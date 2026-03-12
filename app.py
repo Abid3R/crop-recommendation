@@ -205,30 +205,21 @@ html, body, [class*="css"] {
 </style>
 """, unsafe_allow_html=True)
 
-# ── Load model ───────────────────────────────────────────────────
 @st.cache_resource
 def load_model():
     import os
-    base_paths = [
-        '',
-        os.path.dirname(os.path.abspath(__file__)),
-        '/mount/src/crop-recommendation/',
-    ]
-    for base in base_paths:
-        try:
-            m = joblib.load(os.path.join(base, 'crop_model.pkl'))
-            e = joblib.load(os.path.join(base, 'label_encoder.pkl'))
-            x = joblib.load(os.path.join(base, 'feature_columns.pkl'))
-            return m, e, x
-        except:
-            continue
-    raise FileNotFoundError("Model files not found")
+    base = os.path.dirname(os.path.abspath(__file__))
+    m = joblib.load(os.path.join(base, 'crop_model.pkl'))
+    e = joblib.load(os.path.join(base, 'label_encoder.pkl'))
+    x = joblib.load(os.path.join(base, 'feature_columns.pkl'))
+    return m, e, x
 
 try:
     model, encoder, X_cols = load_model()
     model_loaded = True
-except:
+except Exception as e:
     model_loaded = False
+    st.error(f"Load error: {e}")
 
 # ── Constants ────────────────────────────────────────────────────
 ZONES = ['Barisal','Bogra','Chittagonj','Cumilla','Dhaka',
