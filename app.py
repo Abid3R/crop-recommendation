@@ -195,10 +195,21 @@ html, body, [class*="css"] {
 # ── Load model ───────────────────────────────────────────────────
 @st.cache_resource
 def load_model():
-    model   = joblib.load('crop_model.pkl')
-    encoder = joblib.load('label_encoder.pkl')
-    X_cols  = joblib.load('feature_columns.pkl')
-    return model, encoder, X_cols
+    import os
+    base_paths = [
+        '',
+        os.path.dirname(os.path.abspath(__file__)),
+        '/mount/src/crop-recommendation/',
+    ]
+    for base in base_paths:
+        try:
+            m = joblib.load(os.path.join(base, 'crop_model.pkl'))
+            e = joblib.load(os.path.join(base, 'label_encoder.pkl'))
+            x = joblib.load(os.path.join(base, 'feature_columns.pkl'))
+            return m, e, x
+        except:
+            continue
+    raise FileNotFoundError("Model files not found")
 
 try:
     model, encoder, X_cols = load_model()
