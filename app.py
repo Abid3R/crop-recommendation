@@ -28,7 +28,13 @@ html, body, [class*="css"] {
 
 /* Hide default streamlit elements */
 #MainMenu, footer, header { visibility: hidden; }
-
+[data-testid="collapsedControl"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background: #e8b84b !important;
+    border-radius: 50% !important;
+}
 /* Sidebar */
 [data-testid="stSidebar"] {
     background: #2c1a0e !important;
