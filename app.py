@@ -3,20 +3,7 @@ import joblib
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-import os, glob
 
-st.set_page_config(page_title="Debug", page_icon="🌾")
-
-st.write("### Debug Info")
-st.write("Current dir:", os.getcwd())
-st.write("__file__:", __file__)
-st.write("Files in current dir:", os.listdir('.'))
-st.write("Files in /mount/src/:", os.listdir('/mount/src/') if os.path.exists('/mount/src/') else "not found")
-
-# Find all pkl files anywhere
-pkl_files = glob.glob('/mount/**/*.pkl', recursive=True)
-st.write("PKL files found:", pkl_files)
-st.stop()
 # ── Page config ──────────────────────────────────────────────────
 st.set_page_config(
     page_title="CropSense BD",
@@ -205,21 +192,21 @@ html, body, [class*="css"] {
 </style>
 """, unsafe_allow_html=True)
 
+# ── Load model ───────────────────────────────────────────────────
 @st.cache_resource
 def load_model():
-    import os
-    base = os.path.dirname(os.path.abspath(__file__))
-    m = joblib.load(os.path.join(base, 'crop_model.pkl'))
-    e = joblib.load(os.path.join(base, 'label_encoder.pkl'))
-    x = joblib.load(os.path.join(base, 'feature_columns.pkl'))
+    base = '/mount/src/crop-recommendation'
+    m = joblib.load(f'{base}/crop_model.pkl')
+    e = joblib.load(f'{base}/label_encoder.pkl')
+    x = joblib.load(f'{base}/feature_columns.pkl')
     return m, e, x
 
 try:
     model, encoder, X_cols = load_model()
     model_loaded = True
-except Exception as e:
+except Exception as err:
     model_loaded = False
-    st.error(f"Load error: {e}")
+    st.error(f"Error: {err}")
 
 # ── Constants ────────────────────────────────────────────────────
 ZONES = ['Barisal','Bogra','Chittagonj','Cumilla','Dhaka',
