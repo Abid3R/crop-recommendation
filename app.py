@@ -3,7 +3,20 @@ import joblib
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
+import os, glob
 
+st.set_page_config(page_title="Debug", page_icon="🌾")
+
+st.write("### Debug Info")
+st.write("Current dir:", os.getcwd())
+st.write("__file__:", __file__)
+st.write("Files in current dir:", os.listdir('.'))
+st.write("Files in /mount/src/:", os.listdir('/mount/src/') if os.path.exists('/mount/src/') else "not found")
+
+# Find all pkl files anywhere
+pkl_files = glob.glob('/mount/**/*.pkl', recursive=True)
+st.write("PKL files found:", pkl_files)
+st.stop()
 # ── Page config ──────────────────────────────────────────────────
 st.set_page_config(
     page_title="CropSense BD",
