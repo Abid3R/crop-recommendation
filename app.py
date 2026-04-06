@@ -13,9 +13,32 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-html, body, [class*="css"] { font-family: 'Segoe UI', Arial, sans-serif; }
+html, body, [class*="css"] { font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a1a; }
 .stApp { background: #f5f0e8; }
 #MainMenu, footer, header { visibility: hidden; }
+
+/* Fix all input labels */
+.stSelectbox label, .stNumberInput label, .stSlider label {
+    color: #1a1a1a !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+}
+
+/* Fix all input text */
+.stSelectbox div, .stNumberInput div, input, select {
+    color: #1a1a1a !important;
+    background: white !important;
+}
+
+/* Fix metric labels */
+[data-testid="stMetricLabel"] { color: #1a1a1a !important; }
+[data-testid="stMetricValue"] { color: #2c1a0e !important; }
+
+/* Fix all paragraph text */
+p, span, div { color: #1a1a1a; }
+
+/* Fix info box */
+.stAlert { color: #1a1a1a !important; }
 
 .main-title {
     font-family: Georgia, 'Times New Roman', serif;
