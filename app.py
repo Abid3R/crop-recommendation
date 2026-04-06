@@ -13,14 +13,12 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@300;400;500&display=swap');
-
-html, body, [class*="css"] { font-family: 'DM Mono', monospace; }
+html, body, [class*="css"] { font-family: 'Segoe UI', Arial, sans-serif; }
 .stApp { background: #f5f0e8; }
 #MainMenu, footer, header { visibility: hidden; }
 
 .main-title {
-    font-family: 'Playfair Display', serif;
+    font-family: Georgia, 'Times New Roman', serif;
     font-size: 56px;
     font-weight: 900;
     color: #2c1a0e;
