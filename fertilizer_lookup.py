@@ -1,300 +1,218 @@
-# fertilizer_lookup.py
-# Complete version for CropSense BD – includes nutrient-based lookup AND farmer-friendly recommendations
-
+# ================================================================
+# fertilizer_lookup.py - Fertilizer lookup from BARC FRG-2024
+# ================================================================
 import pandas as pd
 import re
 
-# -------------------------------------------------------------------
-# Mapping from model output crop names to exact names in the CSV files
-# -------------------------------------------------------------------
-CROP_NAME_MAP = {
-    # Field crops
-    'Aman': 'T. Aman rice',
-    'Boro': 'Boro rice',
-    'Aush': 'Aus rice',
-    'Wheat': 'Wheat',
-    'Maize': 'Maize',
-    'Potato': 'Potato',
-    'Tomato': 'Tomato (Winter)',
-    'Brinjal(Robi)': 'Brinjal',
-    'Brinjal(Khorip)': 'Brinjal',
-    'Red Lentil': 'Lentil',
-    'Mungbean': 'Mungbean',
-    'Grasspea': 'Grasspea',
-    'Mustard': 'Mustard',
-    'Sugarcane': 'Sugarcane',
-    'Jute': 'Jute (C. capsularis)',
-    'Okra': 'Okra',
-    'Onion': 'Onion',
-    'Garlic': 'Garlic',
-    'Chilli': 'Chilli',
-    'Coriander': 'Coriander',
-    'Turmeric': 'Turmeric',
-    'Ginger': 'Ginger',
-    'Sweet potato': 'Sweet potato',
-    'Radish': 'Radish',
-    'Cabbage': 'Cabbage',
-    'Cauliflower': 'Cauliflower',
-    'Brinjal': 'Brinjal',
-    'Pointed gourd': 'Pointed Gourd',
-    'Sweet gourd': 'Sweet Gourd',
-    'Bitter gourd': 'Bitter Gourd',
-    'Cucumber': 'Cucumber',
-    'Pumpkin': 'Sweet Gourd',
-    'Watermelon': 'Watermelon',
-    'Musk melon': 'Netted melon',
-    # Fruit trees
-    'Banana': 'Banana',
-    'Mango': 'Mango',
-    'Jackfruit': 'Jackfruit',
-    'Guava': 'Guava',
-    'Papaya': 'Papaya',
-    'Litchi': 'Litchi',
-    'Pineapple': 'Pineapple',
-    'Coconut': 'Coconut',
-    'Lemon': 'Lemon',
-    'Dragon fruit': 'Dragon fruit',
-    'Strawberry': 'Strawberry',
-    'Longan': 'Longan',
-    'Cashew nut': 'Cashew nut',
-    'Aonla': 'Aonla',
-    'Jamun': 'Jamun',
-    'Tamarind': 'Tamarind',
+# Fruit tree crops set (lowercase)
+FRUIT_CROPS = {
+    'mango', 'banana', 'guava', 'jackfruit', 'licchi', 'litchi',
+    'papaya', 'pineapple', 'indian jujube', 'coconut', 'orange',
+    'lemon', 'pomelo', 'watermelon', 'sugarcane'
 }
 
-# -------------------------------------------------------------------
-# Helper: parse range strings like "31-60" to midpoint float
-# -------------------------------------------------------------------
-def parse_range(value):
-    """Convert a string like '31-60' or '0-1.3' to a float (midpoint)."""
-    if pd.isna(value) or value == '' or value == '-':
-        return None
-    if isinstance(value, (int, float)):
-        return float(value)
-    s = str(value).strip()
-    s = s.strip("'\"")
+# Crop name mapping: weather dataset label → fertilizer dataset crop name
+CROP_NAME_MAP = {
+    # Field crops
+    'Aman':             'T. Aman rice',
+    'Boro':             'Boro rice',
+    'Aush':             'Aus rice',
+    'Wheat':            'Wheat',
+    'Potato':           'Potato',
+    'Tomato':           'Tomato (Winter)',
+    'Brinjal(Robi)':    'Brinjal',
+    'Brinjal(Khorip)':  'Brinjal',
+    'Sugarcane':        'Sugarcane',
+    'Red Lentil':       'Lentil',
+    'Soybean':          'Soybean',
+    'jute':             'Jute (C. capsularis)',
+    'Tula':             'Cotton',
+    'garlic':           'Garlic',
+    'robi onion':       'Onion',
+    'khorip onion':     'Onion',
+    'robi green chilli ': 'Chilli',
+    'khorip green chilli': 'Chilli',
+    'masterd seed':     'Mustard',
+    'Khorip Mug 1':     'Mungbean',
+    'Robi Mug':         'Mungbean',
+    'Badam robi':       'Groundnut',
+    'Badam Kharip - 1': 'Groundnut',
+    'Corn(Robi)':       'Maize',
+    'corn khorip-1':    'Maize',
+    'Rabi Cucumber':    'Okra',       # closest match
+    'Kharif cucumber':  'Okra',
+    'robi pumpkin Cucurbita':   'Okra',
+    'khorip pumpkin Cucurbita': 'Okra',
+    'robi lau (gourd)':         'Okra',
+    'khorip lau (grourd)':      'Okra',
+    'robi pointed gourd':       'Okra',
+    'khorip pointed grourd':    'Okra',
+    # Fruit trees
+    'Mango':        'Mango',
+    'Banana':       'Banana',
+    'Guava':        'Guava',
+    'jackfruit':    'Jackfruit',
+    'licchi':       'Litchi',
+    'papaya':       'Papaya',
+    'pineapple':    'Pineapple',
+    'indian jujube':'Jamun',
+}
+
+def is_fruit_tree(crop_label):
+    mapped = CROP_NAME_MAP.get(crop_label, crop_label)
+    return mapped.lower() in FRUIT_CROPS or crop_label.lower() in FRUIT_CROPS
+
+def parse_range(val):
+    """Parse range values like '''59-116 → take midpoint."""
+    if pd.isna(val) or val == '' or val == 0:
+        return 0.0
+    s = str(val).replace("'", "").strip()
     if '-' in s:
-        parts = re.split(r'\s*-\s*', s)
-        if len(parts) == 2:
-            try:
-                low = float(parts[0])
-                high = float(parts[1])
-                return round((low + high) / 2, 1)
-            except:
-                pass
+        try:
+            parts = s.split('-')
+            nums = [float(p) for p in parts if p.strip()]
+            if len(nums) == 2:
+                return round((nums[0] + nums[1]) / 2, 1)
+            return float(parts[-1])
+        except:
+            return 0.0
     try:
         return float(s)
     except:
+        return 0.0
+
+def map_age_to_group(age):
+    if age is None: return '>20'
+    if age == 0:    return 'Before planting'
+    if age <= 1:    return '0-1'
+    if age <= 4:    return '2-4'
+    if age <= 7:    return '5-7'
+    if age <= 10:   return '8-10'
+    if age <= 15:   return '11-15'
+    if age <= 20:   return '16-20'
+    return '>20'
+
+def load_field_df(csv_path):
+    df = pd.read_csv(csv_path)
+    df.columns = df.columns.str.strip()
+    df['Crop'] = df['Crop'].str.strip()
+    if 'Soil_Level' in df.columns:
+        df['Soil_Level'] = df['Soil_Level'].str.strip()
+    return df
+
+def load_fruit_df(csv_path):
+    df = pd.read_csv(csv_path)
+    df.columns = df.columns.str.strip()
+    df['Crop'] = df['Crop'].str.strip()
+    if 'Age_Group_years' in df.columns:
+        df['Age_Group_years'] = df['Age_Group_years'].str.strip()
+    return df
+
+def get_field_fertilizer(crop_label, field_df, soil_level='Medium'):
+    mapped = CROP_NAME_MAP.get(crop_label, crop_label)
+    crop_df = field_df[field_df['Crop'].str.lower() == mapped.lower()]
+    if crop_df.empty:
+        # Partial match
+        crop_df = field_df[field_df['Crop'].str.lower().str.contains(
+            mapped.lower().split()[0], na=False)]
+    if crop_df.empty:
         return None
 
-# -------------------------------------------------------------------
-# Load CSV files (with column name cleanup)
-# -------------------------------------------------------------------
-def load_field_df(path):
-    df = pd.read_csv(path)
-    df.columns = df.columns.str.strip()
-    return df
-
-def load_fruit_df(path):
-    df = pd.read_csv(path)
-    df.columns = df.columns.str.strip()
-    return df
-
-# -------------------------------------------------------------------
-# Identify if a crop is a fruit tree (for unit handling)
-# -------------------------------------------------------------------
-def is_fruit_tree(crop_name):
-    fruit_list = [
-        'banana', 'mango', 'jackfruit', 'guava', 'papaya', 'litchi',
-        'pineapple', 'coconut', 'lemon', 'dragon fruit', 'strawberry',
-        'longan', 'cashew nut', 'aonla', 'jamun', 'tamarind',
-        'pummelo', 'mandarin', 'sweet orange', 'satkara', 'golden apple',
-        'burmese grape', 'wax apple', 'bael', 'wood apple', 'bullock\'s heart',
-        'custard apple', 'velvet apple', 'fig', 'indian olive'
-    ]
-    return crop_name.lower() in fruit_list
-
-# -------------------------------------------------------------------
-# Map age in years to the age group string used in fruit CSV
-# -------------------------------------------------------------------
-def age_to_group(age):
-    if age is None:
-        return '>10'
-    if age <= 1:
-        return '0-1'
-    elif age <= 4:
-        return '2-4'
-    elif age <= 7:
-        return '5-7'
-    elif age <= 10:
-        return '8-10'
-    elif age <= 15:
-        return '11-15'
-    elif age <= 20:
-        return '16-20'
+    # Filter soil level
+    if 'Soil_Level' in crop_df.columns:
+        med = crop_df[crop_df['Soil_Level'].str.lower() == soil_level.lower()]
+        row = med.iloc[0] if not med.empty else crop_df.iloc[0]
     else:
-        return '>20'
+        row = crop_df.iloc[0]
 
-# -------------------------------------------------------------------
-# Main nutrient‑based lookup (returns N, P, K, etc. in kg/ha or g/tree)
-# -------------------------------------------------------------------
-def get_fertilizer(crop, field_df, fruit_df, tree_age=None, soil_level='Medium'):
-    mapped_crop = CROP_NAME_MAP.get(crop, crop)
+    nutrients = {}
+    cols = {
+        'N_kg_ha': 'N (kg/ha)', 'P_kg_ha': 'P (kg/ha)',
+        'K_kg_ha': 'K (kg/ha)', 'S_kg_ha': 'S (kg/ha)',
+        'Zn_kg_ha': 'Zn (kg/ha)', 'B_kg_ha': 'B (kg/ha)',
+        'Mg_kg_ha': 'Mg (kg/ha)', 'OF_t_per_ha': 'Organic Matter (t/ha)',
+    }
+    for col, label in cols.items():
+        if col in row.index:
+            val = parse_range(row[col])
+            if val > 0:
+                nutrients[label] = val
 
-    if is_fruit_tree(mapped_crop):
-        fruit_rows = fruit_df[fruit_df['Crop'].str.lower() == mapped_crop.lower()]
-        if fruit_rows.empty:
-            return {'error': f'No fruit data for "{crop}"'}
-        age_group = age_to_group(tree_age)
-        row = fruit_rows[fruit_rows['Age_Group_years'] == age_group]
-        if row.empty:
-            row = fruit_rows.iloc[0]
-            age_group = row['Age_Group_years']
-        else:
-            row = row.iloc[0]
+    return {
+        'crop': mapped,
+        'original_label': crop_label,
+        'variety': row.get('Variety_Group', '-'),
+        'soil_level': row.get('Soil_Level', soil_level),
+        'unit': 'kg/ha',
+        'nutrients': nutrients,
+        'type': 'field',
+    }
+
+def get_fruit_fertilizer(crop_label, fruit_df, tree_age=None):
+    mapped = CROP_NAME_MAP.get(crop_label, crop_label)
+    crop_df = fruit_df[fruit_df['Crop'].str.lower() == mapped.lower()]
+    if crop_df.empty:
+        crop_df = fruit_df[fruit_df['Crop'].str.lower().str.contains(
+            mapped.lower().split()[0], na=False)]
+    if crop_df.empty:
+        return None
+
+    age_group = map_age_to_group(tree_age)
+    split_crops = ['banana', 'papaya', 'pineapple']
+    is_split = any(sc in mapped.lower() for sc in split_crops)
+
+    cols = {
+        'N_g_tree': 'N (g/tree)', 'P_g_tree': 'P (g/tree)',
+        'K_g_tree': 'K (g/tree)', 'S_g_tree': 'S (g/tree)',
+        'Zn_g_tree': 'Zn (g/tree)', 'B_g_tree': 'B (g/tree)',
+        'OF_kg_tree': 'Organic Matter (kg/tree)',
+    }
+
+    if is_split:
+        # Sum all rows for total
         nutrients = {}
-        for nut, col in [
-            ('N (g/tree)', 'N_g_tree'), ('P (g/tree)', 'P_g_tree'),
-            ('K (g/tree)', 'K_g_tree'), ('S (g/tree)', 'S_g_tree'),
-            ('Zn (g/tree)', 'Zn_g_tree'), ('B (g/tree)', 'B_g_tree'),
-            ('OF (kg/tree)', 'OF_kg_tree')
-        ]:
-            val = parse_range(row.get(col))
-            if val is not None:
-                nutrients[nut] = val
-        if not nutrients:
-            return {'error': f'No nutrient values for {crop} (age {age_group})'}
+        for col, label in cols.items():
+            if col in crop_df.columns:
+                total = pd.to_numeric(crop_df[col], errors='coerce').sum()
+                if total > 0:
+                    nutrients[label] = round(total, 1)
         return {
-            'type': 'fruit', 'unit': 'g/tree', 'nutrients': nutrients,
-            'variety': row.get('Variety', '-'), 'age_group': age_group,
-            'note': 'For mature trees; adjust based on canopy size.'
+            'crop': mapped, 'original_label': crop_label,
+            'variety': crop_df['Variety'].iloc[0] if 'Variety' in crop_df.columns else '-',
+            'age_group': 'Total (all applications)', 'unit': 'g/tree',
+            'nutrients': nutrients, 'type': 'fruit',
+            'note': 'Total across all split applications (basal + top dressing)',
         }
     else:
-        field_rows = field_df[field_df['Crop'].str.lower() == mapped_crop.lower()]
-        if field_rows.empty:
-            return {'error': f'No field crop data for "{crop}"'}
-        row = field_rows[field_rows['Soil_Level'].str.lower() == soil_level.lower()]
-        if row.empty:
-            if 'Medium' in field_rows['Soil_Level'].values:
-                row = field_rows[field_rows['Soil_Level'] == 'Medium'].iloc[0]
-            else:
-                row = field_rows.iloc[0]
+        # Match age group
+        if 'Age_Group_years' in crop_df.columns:
+            age_df = crop_df[crop_df['Age_Group_years'] == age_group]
+            if age_df.empty:
+                # fallback to most mature
+                valid = crop_df[crop_df['Age_Group_years'].str.match(r'^\d|^>', na=False)]
+                age_df = valid.iloc[[-1]] if not valid.empty else crop_df.iloc[[-1]]
         else:
-            row = row.iloc[0]
+            age_df = crop_df
+
+        row = age_df.iloc[0]
         nutrients = {}
-        for nut, col in [
-            ('N (kg/ha)', 'N_kg_ha'), ('P (kg/ha)', 'P_kg_ha'),
-            ('K (kg/ha)', 'K_kg_ha'), ('S (kg/ha)', 'S_kg_ha'),
-            ('Zn (kg/ha)', 'Zn_kg_ha'), ('B (kg/ha)', 'B_kg_ha'),
-            ('Mg (kg/ha)', 'Mg_kg_ha'), ('OF (t/ha)', 'OF_t_per_ha')
-        ]:
-            val = parse_range(row.get(col))
-            if val is not None:
-                nutrients[nut] = val
-        if not nutrients:
-            return {'error': f'No nutrient values for {crop} (soil {soil_level})'}
+        for col, label in cols.items():
+            if col in row.index:
+                val = parse_range(row[col])
+                if val > 0:
+                    nutrients[label] = val
         return {
-            'type': 'field', 'unit': 'kg/ha', 'nutrients': nutrients,
-            'variety': row.get('Variety_Group', '-'), 'soil_level': soil_level,
-            'note': 'Based on BARC FRG-2024 for medium soil fertility.'
+            'crop': mapped, 'original_label': crop_label,
+            'variety': row.get('Variety', '-'),
+            'age_group': age_group, 'unit': 'g/tree',
+            'nutrients': nutrients, 'type': 'fruit',
         }
 
-# -------------------------------------------------------------------
-# Farmer‑friendly recommendation (converts nutrients to actual fertilizers,
-# shows amount per decimal, and includes timing)
-# -------------------------------------------------------------------
-def get_farmer_fertilizer(crop, field_df, fruit_df, tree_age=None, soil_level='Medium'):
-    """
-    Returns a list of fertilizers with amount in kg/decimal and simple timing instructions.
-    """
-    # First get the nutrient-based recommendation
-    fert = get_fertilizer(crop, field_df, fruit_df, tree_age, soil_level)
-    if 'error' in fert:
-        return {'error': fert['error']}
-    
-    # For fruit trees, we keep the per‑tree recommendation (easier for farmers)
-    if fert['type'] == 'fruit':
-        nutrients = fert['nutrients']
-        items = []
-        for name, amount in nutrients.items():
-            if amount > 0:
-                items.append({
-                    'name': name.split('(')[0].strip(),  # "N" -> "N"
-                    'amount': amount,
-                    'unit': 'গ্রাম/গাছ',
-                    'timing': 'বছরে দুবার – ফাল্গুন ও ভাদ্র মাসে প্রয়োগ করুন'
-                })
-        return items if items else {'error': 'No fertilizer data available for this fruit.'}
-    
-    # For field crops: convert from kg/ha to kg/decimal
-    # 1 decimal = 40.5 m², 1 hectare = 247 decimals
-    n = fert['nutrients'].get('N (kg/ha)', 0)
-    p = fert['nutrients'].get('P (kg/ha)', 0)
-    k = fert['nutrients'].get('K (kg/ha)', 0)
-    s = fert['nutrients'].get('S (kg/ha)', 0)
-    zn = fert['nutrients'].get('Zn (kg/ha)', 0)
-    
-    # Conversion factors: nutrient to fertilizer material
-    # Urea (46% N): kg = N / 0.46
-    # TSP (20% P): kg = P / 0.20
-    # MOP (50% K): kg = K / 0.50
-    # Gypsum (18% S): kg = S / 0.18
-    # ZnSO4 (21% Zn): kg = Zn / 0.21
-    
-    urea_kg = n / 0.46 if n else 0
-    tsp_kg  = p / 0.20 if p else 0
-    mop_kg  = k / 0.50 if k else 0
-    gypsum_kg = s / 0.18 if s else 0
-    zinc_kg = zn / 0.21 if zn else 0
-    
-    # Convert to per decimal (divide by 247)
-    def to_decimal(kg_ha):
-        return round(kg_ha / 247, 2)
-    
-    recommendations = []
-    
-    if urea_kg > 0:
-        urea_dec = to_decimal(urea_kg)
-        recommendations.append({
-            'name': 'ইউরিয়া (Urea)',
-            'amount': urea_dec,
-            'unit': 'কেজি',
-            'timing': 'অর্ধেক জমি তৈরির সময়, বাকি অর্ধেক ১৫-২০ দিন পর উপরি প্রয়োগ'
-        })
-    if tsp_kg > 0:
-        tsp_dec = to_decimal(tsp_kg)
-        recommendations.append({
-            'name': 'টিএসপি (TSP)',
-            'amount': tsp_dec,
-            'unit': 'কেজি',
-            'timing': 'জমি তৈরির সময় মাটির সাথে ভালোভাবে মিশিয়ে দিন'
-        })
-    if mop_kg > 0:
-        mop_dec = to_decimal(mop_kg)
-        recommendations.append({
-            'name': 'এমওপি (MOP)',
-            'amount': mop_dec,
-            'unit': 'কেজি',
-            'timing': 'জমি তৈরির সময় প্রয়োগ করুন (হালকা দোআঁশ মাটিতে অর্ধেক পরে প্রয়োগ করতে পারেন)'
-        })
-    if gypsum_kg > 0:
-        gypsum_dec = to_decimal(gypsum_kg)
-        recommendations.append({
-            'name': 'জিপসাম (Gypsum)',
-            'amount': gypsum_dec,
-            'unit': 'কেজি',
-            'timing': 'জমি তৈরির সময় প্রয়োগ করুন'
-        })
-    if zinc_kg > 0:
-        zinc_dec = to_decimal(zinc_kg)
-        recommendations.append({
-            'name': 'জিংক সালফেট (Zinc)',
-            'amount': zinc_dec,
-            'unit': 'কেজি',
-            'timing': 'জমি তৈরির সময় প্রয়োগ করুন'
-        })
-    
-    if not recommendations:
-        return {'error': 'সারের পরিমাণ নির্ণয় করা সম্ভব হয়নি।'}
-    
-    return recommendations
+def get_fertilizer(crop_label, field_df, fruit_df, tree_age=None, soil_level='Medium'):
+    if is_fruit_tree(crop_label):
+        result = get_fruit_fertilizer(crop_label, fruit_df, tree_age)
+    else:
+        result = get_field_fertilizer(crop_label, field_df, soil_level)
+    if result is None:
+        return {'error': f'No fertilizer data available for {crop_label}', 'type': 'none'}
+    return result
