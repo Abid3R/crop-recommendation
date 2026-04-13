@@ -271,40 +271,49 @@ if btn:
         badge    = '<span class="badge-t">🌳 Fruit Tree</span>' \
                    if is_fruit else '<span class="badge-f">🌾 Field Crop</span>'
 
-        fert = get_fertilizer(crop, field_df, fruit_df,
-                              tree_age=tree_age if is_fruit else None)
-
-        # Confidence bar width
-        bar_w = int(conf)
-
-        # Fertilizer HTML
-        if 'error' in fert:
-            fert_html = f'<p class="no-fert">⚠️ {fert["error"]}</p>'
-        else:
-            unit      = fert['unit']
-            variety   = fert.get('variety', '-')
-            note      = fert.get('note', '')
-            age_group = fert.get('age_group', '-')
-            soil_lvl  = fert.get('soil_level', '-')
-
-            if fert['type'] == 'fruit':
-                meta = f'Variety: {variety} &nbsp;·&nbsp; Age group: {age_group}'
-            else:
-                meta = f'Variety: {variety} &nbsp;·&nbsp; Soil level: {soil_lvl} &nbsp;·&nbsp; Unit: {unit}'
-            if note:
-                meta += f' &nbsp;·&nbsp; <i>{note}</i>'
-
-            rows = ''.join(
-                f'<tr><td>{n}</td><td><b>{v}</b> {unit}</td></tr>'
-                for n, v in fert['nutrients'].items()
-            )
-            fert_html = f'''
-            <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:8px;">{meta}</p>
-            <table class="fert-table">
-              <tr><th>Nutrient</th><th>Recommended Amount</th></tr>
-              {rows if rows else "<tr><td colspan='2' style='color:rgba(255,255,255,0.3)'>No data available</td></tr>"}
-            </table>''' if rows else '<p class="no-fert">No nutrient data found.</p>'
-
+        # Get farmer-friendly recommendation (actual fertilizers, kg/decimal, timing)
+if is_fruit:
+    # For fruit trees, use the original nutrient display (but simplified)
+    fert = get_fertilizer(crop, field_df, fruit_df, tree_age=tree_age)
+    if 'error' in fert:
+        fert_html = f'<p class="no-fert">⚠️ {fert["error"]}</p>'
+    else:
+        items = ''
+        for nut, val in fert['nutrients'].items():
+            if val > 0:
+                items += f'<div style="display:flex; justify-content:space-between; padding:6px 0;"><span>{nut}</span><span><b>{val} {fert["unit"]}</b></span></div>'
+        fert_html = f'''
+        <div style="margin-top:12px;">
+            <div class="fert-label">📋 সার প্রয়োগ পরামর্শ (BARC FRG-2024)</div>
+            <div style="background:#2c1a0e; border-radius:8px; padding:8px 16px;">
+                {items}
+                <p style="font-size:11px; color:#aaa; margin-top:12px;">* {fert["variety"]} · {fert["age_group"]} বছর · গাছ প্রতি</p>
+            </div>
+        </div>
+        '''
+else:
+    # For field crops – use the new farmer-friendly function
+    recs = get_farmer_fertilizer(crop, field_df, fruit_df, tree_age=None, soil_level='Medium')
+    if isinstance(recs, dict) and 'error' in recs:
+        fert_html = f'<p class="no-fert">⚠️ {recs["error"]}</p>'
+    else:
+        items = ''
+        for r in recs:
+            items += f'''
+            <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.1); padding:10px 0;">
+                <div><strong>{r['name']}</strong><br><span style="font-size:11px;">{r['timing']}</span></div>
+                <div style="text-align:right;"><strong>{r['amount']} {r['unit']}</strong><br><span style="font-size:10px;">প্রতি শতাংশে</span></div>
+            </div>
+            '''
+        fert_html = f'''
+        <div style="margin-top:12px;">
+            <div class="fert-label">📋 সার প্রয়োগ পরামর্শ (BARC FRG-2024)</div>
+            <div style="background:#2c1a0e; border-radius:8px; padding:8px 16px;">
+                {items}
+                <p style="font-size:11px; color:#aaa; margin-top:12px;">* ১ শতাংশ = ৪০.৫ বর্গমিটার<br>* উপরি প্রয়োগ মানে গাছের গোড়ায় সার দেওয়া</p>
+            </div>
+        </div>
+        '''
         # AEZ tag for output
         aez_tag = f'<span class="aez-tag">AEZ {aez}: {aez_name}</span>'
 
