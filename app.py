@@ -1,6 +1,6 @@
 # ================================================================
 # CropSense BD - Crop & Fertilizer Recommendation System
-# streamlit run app_final.py
+# Streamlit app
 # ================================================================
 import streamlit as st
 import pandas as pd
@@ -10,7 +10,10 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from fertilizer_lookup import load_field_df, load_fruit_df, get_fertilizer, is_fruit_tree
+from fertilizer_lookup import (
+    load_field_df, load_fruit_df, get_fertilizer,
+    get_farmer_fertilizer, is_fruit_tree
+)
 
 st.set_page_config(page_title="CropSense BD", page_icon="🌾", layout="wide")
 
@@ -67,17 +70,6 @@ html, body, [class*="css"] {
     font-size: 11px; color: rgba(232,184,75,0.7);
     letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;
 }
-.fert-table { width:100%; border-collapse:collapse; font-size:13px; }
-.fert-table th {
-    background:rgba(255,255,255,0.1); color:#e8b84b;
-    padding:7px 10px; text-align:left;
-    font-size:11px; text-transform:uppercase; letter-spacing:1px;
-}
-.fert-table td {
-    padding:7px 10px;
-    border-bottom:1px solid rgba(255,255,255,0.07); color:#fdf6e3;
-}
-.fert-table tr:last-child td { border-bottom: none; }
 .badge-f {
     background:#3d6b35; color:white;
     padding:2px 8px; border-radius:10px; font-size:10px;
@@ -156,12 +148,7 @@ def get_emoji(c):
 # ── Load model ────────────────────────────────────────────────────
 @st.cache_resource
 def load_all():
-    paths = [
-        os.path.dirname(os.path.abspath(__file__)),
-        '/mount/src/crop-recommendation', '.',
-    ]
-    base = next((p for p in paths
-                 if os.path.exists(os.path.join(p,'crop_model.pkl'))), '.')
+    base = os.path.dirname(os.path.abspath(__file__))
     model    = joblib.load(os.path.join(base, 'crop_model.pkl'))
     encoder  = joblib.load(os.path.join(base, 'label_encoder.pkl'))
     features = joblib.load(os.path.join(base, 'feature_names.pkl'))
@@ -176,10 +163,8 @@ except Exception as e:
     st.stop()
 
 # ── Header ────────────────────────────────────────────────────────
-st.markdown('<div class="main-title">🌾 CropSense <em>BD</em></div>',
-            unsafe_allow_html=True)
-st.markdown('<div class="subtitle">AI Crop & Fertilizer Recommendation · Bangladesh · BARC FRG-2024</div>',
-            unsafe_allow_html=True)
+st.markdown('<div class="main-title">🌾 CropSense <em>BD</em></div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">AI Crop & Fertilizer Recommendation · Bangladesh · BARC FRG-2024</div>', unsafe_allow_html=True)
 
 c1,c2,c3,c4 = st.columns(4)
 with c1: st.metric("Best Model",  "XGBoost")
@@ -187,8 +172,7 @@ with c2: st.metric("Accuracy",    "79.25%")
 with c3: st.metric("Crops",       "41")
 with c4: st.metric("Districts",   "14")
 
-st.markdown('<div class="info-box">🌱 Select your district and month, enter current weather conditions, then click <b>Get Recommendations</b>. The app will show the best crops to grow along with official BARC fertilizer doses.</div>',
-            unsafe_allow_html=True)
+st.markdown('<div class="info-box">🌱 Select your district and month, enter current weather conditions, then click <b>Get Recommendations</b>. The app will show the best crops to grow along with official BARC fertilizer doses.</div>', unsafe_allow_html=True)
 st.divider()
 
 # ── Inputs ────────────────────────────────────────────────────────
@@ -254,7 +238,6 @@ if btn:
     st.divider()
     st.markdown(f"### 🌾 Recommendations for **{district}**")
 
-    # AEZ info box
     st.markdown(f"""
     <div class="aez-box">
         📌 &nbsp; <b>AEZ {aez}</b> — {aez_name} &nbsp;·&nbsp;
@@ -268,54 +251,52 @@ if btn:
     for rank, (crop, conf) in enumerate(top_crops, 1):
         emoji    = get_emoji(crop)
         is_fruit = is_fruit_tree(crop)
-        badge    = '<span class="badge-t">🌳 Fruit Tree</span>' \
-                   if is_fruit else '<span class="badge-f">🌾 Field Crop</span>'
+        badge    = '<span class="badge-t">🌳 Fruit Tree</span>' if is_fruit else '<span class="badge-f">🌾 Field Crop</span>'
 
-        # Get farmer-friendly recommendation (actual fertilizers, kg/decimal, timing)
-if is_fruit:
-    # For fruit trees, use the original nutrient display (but simplified)
-    fert = get_fertilizer(crop, field_df, fruit_df, tree_age=tree_age)
-    if 'error' in fert:
-        fert_html = f'<p class="no-fert">⚠️ {fert["error"]}</p>'
-    else:
-        items = ''
-        for nut, val in fert['nutrients'].items():
-            if val > 0:
-                items += f'<div style="display:flex; justify-content:space-between; padding:6px 0;"><span>{nut}</span><span><b>{val} {fert["unit"]}</b></span></div>'
-        fert_html = f'''
-        <div style="margin-top:12px;">
-            <div class="fert-label">📋 সার প্রয়োগ পরামর্শ (BARC FRG-2024)</div>
-            <div style="background:#2c1a0e; border-radius:8px; padding:8px 16px;">
-                {items}
-                <p style="font-size:11px; color:#aaa; margin-top:12px;">* {fert["variety"]} · {fert["age_group"]} বছর · গাছ প্রতি</p>
-            </div>
-        </div>
-        '''
-else:
-    # For field crops – use the new farmer-friendly function
-    recs = get_farmer_fertilizer(crop, field_df, fruit_df, tree_age=None, soil_level='Medium')
-    if isinstance(recs, dict) and 'error' in recs:
-        fert_html = f'<p class="no-fert">⚠️ {recs["error"]}</p>'
-    else:
-        items = ''
-        for r in recs:
-            items += f'''
-            <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.1); padding:10px 0;">
-                <div><strong>{r['name']}</strong><br><span style="font-size:11px;">{r['timing']}</span></div>
-                <div style="text-align:right;"><strong>{r['amount']} {r['unit']}</strong><br><span style="font-size:10px;">প্রতি শতাংশে</span></div>
-            </div>
-            '''
-        fert_html = f'''
-        <div style="margin-top:12px;">
-            <div class="fert-label">📋 সার প্রয়োগ পরামর্শ (BARC FRG-2024)</div>
-            <div style="background:#2c1a0e; border-radius:8px; padding:8px 16px;">
-                {items}
-                <p style="font-size:11px; color:#aaa; margin-top:12px;">* ১ শতাংশ = ৪০.৫ বর্গমিটার<br>* উপরি প্রয়োগ মানে গাছের গোড়ায় সার দেওয়া</p>
-            </div>
-        </div>
-        '''
-        # AEZ tag for output
+        # Fertilizer recommendation (farmer-friendly for field crops)
+        if is_fruit:
+            fert = get_fertilizer(crop, field_df, fruit_df, tree_age=tree_age)
+            if 'error' in fert:
+                fert_html = f'<p class="no-fert">⚠️ {fert["error"]}</p>'
+            else:
+                items = ''
+                for nut, val in fert['nutrients'].items():
+                    if val > 0:
+                        items += f'<div style="display:flex; justify-content:space-between; padding:6px 0;"><span>{nut}</span><span><b>{val} {fert["unit"]}</b></span></div>'
+                fert_html = f'''
+                <div style="margin-top:12px;">
+                    <div class="fert-label">📋 সার প্রয়োগ পরামর্শ (BARC FRG-2024)</div>
+                    <div style="background:#2c1a0e; border-radius:8px; padding:8px 16px;">
+                        {items}
+                        <p style="font-size:11px; color:#aaa; margin-top:12px;">* {fert["variety"]} · {fert["age_group"]} বছর · গাছ প্রতি</p>
+                    </div>
+                </div>
+                '''
+        else:
+            recs = get_farmer_fertilizer(crop, field_df, fruit_df, tree_age=None, soil_level='Medium')
+            if isinstance(recs, dict) and 'error' in recs:
+                fert_html = f'<p class="no-fert">⚠️ {recs["error"]}</p>'
+            else:
+                items = ''
+                for r in recs:
+                    items += f'''
+                    <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.1); padding:10px 0;">
+                        <div><strong>{r['name']}</strong><br><span style="font-size:11px;">{r['timing']}</span></div>
+                        <div style="text-align:right;"><strong>{r['amount']} {r['unit']}</strong><br><span style="font-size:10px;">প্রতি শতাংশে</span></div>
+                    </div>
+                    '''
+                fert_html = f'''
+                <div style="margin-top:12px;">
+                    <div class="fert-label">📋 সার প্রয়োগ পরামর্শ (BARC FRG-2024)</div>
+                    <div style="background:#2c1a0e; border-radius:8px; padding:8px 16px;">
+                        {items}
+                        <p style="font-size:11px; color:#aaa; margin-top:12px;">* ১ শতাংশ = ৪০.৫ বর্গমিটার<br>* উপরি প্রয়োগ মানে গাছের গোড়ায় সার দেওয়া</p>
+                    </div>
+                </div>
+                '''
+
         aez_tag = f'<span class="aez-tag">AEZ {aez}: {aez_name}</span>'
+        bar_w = int(conf)
 
         st.markdown(f"""
         <div class="crop-card">
@@ -330,13 +311,9 @@ else:
               <div style="font-size:28px;color:#c8e6c9;font-weight:700;">{conf}%</div>
               <div style="font-size:10px;color:rgba(255,255,255,0.4);">confidence</div>
               <div class="conf-bar-bg">
-                <div style="width:{bar_w}%;background:linear-gradient(90deg,#3d6b35,#e8b84b);
-                            height:6px;border-radius:4px;"></div>
+                <div style="width:{bar_w}%;background:linear-gradient(90deg,#3d6b35,#e8b84b); height:6px;border-radius:4px;"></div>
               </div>
             </div>
-          </div>
-          <div class="fert-label" style="margin-top:12px;">
-            📋 Fertilizer Recommendation — BARC FRG-2024
           </div>
           {fert_html}
         </div>
