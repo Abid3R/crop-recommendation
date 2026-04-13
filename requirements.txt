@@ -1,6 +1,0 @@
-streamlit
-joblib
-pandas>=2.2.0
-scikit-learn>=1.4.0
-numpy>=2.0.0
-plotly
