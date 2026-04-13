@@ -1,6 +1,6 @@
 # ================================================================
 # CropSense BD - Crop & Fertilizer Recommendation System
-# streamlit run app_final.py
+# streamlit run app.py
 # ================================================================
 import streamlit as st
 import pandas as pd
@@ -40,63 +40,79 @@ html, body, [class*="css"] {
     border-bottom: 2px solid rgba(74,44,23,0.15);
     padding-bottom: 6px; margin: 16px 0 8px;
 }
-.aez-box {
-    background: #2c1a0e; color: #e8b84b;
-    border-radius: 4px; padding: 10px 14px;
-    font-size: 13px; margin-bottom: 16px;
-    display: inline-block;
-}
 .crop-card {
-    background: #2c1a0e; border-radius: 6px;
-    padding: 20px 24px; margin-bottom: 16px;
+    background: #2c1a0e; border-radius: 8px;
+    padding: 24px 28px; margin-bottom: 20px;
 }
 .crop-title {
-    font-family: Georgia, serif; font-size: 26px;
-    font-weight: 900; color: #e8b84b; margin-bottom: 2px;
+    font-family: Georgia, serif; font-size: 28px;
+    font-weight: 900; color: #e8b84b; margin-bottom: 4px;
 }
-.crop-meta { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 12px; }
 .aez-tag {
     display: inline-block;
     background: rgba(232,184,75,0.15);
     border: 1px solid rgba(232,184,75,0.4);
     color: #e8b84b; padding: 3px 10px;
-    border-radius: 12px; font-size: 11px;
-    margin-right: 6px; margin-bottom: 10px;
+    border-radius: 12px; font-size: 11px; margin-right: 6px;
 }
-.fert-label {
-    font-size: 11px; color: rgba(232,184,75,0.7);
-    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;
-}
-.fert-table { width:100%; border-collapse:collapse; font-size:13px; }
-.fert-table th {
-    background:rgba(255,255,255,0.1); color:#e8b84b;
-    padding:7px 10px; text-align:left;
-    font-size:11px; text-transform:uppercase; letter-spacing:1px;
-}
-.fert-table td {
-    padding:7px 10px;
-    border-bottom:1px solid rgba(255,255,255,0.07); color:#fdf6e3;
-}
-.fert-table tr:last-child td { border-bottom: none; }
 .badge-f {
     background:#3d6b35; color:white;
-    padding:2px 8px; border-radius:10px; font-size:10px;
-    text-transform:uppercase; letter-spacing:1px;
+    padding:3px 10px; border-radius:10px; font-size:11px;
 }
 .badge-t {
     background:#e8b84b; color:#2c1a0e;
-    padding:2px 8px; border-radius:10px; font-size:10px;
-    text-transform:uppercase; letter-spacing:1px;
+    padding:3px 10px; border-radius:10px; font-size:11px;
 }
-.no-fert { color:rgba(255,255,255,0.4); font-size:13px; font-style:italic; }
+.fert-section {
+    background: rgba(255,255,255,0.06);
+    border-radius: 6px; padding: 16px 18px; margin-top: 14px;
+}
+.fert-title {
+    font-size: 12px; font-weight: 700;
+    color: #e8b84b; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 12px;
+}
+.fert-item {
+    display: flex; align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.fert-item:last-child { border-bottom: none; }
+.fert-name {
+    font-size: 14px; color: #fdf6e3;
+    font-weight: 600; flex: 1;
+}
+.fert-amount {
+    font-size: 16px; color: #c8e6c9;
+    font-weight: 700; margin-right: 8px;
+}
+.fert-unit {
+    font-size: 11px; color: rgba(255,255,255,0.4);
+}
+.fert-note {
+    font-size: 11px; color: rgba(255,255,255,0.35);
+    margin-top: 10px; font-style: italic;
+}
+.no-fert {
+    font-size: 13px; color: rgba(255,255,255,0.35);
+    font-style: italic; padding: 8px 0;
+}
+.conf-num {
+    font-size: 30px; color: #c8e6c9; font-weight: 700;
+}
+.conf-label {
+    font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 2px;
+}
 .info-box {
     background:#edf4eb; border-left:4px solid #3d6b35;
     padding:12px 16px; border-radius:0 4px 4px 0;
     font-size:13px; color:#2c4a2a; margin: 16px 0;
 }
-.conf-bar-bg {
-    background: rgba(255,255,255,0.1);
-    border-radius: 4px; height: 6px; margin-top: 6px;
+.aez-box {
+    background: #2c1a0e; color: #e8b84b;
+    border-radius: 6px; padding: 12px 16px;
+    font-size: 14px; margin-bottom: 20px;
+    border: 1px solid rgba(232,184,75,0.3);
 }
 .stButton > button {
     width:100%; background:#2c1a0e !important; color:#e8b84b !important;
@@ -123,22 +139,35 @@ AEZ_MAP = {
     'Rangamati':24,'Rangpur':3,'Sylhet':21,
 }
 AEZ_NAMES = {
-    1:'Old Himalayan Piedmont Plain',
-    3:'Tista Meander Floodplain',
-    4:'Karatoya-Bangali Floodplain',
-    8:'Young Brahmaputra Floodplain',
-    9:'Old Brahmaputra Floodplain',
-    11:'High Ganges River Floodplain',
-    12:'Low Ganges River Floodplain',
-    13:'Ganges Tidal Floodplain',
-    18:'Meghna Floodplain',
-    21:'Sylhet Basin',
-    23:'Chittagong Coastal Plain',
-    24:'Chittagong Hill Tracts',
+    1:'Old Himalayan Piedmont Plain', 3:'Tista Meander Floodplain',
+    4:'Karatoya-Bangali Floodplain', 8:'Young Brahmaputra Floodplain',
+    9:'Old Brahmaputra Floodplain', 11:'High Ganges River Floodplain',
+    12:'Low Ganges River Floodplain', 13:'Ganges Tidal Floodplain',
+    18:'Meghna Floodplain', 21:'Sylhet Basin',
+    23:'Chittagong Coastal Plain', 24:'Chittagong Hill Tracts',
 }
 MONTHS = ['January','February','March','April','May','June',
           'July','August','September','October','November','December']
 DISTRICTS = sorted(AEZ_MAP.keys())
+
+# Friendly fertilizer names for farmers
+FRIENDLY_NAMES = {
+    'N (kg/ha)':              ('Nitrogen (N)',           'kg per hectare',  '🌿'),
+    'P (kg/ha)':              ('Phosphorus (P)',         'kg per hectare',  '🪨'),
+    'K (kg/ha)':              ('Potassium (K)',          'kg per hectare',  '🌱'),
+    'S (kg/ha)':              ('Sulphur (S)',            'kg per hectare',  '🟡'),
+    'Zn (kg/ha)':             ('Zinc (Zn)',              'kg per hectare',  '⚪'),
+    'B (kg/ha)':              ('Boron (B)',              'kg per hectare',  '🔵'),
+    'Mg (kg/ha)':             ('Magnesium (Mg)',         'kg per hectare',  '⚫'),
+    'Organic Matter (t/ha)':  ('Organic Compost/Manure','tons per hectare','♻️'),
+    'N (g/tree)':             ('Nitrogen (N)',           'grams per tree',  '🌿'),
+    'P (g/tree)':             ('Phosphorus (P)',         'grams per tree',  '🪨'),
+    'K (g/tree)':             ('Potassium (K)',          'grams per tree',  '🌱'),
+    'S (g/tree)':             ('Sulphur (S)',            'grams per tree',  '🟡'),
+    'Zn (g/tree)':            ('Zinc (Zn)',              'grams per tree',  '⚪'),
+    'B (g/tree)':             ('Boron (B)',              'grams per tree',  '🔵'),
+    'Organic Matter (kg/tree)':('Organic Compost/Manure','kg per tree',    '♻️'),
+}
 
 CROP_EMOJI = {
     'Aman':'🌾','Boro':'🌾','Aush':'🌾','Wheat':'🌿','jute':'🪢',
@@ -153,6 +182,53 @@ def get_emoji(c):
         if k.lower() in c.lower(): return v
     return '🌱'
 
+def friendly_fert_html(fert):
+    """Convert fertilizer data to farmer-friendly plain display."""
+    if 'error' in fert:
+        return f'<p class="no-fert">⚠️ No fertilizer data available for this crop.</p>'
+
+    is_fruit  = fert['type'] == 'fruit'
+    unit_type = 'per tree' if is_fruit else 'per hectare'
+
+    if is_fruit:
+        age_group = fert.get('age_group', '-')
+        variety   = fert.get('variety', '-')
+        note      = fert.get('note', '')
+        header_info = f'Tree variety: {variety} &nbsp;·&nbsp; Age group: {age_group}'
+        if note: header_info += f' &nbsp;·&nbsp; {note}'
+    else:
+        variety   = fert.get('variety', '-')
+        soil_lvl  = fert.get('soil_level', 'Medium')
+        header_info = f'Variety: {variety} &nbsp;·&nbsp; Soil fertility: {soil_lvl}'
+
+    rows_html = ''
+    for key, val in fert['nutrients'].items():
+        if key in FRIENDLY_NAMES:
+            name, unit_label, icon = FRIENDLY_NAMES[key]
+        else:
+            name, unit_label, icon = key, unit_type, '🌱'
+
+        rows_html += f'''
+        <div class="fert-item">
+            <span class="fert-name">{icon} &nbsp; {name}</span>
+            <span class="fert-amount">{val}</span>
+            <span class="fert-unit">{unit_label}</span>
+        </div>'''
+
+    note_html = ''
+    if is_fruit:
+        note_html = '<p class="fert-note">💡 Apply in split doses — half at start of growing season, half after first fruiting.</p>'
+    else:
+        note_html = '<p class="fert-note">💡 Apply based on medium soil fertility (BARC FRG-2024). Get a soil test for precise doses.</p>'
+
+    return f'''
+    <div class="fert-section">
+        <div class="fert-title">📋 How much fertilizer to apply ({unit_type})</div>
+        <p style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:10px;">{header_info}</p>
+        {rows_html if rows_html else '<p class="no-fert">No nutrient data found.</p>'}
+        {note_html}
+    </div>'''
+
 # ── Load model ────────────────────────────────────────────────────
 @st.cache_resource
 def load_all():
@@ -161,7 +237,7 @@ def load_all():
         '/mount/src/crop-recommendation', '.',
     ]
     base = next((p for p in paths
-                 if os.path.exists(os.path.join(p,'crop_model.pkl'))), '.')
+                 if os.path.exists(os.path.join(p, 'crop_model.pkl'))), '.')
     model    = joblib.load(os.path.join(base, 'crop_model.pkl'))
     encoder  = joblib.load(os.path.join(base, 'label_encoder.pkl'))
     features = joblib.load(os.path.join(base, 'feature_names.pkl'))
@@ -187,7 +263,7 @@ with c2: st.metric("Accuracy",    "79.25%")
 with c3: st.metric("Crops",       "41")
 with c4: st.metric("Districts",   "14")
 
-st.markdown('<div class="info-box">🌱 Select your district and month, enter current weather conditions, then click <b>Get Recommendations</b>. The app will show the best crops to grow along with official BARC fertilizer doses.</div>',
+st.markdown('<div class="info-box">🌱 Select your district and month, enter current weather conditions, then click <b>Get Recommendations</b>. You will see the best crops to grow with exact fertilizer amounts in simple language.</div>',
             unsafe_allow_html=True)
 st.divider()
 
@@ -211,11 +287,11 @@ with c6:
     top_n    = st.selectbox("Number of recommendations", [3, 5, 10], index=0)
 
 st.markdown('<div class="sec">🌳 Fruit Tree Options</div>', unsafe_allow_html=True)
-want_fruit = st.checkbox("Include fruit tree recommendations", value=True)
+want_fruit = st.checkbox("Include fruit tree fertilizer recommendations", value=True)
 tree_age   = None
 if want_fruit:
     tree_age = st.number_input(
-        "Tree age (years) — used to determine fertilizer dosage for fruit trees",
+        "Tree age (years) — used to find the right fertilizer amount for fruit trees",
         min_value=0, max_value=50, value=10, step=1
     )
 
@@ -227,43 +303,40 @@ if btn:
     aez      = AEZ_MAP.get(district, 9)
     aez_name = AEZ_NAMES.get(aez, f'AEZ {aez}')
 
-    # Build input sample matching training features
+    # Build sample
     sample = {f: 0 for f in features}
-    weather_vals = {
+    for k, v in {
         'Rainfall (mm)': rainfall, 'Mean Temp. (*C)': temp,
         'RHmean (%)': humidity, 'SShr (hrs)': sunshine,
         'WS (Km/hr)': wind_spd, 'Week': week,
-    }
-    for k, v in weather_vals.items():
+    }.items():
         if k in sample: sample[k] = v
 
-    # One-hot zone and month
-    zone_col  = f'Agricultural Zone_{district}'
-    month_col = f'Month_{month}'
-    if zone_col  in sample: sample[zone_col]  = 1
-    if month_col in sample: sample[month_col] = 1
+    if f'Agricultural Zone_{district}' in sample:
+        sample[f'Agricultural Zone_{district}'] = 1
+    if f'Month_{month}' in sample:
+        sample[f'Month_{month}'] = 1
 
-    X_input = pd.DataFrame([sample])[features]
-
+    X_input   = pd.DataFrame([sample])[features]
     proba     = model.predict_proba(X_input)[0]
     top_idx   = proba.argsort()[-top_n:][::-1]
     top_crops = [(encoder.inverse_transform([i])[0], round(proba[i]*100, 1))
                  for i in top_idx]
 
-    # ── Results ───────────────────────────────────────────────────
     st.divider()
-    st.markdown(f"### 🌾 Recommendations for **{district}**")
+    st.markdown(f"### 🌾 Crop Recommendations for **{district}**")
 
-    # AEZ info box
     st.markdown(f"""
     <div class="aez-box">
-        📌 &nbsp; <b>AEZ {aez}</b> — {aez_name} &nbsp;·&nbsp;
+        📌 <b>Your Agro-Ecological Zone: AEZ {aez} — {aez_name}</b><br>
+        <span style="font-size:12px;color:rgba(232,184,75,0.7);">
         {month}, Week {week} &nbsp;·&nbsp;
-        🌡️ {temp}°C &nbsp; 🌧️ {rainfall}mm &nbsp; 💧 {humidity}%
+        Temperature: {temp}°C &nbsp;·&nbsp;
+        Rainfall: {rainfall} mm &nbsp;·&nbsp;
+        Humidity: {humidity}%
+        </span>
     </div>
     """, unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
 
     for rank, (crop, conf) in enumerate(top_crops, 1):
         emoji    = get_emoji(crop)
@@ -271,63 +344,24 @@ if btn:
         badge    = '<span class="badge-t">🌳 Fruit Tree</span>' \
                    if is_fruit else '<span class="badge-f">🌾 Field Crop</span>'
 
-        fert = get_fertilizer(crop, field_df, fruit_df,
-                              tree_age=tree_age if is_fruit else None)
-
-        # Confidence bar width
-        bar_w = int(conf)
-
-        # Fertilizer HTML
-        if 'error' in fert:
-            fert_html = f'<p class="no-fert">⚠️ {fert["error"]}</p>'
-        else:
-            unit      = fert['unit']
-            variety   = fert.get('variety', '-')
-            note      = fert.get('note', '')
-            age_group = fert.get('age_group', '-')
-            soil_lvl  = fert.get('soil_level', '-')
-
-            if fert['type'] == 'fruit':
-                meta = f'Variety: {variety} &nbsp;·&nbsp; Age group: {age_group}'
-            else:
-                meta = f'Variety: {variety} &nbsp;·&nbsp; Soil level: {soil_lvl} &nbsp;·&nbsp; Unit: {unit}'
-            if note:
-                meta += f' &nbsp;·&nbsp; <i>{note}</i>'
-
-            rows = ''.join(
-                f'<tr><td>{n}</td><td><b>{v}</b> {unit}</td></tr>'
-                for n, v in fert['nutrients'].items()
-            )
-            fert_html = f'''
-            <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:8px;">{meta}</p>
-            <table class="fert-table">
-              <tr><th>Nutrient</th><th>Recommended Amount</th></tr>
-              {rows if rows else "<tr><td colspan='2' style='color:rgba(255,255,255,0.3)'>No data available</td></tr>"}
-            </table>''' if rows else '<p class="no-fert">No nutrient data found.</p>'
-
-        # AEZ tag for output
-        aez_tag = f'<span class="aez-tag">AEZ {aez}: {aez_name}</span>'
+        fert     = get_fertilizer(crop, field_df, fruit_df,
+                                  tree_age=tree_age if is_fruit else None)
+        fert_html = friendly_fert_html(fert)
 
         st.markdown(f"""
         <div class="crop-card">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;">
             <div>
               <div class="crop-title">#{rank} &nbsp; {emoji} {crop}</div>
-              <div class="crop-meta">
-                {badge} &nbsp; {aez_tag}
+              <div style="margin-top:6px;">
+                {badge} &nbsp;
+                <span class="aez-tag">AEZ {aez}: {aez_name}</span>
               </div>
             </div>
             <div style="text-align:right;">
-              <div style="font-size:28px;color:#c8e6c9;font-weight:700;">{conf}%</div>
-              <div style="font-size:10px;color:rgba(255,255,255,0.4);">confidence</div>
-              <div class="conf-bar-bg">
-                <div style="width:{bar_w}%;background:linear-gradient(90deg,#3d6b35,#e8b84b);
-                            height:6px;border-radius:4px;"></div>
-              </div>
+              <div class="conf-num">{conf}%</div>
+              <div class="conf-label">model confidence</div>
             </div>
-          </div>
-          <div class="fert-label" style="margin-top:12px;">
-            📋 Fertilizer Recommendation — BARC FRG-2024
           </div>
           {fert_html}
         </div>
@@ -335,15 +369,13 @@ if btn:
 
     st.markdown("""
     <div class="info-box">
-    ℹ️ <b>How recommendations are generated:</b><br>
-    Crops are predicted using an <b>XGBoost classifier</b> (79.25% accuracy) trained on
-    historical BAMIS weather data from 14 agricultural districts.
-    Each district is mapped to its <b>Agro-Ecological Zone (AEZ)</b> based on BARC FRG-2024 (pages 28–35).
-    Fertilizer doses follow official <b>BARC Fertilizer Recommendation Guide 2024</b> —
-    field crops in <b>kg/ha</b> assuming medium soil fertility,
-    fruit trees in <b>g/tree</b> based on tree age group.
-    <br><br>
-    ⚠️ <b>Always consult your local agricultural extension officer</b> for site-specific advice.
+    ℹ️ <b>How this works:</b> An XGBoost classifier (79.25% accuracy) trained on BAMIS
+    weather data predicts the most suitable crops for your district and conditions.
+    Your district is mapped to its <b>Agro-Ecological Zone (AEZ)</b> from BARC FRG-2024.
+    Fertilizer amounts come from the official <b>BARC Fertilizer Recommendation Guide 2024</b>.
+    Field crop amounts are in <b>kg per hectare</b> (medium soil).
+    Fruit tree amounts are in <b>grams per tree</b> based on tree age.
+    <br><br>⚠️ Always consult your local agricultural extension officer for final advice.
     </div>
     """, unsafe_allow_html=True)
 
@@ -351,8 +383,8 @@ else:
     st.info("👆 Select your district, month, and weather conditions above, then click **Get Recommendations**")
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.markdown("**1. Enter Location & Weather**\n\nSelect district, month, week and input current weather measurements from your area.")
+        st.markdown("**1. Enter Location & Weather**\n\nChoose your district, current month, and input weather measurements.")
     with c2:
-        st.markdown("**2. AI Analysis**\n\nXGBoost model analyzes conditions against BAMIS historical data and maps your district to its Agro-Ecological Zone (AEZ).")
+        st.markdown("**2. AI Crop Prediction**\n\nXGBoost model finds the best crops for your conditions based on historical BAMIS data.")
     with c3:
-        st.markdown("**3. Crop + AEZ + Fertilizer**\n\nGet top crop picks with AEZ zone info and official BARC fertilizer doses for each recommended crop.")
+        st.markdown("**3. Plain Fertilizer Advice**\n\nGet simple, clear fertilizer amounts from BARC FRG-2024 — easy to understand and act on.")
