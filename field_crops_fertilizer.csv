@@ -1,0 +1,185 @@
+Crop,Variety_Group,Yield_Goal_t_per_ha,Soil_Level,N_kg_ha,P_kg_ha,K_kg_ha,S_kg_ha,Zn_kg_ha,B_kg_ha,Mg_kg_ha,OF_t_per_ha,Data_Type
+Boro rice,BRRI dhan29 etc,7.5,Optimum,'''0-58,'''0-60,'''0-40,'''0-6,,,2,,Field_Crop
+Boro rice,BRRI dhan29 etc,7.5,Medium,'''59-116,'''7-12,'''41-80,'''7-12,'''0-1.3,,,2,Field_Crop
+Boro rice,BRRI dhan29 etc,7.5,Low,'''117-174,'''13-18,'''81-120,'''13-18,'''1.4-2.6,,,2,Field_Crop
+Boro rice,BRRI dhan29 etc,7.5,Very low,'''175-232,'''19-24,'''121-160,'''19-24,'''2.7-3.9,,,2,Field_Crop
+Boro rice,BRRI dhan28 etc,6.0,Optimum,'''0-46,'''0-3,'''0-20,'''0-5,,,2,,Field_Crop
+Boro rice,BRRI dhan28 etc,6.0,Medium,'''47-92,'''6-10,'''33-64,'''6-10,'''0-1.0,,,2,Field_Crop
+Boro rice,BRRI dhan28 etc,6.0,Low,'''93-138,'''11-15,'''65-96,'''11-15,'''1.1-2.0,,,2,Field_Crop
+Boro rice,BRRI dhan28 etc,6.0,Very low,'''139-184,'''16-20,'''97-128,'''16-20,'''2.1-3.0,,,2,Field_Crop
+Aus rice,BRRI dhan48 etc,5.0,Optimum,'''0-24,'''0-4,'''0-22,'''0-3,,,,,Field_Crop
+Aus rice,BRRI dhan48 etc,5.0,Medium,'''25-48,'''5-8,'''23-44,'''4-6,'''0-0.7,,,,Field_Crop
+Aus rice,BRRI dhan48 etc,5.0,Low,'''49-72,'''9-12,'''45-66,'''7-9,'''0.8-1.4,,,,Field_Crop
+Aus rice,BRRI dhan48 etc,5.0,Very low,'''73-96,'''13-16,'''67-88,'''10-12,'''1.5-2.1,,,,Field_Crop
+Aus rice,BRRI dhan27 etc,4.0,Optimum,'''0-21,'''0-3,'''0-19,'''0-2.5,,,,,Field_Crop
+Aus rice,BRRI dhan27 etc,4.0,Medium,'''22-42,'''4-6,'''20-38,'''2.6-5.0,'''0-0.5,,,,Field_Crop
+Aus rice,BRRI dhan27 etc,4.0,Low,'''43-63,'''7-9,'''39-57,'''5.1-7.5,'''0.6-1.0,,,,Field_Crop
+Aus rice,BRRI dhan27 etc,4.0,Very low,'''64-84,'''10-12,'''58-75,'''7.6-10,'''1.1-1.5,,,,Field_Crop
+T. Aman rice,BRRI dhan72 etc,6.0,Optimum,'''0-30,'''0-5,'''0-27,'''0-4,,,,,Field_Crop
+T. Aman rice,BRRI dhan72 etc,6.0,Medium,'''31-60,'''6-10,'''28-54,'''5-8,'''0-0.9,,,,Field_Crop
+T. Aman rice,BRRI dhan72 etc,6.0,Low,'''61-90,'''11-15,'''55-81,'''9-12,'''1.0-1.8,,,,Field_Crop
+T. Aman rice,BRRI dhan72 etc,6.0,Very low,'''91-120,'''16-20,'''82-108,'''13-16,'''1.9-2.7,,,,Field_Crop
+T. Aman rice,BR22 etc,5.0,Optimum,'''0-24,'''0-4,'''0-22,'''0-3,,,,,Field_Crop
+T. Aman rice,BR22 etc,5.0,Medium,'''25-48,'''5-8,'''23-44,'''4-6,'''0-0.7,,,,Field_Crop
+T. Aman rice,BR22 etc,5.0,Low,'''49-72,'''9-12,'''45-66,'''7-9,'''0.8-1.4,,,,Field_Crop
+T. Aman rice,BR22 etc,5.0,Very low,'''73-96,'''13-16,'''67-88,'''10-12,'''1.5-2.1,,,,Field_Crop
+T. Aman rice,BRRI dhan34 etc,4.0,Optimum,'''0-19,'''0-3,'''0-18,'''0-2.5,,,,,Field_Crop
+T. Aman rice,BRRI dhan34 etc,4.0,Medium,'''20-38,'''4-6,'''19-36,'''2.6-5.0,'''0-0.7,,,,Field_Crop
+T. Aman rice,BRRI dhan34 etc,4.0,Low,'''39-57,'''7-9,'''37-54,'''5.1-7.5,'''0.8-1.4,,,,Field_Crop
+T. Aman rice,BRRI dhan34 etc,4.0,Very low,'''58-76,'''10-12,'''55-72,'''7.6-10,'''1.5-2.1,,,,Field_Crop
+B. Aman rice,BRRI dhan91,2.5,Optimum,'''0-12,'''0-2.5,'''0-10,'''0-2,,,,,Field_Crop
+B. Aman rice,BRRI dhan91,2.5,Medium,'''13-24,'''2.6-5.0,'''11-20,'''3-4,'''0-0.5,,,,Field_Crop
+B. Aman rice,BRRI dhan91,2.5,Low,'''25-36,'''5.1-7.5,'''21-30,'''5-6,'''0.6-1.0,,,,Field_Crop
+B. Aman rice,BRRI dhan91,2.5,Very low,'''37-48,'''7.6-10,'''31-40,'''7-8,'''1.1-1.5,,,,Field_Crop
+Wheat,BARI Gom 25 etc,4.5,Optimum,'''0-40,'''0-10,'''0-30,'''0-5,,,2,,Field_Crop
+Wheat,BARI Gom 25 etc,4.5,Medium,'''41-80,'''11-20,'''31-60,'''6-10,'''0-1.3,'''0-1.0,'''0-4,2,Field_Crop
+Wheat,BARI Gom 25 etc,4.5,Low,'''81-120,'''21-30,'''61-90,'''11-15,'''1.4-2.6,'''1.1-2.0,'''4-8,2,Field_Crop
+Wheat,BARI Gom 25 etc,4.5,Very low,'''121-160,'''31-40,'''91-120,'''16-20,'''2.7-3.9,'''2.1-3.0,'''7-12,2,Field_Crop
+Maize,Hybrid,11.0,Optimum,'''0-80,'''0-18,'''0-45,'''0-12,'''0-5,,3,,Field_Crop
+Maize,Hybrid,11.0,Medium,'''81-160,'''19-36,'''46-90,'''13-24,'''6-10,'''0-2.0,'''0-1.0,3,Field_Crop
+Maize,Hybrid,11.0,Low,'''161-240,'''37-54,'''91-135,'''25-36,'''11-15,'''2.1-4.0,'''1.1-2.0,3,Field_Crop
+Maize,Hybrid,11.0,Very low,'''241-320,'''55-72,'''136-180,'''37-48,'''16-20,'''4.1-6.0,'''2.1-3.0,3,Field_Crop
+Jute (C. capsularis),CVL1 etc,3.5,Optimum,'''0-30,'''0-4,'''0-22,'''0-6,,,,,Field_Crop
+Jute (C. capsularis),CVL1 etc,3.5,Medium,'''31-60,'''5-8,'''23-44,'''7-12,'''0-1.5,,,,Field_Crop
+Jute (C. capsularis),CVL1 etc,3.5,Low,'''61-90,'''9-12,'''45-66,'''13-18,'''1.6-3.0,,,,Field_Crop
+Jute (C. capsularis),CVL1 etc,3.5,Very low,'''91-120,'''13-16,'''67-88,'''19-24,'''3.1-4.5,,,,Field_Crop
+Jute (C. olitorius),O4O 9897 etc,4.4,Optimum,'''0-35,'''0-6,'''0-25,'''0-6,,,,,Field_Crop
+Jute (C. olitorius),O4O 9897 etc,4.4,Medium,'''36-70,'''7-12,'''26-50,'''7-12,'''0-2.0,,,,Field_Crop
+Jute (C. olitorius),O4O 9897 etc,4.4,Low,'''71-105,'''13-18,'''51-75,'''13-18,'''2.1-4.0,,,,Field_Crop
+Jute (C. olitorius),O4O 9897 etc,4.4,Very low,'''106-140,'''19-24,'''76-100,'''19-24,'''4.1-6.0,,,,Field_Crop
+Kenaf/Mesta,HC2 etc,3.5,Optimum,'''0-30,'''0-5,'''0-22,'''0-6,,,,,Field_Crop
+Kenaf/Mesta,HC2 etc,3.5,Medium,'''31-60,'''6-10,'''23-44,'''7-12,'''0-1.5,,,,Field_Crop
+Kenaf/Mesta,HC2 etc,3.5,Low,'''61-90,'''11-15,'''45-66,'''13-18,'''1.6-3.0,,,,Field_Crop
+Kenaf/Mesta,HC2 etc,3.5,Very low,'''91-120,'''16-20,'''67-88,'''19-24,'''3.1-4.5,,,,Field_Crop
+Cotton,CB-9 CB-10,2.25,Optimum,'''0-30,'''0-12,'''0-25,'''0-6,,,,,Field_Crop
+Cotton,CB-9 CB-10,2.25,Medium,'''31-60,'''13-24,'''26-50,'''7-12,'''0-1.5,'''0-0.5,,,Field_Crop
+Cotton,CB-9 CB-10,2.25,Low,'''61-90,'''25-36,'''51-75,'''13-18,'''1.6-3.0,'''0.6-1.0,,,Field_Crop
+Cotton,CB-9 CB-10,2.25,Very low,'''91-120,'''37-48,'''76-100,'''19-24,'''3.1-4.5,'''1.1-1.5,,,Field_Crop
+Cotton,CB-12 CB-13 CB-14,2.70,Optimum,'''0-40,'''0-15,'''0-45,'''0-8,'''0-5,'''0-2.0,'''0-5,3,Field_Crop
+Cotton,CB-12 CB-13 CB-14,2.70,Medium,'''41-80,'''16-30,'''46-90,'''9-16,'''0-2.0,'''0-1.0,'''6-10,3,Field_Crop
+Cotton,CB-12 CB-13 CB-14,2.70,Low,'''81-120,'''31-45,'''91-135,'''17-24,'''3-4,'''1.1-2.0,'''11-15,3,Field_Crop
+Cotton,CB-12 CB-13 CB-14,2.70,Very low,'''121-160,'''46-60,'''136-180,'''25-32,'''5-6,'''2.1-3.0,'''16-20,3,Field_Crop
+Lentil,BARI Masur etc,1.8,Optimum,'''0-7,'''0-5,'''0-8,'''0-4,,,,,Field_Crop
+Lentil,BARI Masur etc,1.8,Medium,'''8-14,'''6-10,'''9-16,'''5-8,'''0-1.0,'''0-0.4,'''0-0.4,,Field_Crop
+Lentil,BARI Masur etc,1.8,Low,'''15-21,'''11-15,'''17-24,'''9-12,'''1.1-2.0,'''0.5-0.8,'''0.5-0.8,,Field_Crop
+Lentil,BARI Masur etc,1.8,Very low,'''22-28,'''16-20,'''25-32,'''13-16,'''2.1-3.0,'''0.9-1.2,'''0.9-1.2,,Field_Crop
+Chickpea,BARI Chola etc,2.0,Optimum,'''0-9,'''0-6,'''0-8,'''0-4,,,,,Field_Crop
+Chickpea,BARI Chola etc,2.0,Medium,'''10-18,'''7-12,'''9-16,'''5-8,'''0-1.0,'''0-0.6,'''0-0.4,,Field_Crop
+Chickpea,BARI Chola etc,2.0,Low,'''19-27,'''13-18,'''17-24,'''9-12,'''1.1-2.0,'''0.7-1.2,'''0.5-0.8,,Field_Crop
+Chickpea,BARI Chola etc,2.0,Very low,'''28-36,'''19-24,'''25-32,'''13-16,'''2.1-3.0,'''1.3-1.8,'''0.9-1.2,,Field_Crop
+Mungbean,BARI Mung etc,2.0,Optimum,'''0-6,'''0-5,'''0-8,'''0-4,,,,,Field_Crop
+Mungbean,BARI Mung etc,2.0,Medium,'''7-12,'''6-10,'''9-16,'''5-8,'''0-1.0,'''0-0.4,'''0-0.4,,Field_Crop
+Mungbean,BARI Mung etc,2.0,Low,'''13-18,'''11-15,'''17-24,'''9-12,'''1.1-2.0,'''0.5-0.8,'''0.5-0.8,,Field_Crop
+Mungbean,BARI Mung etc,2.0,Very low,'''19-24,'''16-20,'''25-32,'''13-16,'''2.1-3.0,'''0.9-1.2,'''0.9-1.2,,Field_Crop
+Blackgram,BARI Mash etc,1.5,Optimum,'''0-6,'''0-5,'''0-6,'''0-3,,,,,Field_Crop
+Blackgram,BARI Mash etc,1.5,Medium,'''7-12,'''6-10,'''7-12,'''4-6,,,,,Field_Crop
+Blackgram,BARI Mash etc,1.5,Low,'''13-18,'''11-15,'''13-18,'''7-9,,,,,Field_Crop
+Blackgram,BARI Mash etc,1.5,Very low,'''19-24,'''16-20,'''19-24,'''10-12,,,,,Field_Crop
+Grasspea,BARI Kheshari etc,1.5,Optimum,'''0-5,'''0-5,'''0-6,'''0-3,,,,,Field_Crop
+Grasspea,BARI Kheshari etc,1.5,Medium,'''6-10,'''6-10,'''7-12,'''4-6,,,,,Field_Crop
+Grasspea,BARI Kheshari etc,1.5,Low,'''11-15,'''11-15,'''13-18,'''7-9,,,,,Field_Crop
+Grasspea,BARI Kheshari etc,1.5,Very low,'''16-20,'''16-20,'''19-24,'''10-12,,,,,Field_Crop
+Cowpea,BARI Falon etc,1.4,Optimum,'''0-5,'''0-5,'''0-6,'''0-3.0,,,,,Field_Crop
+Cowpea,BARI Falon etc,1.4,Medium,'''6-10,'''6-10,'''7-12,'''3.1-6.0,,,,,Field_Crop
+Cowpea,BARI Falon etc,1.4,Low,'''11-15,'''11-15,'''13-18,'''6.1-9.0,,,,,Field_Crop
+Cowpea,BARI Falon etc,1.4,Very low,'''16-20,'''16-20,'''19-24,'''9.1-12.0,,,,,Field_Crop
+Mustard,BARI Sharisa etc,2.0,Optimum,'''0-30,'''0-8,'''0-25,'''0-8,,,3,,Field_Crop
+Mustard,BARI Sharisa etc,2.0,Medium,'''31-60,'''9-16,'''26-50,'''9-16,'''0-1.3,'''0-1.0,'''0-3,3,Field_Crop
+Mustard,BARI Sharisa etc,2.0,Low,'''61-90,'''17-24,'''51-75,'''17-24,'''1.4-2.6,'''0.6-2.0,'''4-6,3,Field_Crop
+Mustard,BARI Sharisa etc,2.0,Very low,'''91-120,'''25-32,'''76-100,'''25-32,'''2.7-3.9,'''1.1-3.0,'''7-9,3,Field_Crop
+Mustard,BARI Sharisa (campestris),1.8,Optimum,'''0-30,'''0-8,'''0-20,'''0-5,,,3,,Field_Crop
+Mustard,BARI Sharisa (campestris),1.8,Medium,'''31-60,'''9-16,'''21-40,'''6-10,'''0-1.0,'''0-0.5,'''0-2.5,3,Field_Crop
+Mustard,BARI Sharisa (campestris),1.8,Low,'''61-90,'''17-24,'''41-60,'''11-15,'''1.1-2.0,'''0.6-1.0,'''2.6-5.0,3,Field_Crop
+Mustard,BARI Sharisa (campestris),1.8,Very low,'''91-120,'''25-32,'''61-80,'''16-20,'''2.1-3.0,'''1.1-1.5,'''5.1-7.5,3,Field_Crop
+Sesame,BARI Til etc,1.4,Optimum,'''0-25,'''0-8,'''0-27,'''0-3,,,,,Field_Crop
+Sesame,BARI Til etc,1.4,Medium,'''26-50,'''9-16,'''28-54,'''4-6,'''0-1.0,'''0-0.8,,,Field_Crop
+Sesame,BARI Til etc,1.4,Low,'''51-75,'''17-24,'''55-81,'''7-9,'''1.1-2.0,'''0.9-1.6,,,Field_Crop
+Sesame,BARI Til etc,1.4,Very low,'''76-100,'''25-32,'''82-108,'''10-12,'''2.1-3.0,'''1.7-2.4,,,Field_Crop
+Groundnut,BARI Chinabadam etc,2.6,Optimum,'''0-12,'''0-10,'''0-20,'''0-10,,,,,Field_Crop
+Groundnut,BARI Chinabadam etc,2.6,Medium,'''13-24,'''11-20,'''21-40,'''11-20,'''0-1.3,'''0-1.0,'''0-0.4,,Field_Crop
+Groundnut,BARI Chinabadam etc,2.6,Low,'''25-36,'''21-30,'''41-60,'''21-30,'''1.4-2.6,'''0.6-2.0,'''0.5-0.8,,Field_Crop
+Groundnut,BARI Chinabadam etc,2.6,Very low,'''37-48,'''31-40,'''61-80,'''31-40,'''2.7-3.9,'''1.1-3.0,'''0.9-1.2,,Field_Crop
+Soybean,BARI Soybean etc,2.0,Optimum,'''0-9,'''0-12,'''0-20,'''0-7,,,2,,Field_Crop
+Soybean,BARI Soybean etc,2.0,Medium,'''10-18,'''13-24,'''21-40,'''8-14,'''0-1.0,'''0-0.5,'''0-0.2,2,Field_Crop
+Soybean,BARI Soybean etc,2.0,Low,'''19-27,'''25-36,'''41-60,'''15-21,'''1.0-2.0,'''0.6-1.0,'''0.3-0.4,2,Field_Crop
+Soybean,BARI Soybean etc,2.0,Very low,'''28-36,'''37-48,'''61-80,'''22-24,'''2.0-3.0,'''1.1-1.5,'''0.5-0.6,2,Field_Crop
+Potato,BARI Alu etc,30.0,Optimum,'''0-45,'''0-10,'''0-45,'''0-5,,,,,Field_Crop
+Potato,BARI Alu etc,30.0,Medium,'''46-90,'''11-20,'''46-90,'''6-10,'''0-5,'''0-2.0,'''0-0.8,,Field_Crop
+Potato,BARI Alu etc,30.0,Low,'''91-135,'''21-30,'''91-135,'''11-15,'''6-10,'''3.0-4.0,'''0.81-1.6,,Field_Crop
+Potato,BARI Alu etc,30.0,Very low,'''136-180,'''31-40,'''136-180,'''16-20,'''11-15,'''5.0-6.0,'''1.61-2.4,,Field_Crop
+Sweet potato,BARI Misti Alu,40.0,Optimum,'''0-40,'''0-12,'''0-40,'''0-5,,,,,Field_Crop
+Sweet potato,BARI Misti Alu,40.0,Medium,'''41-80,'''13-24,'''41-80,'''6-10,'''0-5,'''0-1.5,'''0-0.8,,Field_Crop
+Sweet potato,BARI Misti Alu,40.0,Low,'''81-120,'''25-36,'''81-120,'''11-15,'''6-10,'''1.6-3.0,'''0.9-1.6,,Field_Crop
+Sweet potato,BARI Misti Alu,40.0,Very low,'''121-160,'''37-48,'''121-160,'''16-20,'''11-15,'''3.1-4.5,'''1.7-2.4,,Field_Crop
+Mukhi Kachu,Bilasi etc,30.0,Optimum,'''0-30,'''0-11,'''0-30,'''0-5,,,,,Field_Crop
+Mukhi Kachu,Bilasi etc,30.0,Medium,'''31-60,'''12-22,'''31-60,'''6-10,'''0-1.0,'''0-0.7,,,Field_Crop
+Mukhi Kachu,Bilasi etc,30.0,Low,'''61-90,'''23-33,'''61-90,'''11-15,'''1.1-2.0,'''0.8-1.4,,,Field_Crop
+Mukhi Kachu,Bilasi etc,30.0,Very low,'''91-120,'''34-44,'''91-120,'''16-20,'''2.1-3.0,'''1.5-2.1,,,Field_Crop
+Pani Kachu,BARI Panikachu,30.0,Optimum,'''0-40,'''0-10,'''0-45,'''0-5,,,,,Field_Crop
+Pani Kachu,BARI Panikachu,30.0,Medium,'''41-80,'''11-20,'''61-90,'''6-10,'''0-1.0,'''0-0.7,,,Field_Crop
+Pani Kachu,BARI Panikachu,30.0,Low,'''81-120,'''21-30,'''121-135,'''11-15,'''1.1-2.0,'''0.8-1.4,,,Field_Crop
+Pani Kachu,BARI Panikachu,30.0,Very low,'''121-160,'''31-40,'''181-180,'''16-20,'''2.1-3.0,'''1.5-2.1,,,Field_Crop
+Cauliflower,BARI Fulkopi,60.0,Optimum,'''0-40,'''0-15,'''0-30,'''0-6,'''0-2.5,,5,,Field_Crop
+Cauliflower,BARI Fulkopi,60.0,Medium,'''41-80,'''16-30,'''31-60,'''7-12,'''2.6-5.0,'''0-1.5,'''0-0.8,5,Field_Crop
+Cauliflower,BARI Fulkopi,60.0,Low,'''81-120,'''31-45,'''61-90,'''13-18,'''5.1-7.5,'''1.6-3.0,'''0.9-1.6,5,Field_Crop
+Cauliflower,BARI Fulkopi,60.0,Very low,'''121-160,'''46-60,'''91-120,'''19-24,'''7.6-10,'''3.1-4.5,'''1.7-2.4,5,Field_Crop
+Broccoli,BARI Brokoli,40.0,Optimum,'''0-30,'''0-12,'''0-25,'''0-5,'''0-2.5,,5,,Field_Crop
+Broccoli,BARI Brokoli,40.0,Medium,'''31-60,'''13-24,'''26-50,'''6-10,'''2.6-5.0,'''0-1.5,'''0-0.8,5,Field_Crop
+Broccoli,BARI Brokoli,40.0,Low,'''61-80,'''25-36,'''51-75,'''11-15,'''5.1-7.5,'''1.6-3.0,'''0.9-1.6,5,Field_Crop
+Broccoli,BARI Brokoli,40.0,Very low,'''91-120,'''37-48,'''76-100,'''16-20,'''7.8-10,'''3.1-4.5,'''1.7-2.4,5,Field_Crop
+Cabbage,BARI Bandhakopi,90.0,Optimum,'''0-35,'''0-12,'''0-28,'''0-6,,,5,,Field_Crop
+Cabbage,BARI Bandhakopi,90.0,Medium,'''36-70,'''13-24,'''29-56,'''7-12,'''0-1.5,'''0-0.8,,,Field_Crop
+Cabbage,BARI Bandhakopi,90.0,Low,'''71-105,'''25-36,'''57-84,'''13-18,'''1.6-3.0,'''0.9-1.6,,,Field_Crop
+Cabbage,BARI Bandhakopi,90.0,Very low,'''106-140,'''37-48,'''85-112,'''19-24,'''3.1-4.5,'''1.7-2.4,,,Field_Crop
+Tomato (Winter),BARI Tomato etc,75.0,Optimum,'''0-40,'''0-15,'''0-25,'''0-7,'''0-4,,5,,Field_Crop
+Tomato (Winter),BARI Tomato etc,75.0,Medium,'''41-80,'''16-30,'''26-50,'''8-14,'''5-8,'''0-1.6,'''0-1.0,5,Field_Crop
+Tomato (Winter),BARI Tomato etc,75.0,Low,'''81-120,'''31-45,'''51-75,'''15-21,'''9-12,'''1.7-3.2,'''1.1-2.0,5,Field_Crop
+Tomato (Winter),BARI Tomato etc,75.0,Very low,'''121-160,'''46-60,'''76-100,'''22-28,'''13-16,'''3.3-4.8,'''2.1-3.0,5,Field_Crop
+Brinjal,BARI Begun,50.0,Optimum,'''0-35,'''0-12,'''0-25,'''0-6,,,5,,Field_Crop
+Brinjal,BARI Begun,50.0,Medium,'''36-70,'''13-24,'''26-50,'''7-12,'''0-1.5,'''0-1.0,,,Field_Crop
+Brinjal,BARI Begun,50.0,Low,'''71-105,'''25-36,'''51-75,'''13-18,'''1.6-3.0,'''1.1-2.0,,,Field_Crop
+Brinjal,BARI Begun,50.0,Very low,'''106-140,'''37-48,'''76-100,'''19-24,'''3.1-4.5,'''2.1-3.0,,,Field_Crop
+Okra,BARI Dherosh-2,25.0,Optimum,'''0-30,'''0-10,'''0-23,'''0-5,,,5,,Field_Crop
+Okra,BARI Dherosh-2,25.0,Medium,'''31-60,'''11-20,'''24-46,'''6-10,'''0-1.0,'''0-0.7,,,Field_Crop
+Okra,BARI Dherosh-2,25.0,Low,'''61-90,'''21-30,'''47-69,'''11-15,'''1.1-2.0,'''0.8-1.4,,,Field_Crop
+Okra,BARI Dherosh-2,25.0,Very low,'''91-120,'''31-40,'''70-92,'''16-20,'''2.1-3.0,'''1.5-2.1,,,Field_Crop
+Radish,BARI Mula,60.0,Optimum,'''0-37,'''0-15,'''0-30,'''0-6,,,5,,Field_Crop
+Radish,BARI Mula,60.0,Medium,'''38-74,'''16-30,'''31-60,'''7-12,'''0-1.5,,5,,Field_Crop
+Radish,BARI Mula,60.0,Low,'''75-111,'''31-45,'''61-90,'''13-18,'''1.6-3.0,,5,,Field_Crop
+Radish,BARI Mula,60.0,Very low,'''112-148,'''46-60,'''91-120,'''19-24,'''3.1-4.5,,5,,Field_Crop
+Carrot,All cultivars,25.0,Optimum,'''0-33,'''0-10,'''0-30,'''0-5,,,3,,Field_Crop
+Carrot,All cultivars,25.0,Medium,'''34-66,'''11-20,'''31-60,'''6-10,'''0-1.0,,3,,Field_Crop
+Carrot,All cultivars,25.0,Low,'''67-99,'''21-30,'''61-90,'''11-15,'''1.1-2.0,,3,,Field_Crop
+Carrot,All cultivars,25.0,Very low,'''100-132,'''31-40,'''91-120,'''16-20,'''2.1-3.0,,3,,Field_Crop
+Country bean,BARI Sheem,25.0,Optimum,'''0-15,'''0-12,'''0-23,'''0-4,'''0-2.5,,5,,Field_Crop
+Country bean,BARI Sheem,25.0,Medium,'''16-30,'''13-24,'''24-46,'''5-8,'''2.6-5.0,'''0-1.5,'''0-1.0,5,Field_Crop
+Country bean,BARI Sheem,25.0,Low,'''31-45,'''25-36,'''47-69,'''9-12,'''5.1-7.5,'''2.2-3.0,'''1.1-2.0,5,Field_Crop
+Country bean,BARI Sheem,25.0,Very low,'''46-60,'''37-48,'''70-92,'''13-16,'''7.6-10,'''4.3-4.5,'''2.1-3.0,5,Field_Crop
+Onion,BARI Piaz,12.0,Optimum,'''0-25,'''0-10,'''0-20,'''0-8,,,3,,Field_Crop
+Onion,BARI Piaz,12.0,Medium,'''26-50,'''11-20,'''21-40,'''9-16,'''0-1.0,'''0-0.5,,,Field_Crop
+Onion,BARI Piaz,12.0,Low,'''51-75,'''21-30,'''41-60,'''17-24,'''1.1-2.0,'''0.6-1.0,,,Field_Crop
+Onion,BARI Piaz,12.0,Very low,'''76-100,'''31-40,'''61-80,'''25-32,'''2.1-3.0,'''1.1-1.5,,,Field_Crop
+Garlic,BARI Rashun,15.0,Optimum,'''0-30,'''0-10,'''0-25,'''0-10,,,5,,Field_Crop
+Garlic,BARI Rashun,15.0,Medium,'''31-60,'''11-20,'''26-50,'''11-20,'''0-1.3,'''0-0.7,,,Field_Crop
+Garlic,BARI Rashun,15.0,Low,'''61-90,'''21-30,'''51-75,'''21-30,'''1.4-2.6,'''0.8-1.4,,,Field_Crop
+Garlic,BARI Rashun,15.0,Very low,'''91-120,'''31-40,'''76-100,'''31-40,'''2.6-3.9,'''1.5-2.1,,,Field_Crop
+Ginger,BARI Ada,30.0,Optimum,'''0-45,'''0-15,'''0-40,'''0-5,,,3,,Field_Crop
+Ginger,BARI Ada,30.0,Medium,'''46-90,'''16-30,'''41-80,'''6-10,'''0-1.5,'''0-0.7,,,Field_Crop
+Ginger,BARI Ada,30.0,Low,'''91-135,'''31-45,'''81-120,'''11-15,'''1.6-3.0,'''0.8-1.4,,,Field_Crop
+Ginger,BARI Ada,30.0,Very low,'''136-180,'''46-60,'''121-160,'''16-20,'''3.1-4.5,'''1.5-2.1,,,Field_Crop
+Turmeric,BARI Halud,30.0,Optimum,'''0-45,'''0-15,'''0-40,'''0-5,,,3,,Field_Crop
+Turmeric,BARI Halud,30.0,Medium,'''46-90,'''16-30,'''41-80,'''6-10,'''0-1.5,'''0-0.7,,,Field_Crop
+Turmeric,BARI Halud,30.0,Low,'''91-135,'''31-45,'''81-120,'''11-15,'''1.6-3.0,'''0.8-1.4,,,Field_Crop
+Turmeric,BARI Halud,30.0,Very low,'''136-180,'''46-60,'''121-160,'''16-20,'''3.1-4.5,'''1.5-2.1,,,Field_Crop
+Chilli,BARI Morich,2.5,Optimum,'''0-35,'''0-12,'''0-25,'''0-5,,,5,,Field_Crop
+Chilli,BARI Morich,2.5,Medium,'''36-70,'''13-24,'''26-50,'''6-10,'''0-1.5,'''0-0.7,,,Field_Crop
+Chilli,BARI Morich,2.5,Low,'''71-105,'''25-36,'''51-75,'''11-15,'''1.6-3.0,'''0.8-1.4,,,Field_Crop
+Chilli,BARI Morich,2.5,Very low,'''106-140,'''37-48,'''76-100,'''16-20,'''3.1-4.5,'''1.5-2.1,,,Field_Crop
+Coriander,BARI Dhonia,1.5,Optimum,'''0-20,'''0-8,'''0-15,'''0-5,,,2,,Field_Crop
+Coriander,BARI Dhonia,1.5,Medium,'''21-40,'''9-16,'''16-30,'''6-10,'''0-1.0,'''0-0.7,,,Field_Crop
+Coriander,BARI Dhonia,1.5,Low,'''41-60,'''17-24,'''31-45,'''11-15,'''1.1-2.0,'''0.8-1.4,,,Field_Crop
+Coriander,BARI Dhonia,1.5,Very low,'''61-80,'''25-32,'''46-60,'''16-20,'''2.1-3.0,'''1.5-2.1,,,Field_Crop
+Fenugreek,BARI Methi,2.0,Optimum,'''0-25,'''0-10,'''0-20,'''0-5,,,2,,Field_Crop
+Fenugreek,BARI Methi,2.0,Medium,'''26-50,'''11-20,'''21-40,'''6-10,'''0-1.0,'''0-0.7,,,Field_Crop
+Fenugreek,BARI Methi,2.0,Low,'''51-75,'''21-30,'''41-60,'''11-15,'''1.1-2.0,'''0.8-1.4,,,Field_Crop
+Fenugreek,BARI Methi,2.0,Very low,'''76-100,'''31-40,'''61-80,'''16-20,'''2.1-3.0,'''1.5-2.1,,,Field_Crop

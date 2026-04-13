@@ -1,0 +1,253 @@
+Crop,Variety,Age_Group_years,N_g_tree,P_g_tree,K_g_tree,S_g_tree,Zn_g_tree,B_g_tree,OF_kg_tree,Data_Type
+Mango,BARI Aam-3 etc,Before planting,0,100,100,50,10,10,10,Fruit_Tree
+Mango,BARI Aam-3 etc,0-1,100,30,50,20,5,5,10,Fruit_Tree
+Mango,BARI Aam-3 etc,2-4,210,50,90,30,5,5,15,Fruit_Tree
+Mango,BARI Aam-3 etc,5-7,390,80,120,50,5,5,20,Fruit_Tree
+Mango,BARI Aam-3 etc,8-10,500,100,150,70,8,8,25,Fruit_Tree
+Mango,BARI Aam-3 etc,11-15,550,150,200,80,8,8,30,Fruit_Tree
+Mango,BARI Aam-3 etc,16-20,800,200,230,100,10,10,35,Fruit_Tree
+Mango,BARI Aam-3 etc,>20,1000,300,300,130,10,12,40,Fruit_Tree
+Jackfruit,BARI Kanthal etc,Before planting,0,100,125,35,0,0,25,Fruit_Tree
+Jackfruit,BARI Kanthal etc,0-1,150,75,150,20,2,0,25,Fruit_Tree
+Jackfruit,BARI Kanthal etc,2-4,250,100,250,30,4,1,25,Fruit_Tree
+Jackfruit,BARI Kanthal etc,5-7,350,150,350,35,4,2,20,Fruit_Tree
+Jackfruit,BARI Kanthal etc,8-10,450,200,450,45,6,4,25,Fruit_Tree
+Jackfruit,BARI Kanthal etc,11-15,600,280,550,60,7,5,30,Fruit_Tree
+Jackfruit,BARI Kanthal etc,16-20,750,300,650,90,8,8,35,Fruit_Tree
+Jackfruit,BARI Kanthal etc,>20,800,400,750,100,10,10,40,Fruit_Tree
+Banana,All,Basal (pit),250,100,340,50,33,15,3,Fruit_Tree
+Banana,All,1st TD,50,70,0,0,0,0,0,Fruit_Tree
+Banana,All,2nd TD,50,70,0,0,0,0,0,Fruit_Tree
+Banana,All,3rd TD,50,70,0,0,0,0,0,Fruit_Tree
+Banana,All,4th TD,100,130,0,0,0,0,0,Fruit_Tree
+Papaya,BARI Papaya-1,Before planting,0,120,60,35,15,0,5,Fruit_Tree
+Papaya,BARI Papaya-1,1st TD,35,35,0,0,0,0,0,Fruit_Tree
+Papaya,BARI Papaya-1,2nd TD,35,35,0,0,0,0,0,Fruit_Tree
+Papaya,BARI Papaya-1,3rd TD,40,40,0,0,0,0,0,Fruit_Tree
+Papaya,BARI Papaya-1,4th TD,60,60,0,0,0,0,0,Fruit_Tree
+Papaya,BARI Papaya-1,5th TD,60,60,0,0,0,0,0,Fruit_Tree
+Papaya,BARI Papaya-1,6th TD,50,50,0,0,0,0,0,Fruit_Tree
+Guava,BARI Payara etc,Before planting,0,60,125,10,5,2,15,Fruit_Tree
+Guava,BARI Payara etc,0-1,150,70,100,15,5,2,10,Fruit_Tree
+Guava,BARI Payara etc,2-4,160,80,250,20,8,5,15,Fruit_Tree
+Guava,BARI Payara etc,5-7,250,120,300,25,8,8,15,Fruit_Tree
+Guava,BARI Payara etc,8-10,300,150,350,35,10,10,20,Fruit_Tree
+Guava,BARI Payara etc,>10,400,200,450,40,10,10,25,Fruit_Tree
+Coconut,BARI Narkel etc,Before planting,0,60,200,45,20,5,25,Fruit_Tree
+Coconut,BARI Narkel etc,0-1,100,30,200,20,10,2,10,Fruit_Tree
+Coconut,BARI Narkel etc,2-4,150,50,250,30,15,3,15,Fruit_Tree
+Coconut,BARI Narkel etc,5-7,220,80,350,50,20,3,20,Fruit_Tree
+Coconut,BARI Narkel etc,8-10,425,100,600,55,20,5,20,Fruit_Tree
+Coconut,BARI Narkel etc,11-15,550,160,950,60,25,10,25,Fruit_Tree
+Coconut,BARI Narkel etc,16-20,650,160,1200,70,30,10,25,Fruit_Tree
+Coconut,BARI Narkel etc,>20,800,250,1500,80,30,15,30,Fruit_Tree
+Pineapple,Giant kew etc,Basal,60,25,60,7,0,0,3,Fruit_Tree
+Pineapple,Giant kew etc,Split 1 (4-5 MAP),0,0,30,0,0,0,0,Fruit_Tree
+Pineapple,Giant kew etc,Split 2 (5-6 MAP),0,0,30,0,0,0,0,Fruit_Tree
+Pineapple,Giant kew etc,Split 3 (6-7 MAP),0,0,30,0,0,0,0,Fruit_Tree
+Pineapple,Giant kew etc,Split 4 (7-8 MAP),0,0,30,0,0,0,0,Fruit_Tree
+Pineapple,Giant kew etc,Split 5 (8-9 MAP),0,0,30,0,0,0,0,Fruit_Tree
+Litchi,BARI Litchu etc,Before planting,0,100,200,20,15,4,25,Fruit_Tree
+Litchi,BARI Litchu etc,0-1,160,80,150,25,20,5,10,Fruit_Tree
+Litchi,BARI Litchu etc,2-4,200,100,280,40,25,5,15,Fruit_Tree
+Litchi,BARI Litchu etc,5-7,250,150,400,50,30,5,20,Fruit_Tree
+Litchi,BARI Litchu etc,8-10,400,250,600,60,35,8,25,Fruit_Tree
+Litchi,BARI Litchu etc,11-15,600,300,650,60,40,10,30,Fruit_Tree
+Litchi,BARI Litchu etc,16-20,750,350,800,70,45,12,35,Fruit_Tree
+Litchi,BARI Litchu etc,>20,1000,400,900,80,50,15,40,Fruit_Tree
+Pummelo,BARI Batabilebu,Before planting,0,60,50,45,0,0,15,Fruit_Tree
+Pummelo,BARI Batabilebu,0-1,100,40,90,20,5,2,10,Fruit_Tree
+Pummelo,BARI Batabilebu,2-4,150,50,160,25,5,2,15,Fruit_Tree
+Pummelo,BARI Batabilebu,5-7,250,75,250,30,20,5,20,Fruit_Tree
+Pummelo,BARI Batabilebu,8-10,300,100,275,40,20,6,25,Fruit_Tree
+Pummelo,BARI Batabilebu,11-15,350,120,350,50,25,8,30,Fruit_Tree
+Pummelo,BARI Batabilebu,>15,450,150,400,60,25,10,35,Fruit_Tree
+Mandarin,BARI Komola,Before planting,0,60,50,0,0,0,15,Fruit_Tree
+Mandarin,BARI Komola,0-1,100,30,80,20,5,2,10,Fruit_Tree
+Mandarin,BARI Komola,2-4,150,50,120,25,8,2,15,Fruit_Tree
+Mandarin,BARI Komola,5-7,200,75,180,30,10,3,20,Fruit_Tree
+Mandarin,BARI Komola,8-10,250,100,250,40,12,4,25,Fruit_Tree
+Mandarin,BARI Komola,11-15,350,150,300,50,15,6,30,Fruit_Tree
+Mandarin,BARI Komola,>15,500,200,400,60,15,8,35,Fruit_Tree
+Sweet orange,BARI Malta,Before planting,0,60,50,0,0,0,20,Fruit_Tree
+Sweet orange,BARI Malta,0-1,125,40,75,20,5,2,10,Fruit_Tree
+Sweet orange,BARI Malta,2-4,200,50,90,25,8,2,15,Fruit_Tree
+Sweet orange,BARI Malta,5-7,250,75,140,40,10,5,20,Fruit_Tree
+Sweet orange,BARI Malta,8-10,320,100,175,50,12,5,25,Fruit_Tree
+Sweet orange,BARI Malta,11-15,350,150,225,50,15,8,30,Fruit_Tree
+Sweet orange,BARI Malta,>15,480,200,300,60,15,8,40,Fruit_Tree
+Lemon,BARI Lebu,Before planting,0,50,50,0,0,0,15,Fruit_Tree
+Lemon,BARI Lebu,0-1,125,75,75,20,5,2,10,Fruit_Tree
+Lemon,BARI Lebu,2-4,150,90,200,30,5,2,15,Fruit_Tree
+Lemon,BARI Lebu,5-7,250,120,250,50,8,5,20,Fruit_Tree
+Lemon,BARI Lebu,8-10,300,160,280,60,10,6,25,Fruit_Tree
+Lemon,BARI Lebu,>10,350,200,320,80,10,8,30,Fruit_Tree
+Satkara,BARI Satkara,Before planting,0,50,0,0,0,0,10,Fruit_Tree
+Satkara,BARI Satkara,0-1,100,25,75,20,5,2,5,Fruit_Tree
+Satkara,BARI Satkara,2-4,150,35,170,25,5,2,5,Fruit_Tree
+Satkara,BARI Satkara,5-7,200,80,250,30,8,4,8,Fruit_Tree
+Satkara,BARI Satkara,8-10,280,100,280,30,10,5,10,Fruit_Tree
+Satkara,BARI Satkara,>10,300,150,325,40,10,5,10,Fruit_Tree
+Golden apple (Amra),BARI Amra-1,Before planting,0,50,30,0,0,0,5,Fruit_Tree
+Golden apple (Amra),BARI Amra-1,0-1,50,40,50,15,5,2,5,Fruit_Tree
+Golden apple (Amra),BARI Amra-1,2-4,100,50,80,25,5,2,5,Fruit_Tree
+Golden apple (Amra),BARI Amra-1,5-7,125,80,120,30,8,4,8,Fruit_Tree
+Golden apple (Amra),BARI Amra-1,8-10,150,100,150,35,10,5,10,Fruit_Tree
+Golden apple (Amra),BARI Amra-1,>10,180,125,180,50,10,5,10,Fruit_Tree
+Golden apple (Amra),BARI Amra-2,Before planting,0,75,30,0,0,0,10,Fruit_Tree
+Golden apple (Amra),BARI Amra-2,0-1,175,50,100,20,5,2,5,Fruit_Tree
+Golden apple (Amra),BARI Amra-2,2-4,120,75,125,30,5,2,5,Fruit_Tree
+Golden apple (Amra),BARI Amra-2,5-7,180,100,180,40,8,4,8,Fruit_Tree
+Golden apple (Amra),BARI Amra-2,8-10,200,120,200,50,10,5,10,Fruit_Tree
+Golden apple (Amra),BARI Amra-2,11-15,250,140,250,60,10,8,10,Fruit_Tree
+Golden apple (Amra),BARI Amra-2,>15,300,150,300,75,12,10,10,Fruit_Tree
+Jamun,BARI Jam-1,Before planting,0,30,0,0,0,0,10,Fruit_Tree
+Jamun,BARI Jam-1,0-1,175,30,50,15,5,2,10,Fruit_Tree
+Jamun,BARI Jam-1,2-4,150,50,120,30,5,2,15,Fruit_Tree
+Jamun,BARI Jam-1,5-7,250,75,200,40,8,4,20,Fruit_Tree
+Jamun,BARI Jam-1,8-10,350,120,275,50,10,5,20,Fruit_Tree
+Jamun,BARI Jam-1,11-15,400,150,350,60,10,8,25,Fruit_Tree
+Jamun,BARI Jam-1,16-20,450,180,400,70,12,10,25,Fruit_Tree
+Jamun,BARI Jam-1,>20,500,200,450,80,12,10,25,Fruit_Tree
+Burmese grape (Lotkon),BARI Lotkon,Before planting,0,50,50,0,0,0,15,Fruit_Tree
+Burmese grape (Lotkon),BARI Lotkon,0-1,50,20,50,20,5,2,10,Fruit_Tree
+Burmese grape (Lotkon),BARI Lotkon,2-4,150,60,150,35,5,2,15,Fruit_Tree
+Burmese grape (Lotkon),BARI Lotkon,5-7,225,80,180,45,8,4,20,Fruit_Tree
+Burmese grape (Lotkon),BARI Lotkon,8-10,350,100,250,65,10,6,25,Fruit_Tree
+Burmese grape (Lotkon),BARI Lotkon,11-15,400,120,300,75,12,8,30,Fruit_Tree
+Burmese grape (Lotkon),BARI Lotkon,>15,450,140,350,100,12,10,35,Fruit_Tree
+Aonla,BARI Amloki,Before planting,0,30,0,0,0,0,10,Fruit_Tree
+Aonla,BARI Amloki,0-1,100,30,75,18,5,2,15,Fruit_Tree
+Aonla,BARI Amloki,2-4,220,50,150,35,5,2,15,Fruit_Tree
+Aonla,BARI Amloki,5-7,300,100,250,45,8,4,20,Fruit_Tree
+Aonla,BARI Amloki,8-10,400,150,350,50,10,5,25,Fruit_Tree
+Aonla,BARI Amloki,11-15,500,200,400,55,11,8,25,Fruit_Tree
+Aonla,BARI Amloki,>15,675,250,500,60,12,10,30,Fruit_Tree
+Wax apple (Jamrul),BARI Jamrul,Before planting,0,35,0,0,0,0,10,Fruit_Tree
+Wax apple (Jamrul),BARI Jamrul,0-1,192,40,75,18,4,2.6,15,Fruit_Tree
+Wax apple (Jamrul),BARI Jamrul,2-4,175,100,150,27,4,2.6,15,Fruit_Tree
+Wax apple (Jamrul),BARI Jamrul,5-7,230,130,175,36,8,4.3,20,Fruit_Tree
+Wax apple (Jamrul),BARI Jamrul,8-10,276,150,225,45,10,5.5,25,Fruit_Tree
+Wax apple (Jamrul),BARI Jamrul,>10,336,200,250,59,10,6.8,30,Fruit_Tree
+Bael,BARI Bel,Before planting,0,30,0,0,0,0,10,Fruit_Tree
+Bael,BARI Bel,0-1,100,30,75,20,5,2,10,Fruit_Tree
+Bael,BARI Bel,2-4,200,50,150,30,5,2,15,Fruit_Tree
+Bael,BARI Bel,5-7,250,120,200,40,8,4,20,Fruit_Tree
+Bael,BARI Bel,8-10,300,150,250,50,10,5,25,Fruit_Tree
+Bael,BARI Bel,>10,350,200,300,60,10,8,30,Fruit_Tree
+Wood apple (Kodbel),BARI Kodbel,Before planting,0,30,0,0,0,0,10,Fruit_Tree
+Wood apple (Kodbel),BARI Kodbel,0-1,100,40,75,15,5,2,10,Fruit_Tree
+Wood apple (Kodbel),BARI Kodbel,2-4,200,50,150,35,5,2,15,Fruit_Tree
+Wood apple (Kodbel),BARI Kodbel,5-7,250,70,200,50,8,4,20,Fruit_Tree
+Wood apple (Kodbel),BARI Kodbel,8-10,300,80,250,70,10,5,20,Fruit_Tree
+Wood apple (Kodbel),BARI Kodbel,11-15,350,100,275,75,10,8,25,Fruit_Tree
+Wood apple (Kodbel),BARI Kodbel,>15,400,150,300,80,12,10,30,Fruit_Tree
+Bullock's heart (Ata),BARI Ata,Before planting,0,30,0,0,0,0,10,Fruit_Tree
+Bullock's heart (Ata),BARI Ata,0-1,100,40,75,15,5,2,10,Fruit_Tree
+Bullock's heart (Ata),BARI Ata,2-4,200,50,150,35,5,2,15,Fruit_Tree
+Bullock's heart (Ata),BARI Ata,5-7,250,70,200,50,8,4,20,Fruit_Tree
+Bullock's heart (Ata),BARI Ata,8-10,300,80,250,70,10,5,20,Fruit_Tree
+Bullock's heart (Ata),BARI Ata,11-15,350,100,275,75,10,8,25,Fruit_Tree
+Bullock's heart (Ata),BARI Ata,>15,400,150,300,80,12,10,30,Fruit_Tree
+Custard apple (Sharifa),All,Before planting,0,30,0,0,0,0,10,Fruit_Tree
+Custard apple (Sharifa),All,0-1,175,30,75,10,5,2,10,Fruit_Tree
+Custard apple (Sharifa),All,2-4,150,50,120,20,5,2,15,Fruit_Tree
+Custard apple (Sharifa),All,5-7,200,60,150,30,8,4,20,Fruit_Tree
+Custard apple (Sharifa),All,8-10,250,70,175,40,10,5,20,Fruit_Tree
+Custard apple (Sharifa),All,>10,300,80,200,50,10,8,25,Fruit_Tree
+Velvet apple (Bilatigab),BARI Bilatigab,Before planting,0,30,0,0,0,0,10,Fruit_Tree
+Velvet apple (Bilatigab),BARI Bilatigab,0-1,175,40,75,10,5,2,10,Fruit_Tree
+Velvet apple (Bilatigab),BARI Bilatigab,2-4,150,60,150,20,5,2,15,Fruit_Tree
+Velvet apple (Bilatigab),BARI Bilatigab,5-7,250,80,250,40,8,4,20,Fruit_Tree
+Velvet apple (Bilatigab),BARI Bilatigab,8-10,350,90,350,50,10,5,20,Fruit_Tree
+Velvet apple (Bilatigab),BARI Bilatigab,11-15,450,100,450,55,10,8,25,Fruit_Tree
+Velvet apple (Bilatigab),BARI Bilatigab,>15,550,110,550,60,12,10,25,Fruit_Tree
+Tamarind,BARI Tentul,Before planting,0,30,0,0,0,0,10,Fruit_Tree
+Tamarind,BARI Tentul,0-1,175,50,75,15,5,2,10,Fruit_Tree
+Tamarind,BARI Tentul,2-4,150,80,200,20,5,2,15,Fruit_Tree
+Tamarind,BARI Tentul,5-7,250,100,300,30,8,4,20,Fruit_Tree
+Tamarind,BARI Tentul,8-10,350,150,400,40,10,5,20,Fruit_Tree
+Tamarind,BARI Tentul,11-15,450,200,500,50,10,8,25,Fruit_Tree
+Tamarind,BARI Tentul,16-20,500,225,550,55,12,10,25,Fruit_Tree
+Tamarind,BARI Tentul,>20,550,250,600,60,12,10,30,Fruit_Tree
+Dragon fruit,BARI Dragonphol,Before planting,0,30,20,15,0,0,20,Fruit_Tree
+Dragon fruit,BARI Dragonphol,0-1,75,50,150,15,0,0,10,Fruit_Tree
+Dragon fruit,BARI Dragonphol,2-4,150,75,200,25,5,2,15,Fruit_Tree
+Dragon fruit,BARI Dragonphol,5-7,175,100,250,30,5,5,20,Fruit_Tree
+Dragon fruit,BARI Dragonphol,8-10,200,125,300,40,8,5,20,Fruit_Tree
+Dragon fruit,BARI Dragonphol,>10,250,150,350,50,10,8,25,Fruit_Tree
+Strawberry,BARI Strawberry,Whole season (kg/ha),0-45,0-18,0-42,0-9,0-1.5,0-0.7,5,Fruit_Tree
+Longan,BARI Longan,Before planting,0,30,20,0,0,0,10,Fruit_Tree
+Longan,BARI Longan,0-1,150,50,100,15,0,0,10,Fruit_Tree
+Longan,BARI Longan,2-4,200,75,150,20,5,2,15,Fruit_Tree
+Longan,BARI Longan,5-7,250,100,200,35,5,5,20,Fruit_Tree
+Longan,BARI Longan,8-10,350,150,300,40,8,8,20,Fruit_Tree
+Longan,BARI Longan,>10,400,200,350,50,10,8,25,Fruit_Tree
+Cashew nut,BAU Kajubadam,Before planting,0,0,0,0,0,0,0,Fruit_Tree
+Cashew nut,BAU Kajubadam,0-1,175,30,70,0,0,0,10,Fruit_Tree
+Cashew nut,BAU Kajubadam,2-4,90,40,85,15,5,5,15,Fruit_Tree
+Cashew nut,BAU Kajubadam,5-7,105,50,100,20,5,5,20,Fruit_Tree
+Cashew nut,BAU Kajubadam,8-10,125,60,120,25,8,8,20,Fruit_Tree
+Cashew nut,BAU Kajubadam,>10,145,70,140,30,10,8,25,Fruit_Tree
+Star goose berry (Orboroi),BAU Orboroi,Before planting,0,0,0,0,0,0,0,Fruit_Tree
+Star goose berry (Orboroi),BAU Orboroi,0-1,50,30,100,10,0,0,10,Fruit_Tree
+Star goose berry (Orboroi),BAU Orboroi,2-4,75,50,120,15,5,5,15,Fruit_Tree
+Star goose berry (Orboroi),BAU Orboroi,5-7,100,50,150,20,5,5,20,Fruit_Tree
+Star goose berry (Orboroi),BAU Orboroi,8-10,125,60,200,25,8,8,25,Fruit_Tree
+Star goose berry (Orboroi),BAU Orboroi,>10,150,70,250,30,10,10,25,Fruit_Tree
+Fig (Dumur),BAU Dumur,Before planting,0,0,0,0,0,0,0,Fruit_Tree
+Fig (Dumur),BAU Dumur,0-1,50,30,70,10,0,0,10,Fruit_Tree
+Fig (Dumur),BAU Dumur,2-4,90,40,85,15,5,5,15,Fruit_Tree
+Fig (Dumur),BAU Dumur,5-7,105,50,100,20,5,5,20,Fruit_Tree
+Fig (Dumur),BAU Dumur,8-10,125,60,120,25,8,8,25,Fruit_Tree
+Fig (Dumur),BAU Dumur,>10,145,70,140,30,10,10,25,Fruit_Tree
+Indian olive (Jalpai),BARI Jalpai,Before planting,0,30,0,0,0,0,10,Fruit_Tree
+Indian olive (Jalpai),BARI Jalpai,0-1,175,30,50,10,5,2,10,Fruit_Tree
+Indian olive (Jalpai),BARI Jalpai,2-4,100,50,90,20,5,2,15,Fruit_Tree
+Indian olive (Jalpai),BARI Jalpai,5-7,150,75,120,30,8,3,20,Fruit_Tree
+Indian olive (Jalpai),BARI Jalpai,8-10,200,80,150,40,10,3,20,Fruit_Tree
+Indian olive (Jalpai),BARI Jalpai,11-15,250,85,200,50,10,4,25,Fruit_Tree
+Indian olive (Jalpai),BARI Jalpai,>15,300,90,220,60,12,4,25,Fruit_Tree
+Watermelon,BARI Tormuj,Optimum (kg/ha),0-39,0-12,0-40,0-5,0-3,0,7,Fruit_Tree
+Watermelon,BARI Tormuj,Medium,40-78,13-24,41-80,6-10,4-6,0-1.6,7,Fruit_Tree
+Watermelon,BARI Tormuj,Low,79-117,25-36,81-120,11-15,7-9,2.3-3.2,7,Fruit_Tree
+Watermelon,BARI Tormuj,Very low,118-156,37-48,121-160,16-20,10-12,4.5-4.8,7,Fruit_Tree
+Netted melon,OP/Hybrid,Optimum,0-20,0-11,0-30,0-5,0,0,5,Fruit_Tree
+Netted melon,OP/Hybrid,Medium,21-40,12-22,31-60,6-10,0-1.6,0-1.0,5,Fruit_Tree
+Netted melon,OP/Hybrid,Low,41-60,23-33,61-90,11-15,2.3-3.2,1.1-2.0,5,Fruit_Tree
+Netted melon,OP/Hybrid,Very low,61-80,34-44,91-120,16-20,4.5-4.8,2.1-3.0,5,Fruit_Tree
+Sugarcane,BSRI Akh,Optimum,0-54,0-18,0-53,0-6,0,0,3,Fruit_Tree
+Sugarcane,BSRI Akh,Medium,55-108,19-36,54-106,7-12,0-1.6,0-1.0,3,Fruit_Tree
+Sugarcane,BSRI Akh,Low,109-162,37-54,107-159,13-18,1.7-3.2,1.1-2.0,3,Fruit_Tree
+Sugarcane,BSRI Akh,Very low,163-220,55-72,160-212,19-24,3.3-4.8,2.1-3.0,3,Fruit_Tree
+Sugar beet,All,Optimum,0-32,0-16,0-40,0-6,0-3,,5,Fruit_Tree
+Sugar beet,All,Medium,33-64,17-32,41-80,7-12,4-6,0-2,5,Fruit_Tree
+Sugar beet,All,Low,65-96,33-48,81-120,13-18,7-9,3-4,5,Fruit_Tree
+Sugar beet,All,Very low,97-148,49-56,121-160,19-24,10-12,5-6,5,Fruit_Tree
+Tea (young),,1 year,80,40,80,0,0,0,0,Fruit_Tree
+Tea (young),,2 year,90,45,90,0,0,0,0,Fruit_Tree
+Tea (young),,3 year,120,40,80,0,0,0,0,Fruit_Tree
+Tea (young),,4 year,135,45,90,0,0,0,0,Fruit_Tree
+Tea (young),,5 year,150,50,100,0,0,0,0,Fruit_Tree
+Tea (mature),Up to 1000 kg/ha,50,15,25,0,0,0,0,,Fruit_Tree
+Tea (mature),1001-2000 kg/ha,51-100,15-20,26-50,0,0,260,0,,Fruit_Tree
+Tea (mature),2001-3000 kg/ha,101-150,20-25,51-75,0,0,360,0,,Fruit_Tree
+Betel leaf (Pan),BARI Pan,Optimum,0-20,0-8,0-12,0-4,0,0,3 (oilcake),Fruit_Tree
+Betel leaf (Pan),BARI Pan,Medium,21-40,9-16,13-24,5-8,0-1.0,0,3,Fruit_Tree
+Betel leaf (Pan),BARI Pan,Low,41-60,17-24,25-36,9-12,1.1-2.0,0,3,Fruit_Tree
+Betel leaf (Pan),BARI Pan,Very low,61-80,25-32,37-48,13-16,2.1-3.0,0,3,Fruit_Tree
+Betelnut (Supari),All,Before planting,0,30,0,18,0,0,0,Fruit_Tree
+Betelnut (Supari),All,0-1,120,120,135,0,0,0,0,Fruit_Tree
+Betelnut (Supari),All,2-4,175,165,180,36,0,0,0,Fruit_Tree
+Betelnut (Supari),All,5-7,225,210,230,42,0,0,0,Fruit_Tree
+Betelnut (Supari),All,8-10,275,255,280,48,0,0,0,Fruit_Tree
+Betelnut (Supari),All,>10,325,300,325,54,0,0,0,Fruit_Tree
+Rubber,Hevea,Before planting,45,90,50,0,0,0,0,Fruit_Tree
+Rubber,Hevea,1-7,45,45,50,0,0,0,0,Fruit_Tree
+Rubber,Hevea,>7,56,68,55,0,0,0,0,Fruit_Tree
+Palmyra palm (Tal),All,Before planting,0,0,0,0,0,0,0,Fruit_Tree
+Palmyra palm (Tal),All,1-4,100,40,100,0,0,0,5,Fruit_Tree
+Palmyra palm (Tal),All,5-10,200,50,200,0,0,0,7,Fruit_Tree
+Palmyra palm (Tal),All,11-15,300,60,300,0,0,0,10,Fruit_Tree
+Palmyra palm (Tal),All,16-20,400,80,400,0,0,0,12,Fruit_Tree
+Palmyra palm (Tal),All,>20,500,100,500,0,0,0,15,Fruit_Tree
