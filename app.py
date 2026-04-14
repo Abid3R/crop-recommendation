@@ -17,7 +17,8 @@ st.set_page_config(page_title="CropSense BD", page_icon="🌾", layout="wide")
 st.markdown("""
 <style>
 html, body, [class*="css"] {
-    font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a1a;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #1a1a1a;
 }
 .stApp { background: #f5f0e8; }
 #MainMenu, footer, header { visibility: hidden; }
@@ -42,7 +43,8 @@ html, body, [class*="css"] {
 .info-box {
     background:#edf4eb; border-left:4px solid #3d6b35;
     padding:12px 16px; border-radius:0 4px 4px 0;
-    font-size:13px; color:#2c4a2a; margin: 16px 0;
+    font-size:13px; color:#1a1a1a !important;
+    margin: 16px 0;
 }
 .stButton > button {
     width:100%; background:#2c1a0e !important; color:#e8b84b !important;
@@ -58,6 +60,30 @@ html, body, [class*="css"] {
 input { color:#1a1a1a !important; }
 [data-testid="stMetricValue"] { color:#2c1a0e !important; font-weight:700 !important; }
 [data-testid="stMetricLabel"] { color:#6a5040 !important; }
+
+/* ===== FERTILIZER RECOMMENDATION TEXT FIXES ===== */
+/* Force dark text inside expanders (where fertilizer details live) */
+.stExpander p, .stExpander div, .stExpander span,
+.stMarkdown, .stWrite, .stCaption {
+    color: #1a1a1a !important;
+}
+/* Make captions darker (default light gray is hard to read) */
+.stCaption {
+    color: #2c2c2c !important;
+    font-weight: 500;
+}
+/* Ensure info boxes (st.info) inside expanders have readable text */
+.stAlert div, .stAlert p {
+    color: #1a1a1a !important;
+}
+/* Fertilizer nutrient lines (written with st.write) */
+.stWrite p, .stMarkdown p {
+    color: #1a1a1a !important;
+}
+/* Override any light text in metric area that might affect fertilizer block */
+[data-testid="stMetricValue"] {
+    color: #2c1a0e !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
