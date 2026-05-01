@@ -109,7 +109,6 @@ CROP_INFO = {
 def crop_meta(label):
     if label in CROP_INFO:
         return CROP_INFO[label]
-    # case-insensitive fallback
     lc = label.lower().strip()
     for k, v in CROP_INFO.items():
         if k.lower().strip() == lc:
@@ -118,7 +117,7 @@ def crop_meta(label):
 
 
 # ----------------------------------------------------------------
-# CSS — recreates the design from the HTML prototype
+# CSS
 # ----------------------------------------------------------------
 st.markdown("""
 <style>
@@ -144,6 +143,7 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
 [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3 { color: #ffffff !important; }
 
+/* Sidebar selectbox */
 [data-testid="stSidebar"] [data-baseweb="select"] > div {
     background-color: #ffffff !important;
     border: 1.5px solid rgba(255,255,255,0.45) !important;
@@ -161,13 +161,20 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     color: #1a5c2a !important;
     fill: #1a5c2a !important;
 }
+
+/* ✅ FIX: Sidebar selectbox label — force bright white so it's always readable */
 [data-testid="stSidebar"] .stSelectbox label,
 [data-testid="stSidebar"] label[data-testid="stWidgetLabel"] p,
-[data-testid="stSidebar"] label[data-testid="stWidgetLabel"] {
+[data-testid="stSidebar"] label[data-testid="stWidgetLabel"],
+[data-testid="stSidebar"] .stSelectbox > label,
+[data-testid="stSidebar"] div[data-testid="stWidgetLabel"] > p {
     color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
     font-weight: 700 !important;
-    font-size: 0.95rem !important;
+    font-size: 1rem !important;
     margin-bottom: 0.4rem !important;
+    opacity: 1 !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
 
 /* AEZ badge */
@@ -270,6 +277,7 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     transform: translateY(-2px);
     box-shadow: 0 10px 30px rgba(26,92,42,0.42) !important;
 }
+
 /* Secondary (reset) button — outline style */
 .reset-btn .stButton > button {
     background: #ffffff !important;
@@ -289,21 +297,21 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     transform: translateY(-1px);
 }
 
-/* === Sidebar toggle button === */
-.sidebar-open-btn .stButton > button {
+/* === Sidebar toggle button in main area === */
+.toggle-btn-wrap .stButton > button {
     background: #1a5c2a !important;
     color: #ffffff !important;
+    font-size: 0.92rem !important;
+    font-weight: 700 !important;
     border: none !important;
     border-radius: 50px !important;
-    font-size: 0.88rem !important;
-    font-weight: 600 !important;
-    padding: 0.4rem 1.1rem !important;
-    box-shadow: 0 3px 10px rgba(26,92,42,0.25) !important;
+    padding: 0.45rem 1.3rem !important;
+    box-shadow: 0 3px 10px rgba(26,92,42,0.28) !important;
     width: auto !important;
-    margin: 0 !important;
-    margin-bottom: 0.5rem !important;
+    margin-top: 0 !important;
+    margin-bottom: 0.8rem !important;
 }
-.sidebar-open-btn .stButton > button:hover {
+.toggle-btn-wrap .stButton > button:hover {
     background: #3a9e48 !important;
     transform: translateY(-1px);
 }
@@ -488,9 +496,25 @@ if 'result' not in st.session_state:
     st.session_state.result = None
 if 'inputs_snapshot' not in st.session_state:
     st.session_state.inputs_snapshot = None
-# ← NEW: sidebar toggle state
 if 'sidebar_open' not in st.session_state:
     st.session_state.sidebar_open = True
+if 'last_district' not in st.session_state:
+    st.session_state.last_district = 'Dhaka'
+
+
+# ================================================================
+# SIDEBAR TOGGLE BUTTON — always visible at top of main area
+# ================================================================
+st.markdown('<div class="toggle-btn-wrap">', unsafe_allow_html=True)
+if st.session_state.sidebar_open:
+    if st.button("✕ সাইডবার বন্ধ করুন", key="toggle_sidebar"):
+        st.session_state.sidebar_open = False
+        st.rerun()
+else:
+    if st.button("☰ জেলা নির্বাচন করুন", key="toggle_sidebar"):
+        st.session_state.sidebar_open = True
+        st.rerun()
+st.markdown('</div>', unsafe_allow_html=True)
 
 
 # ================================================================
@@ -501,21 +525,30 @@ if st.session_state.sidebar_open:
         st.markdown("<div style='font-size:1.5rem; font-weight:700; margin-bottom:0.2rem;'>🌾 ফসল সাজেস্টার</div>", unsafe_allow_html=True)
         st.markdown("<div style='font-size:0.8rem; color:#a8dba0 !important; margin-bottom:1.4rem; line-height:1.5;'>BARC FRG-2024 ভিত্তিক ফসল ও সার সুপারিশ</div>", unsafe_allow_html=True)
 
+        # ✅ Label rendered via HTML so color is guaranteed white
+        st.markdown(
+            "<p style='color:#ffffff; font-weight:700; font-size:1rem; "
+            "margin-bottom:0.3rem;'>📍 জেলা নির্বাচন করুন</p>",
+            unsafe_allow_html=True
+        )
+
         districts = sorted(DISTRICT_TO_AEZ.keys())
         district_labels = [f"{DISTRICT_BANGLA.get(d, d)} ({d})" for d in districts]
-        default_idx = districts.index('Dhaka') if 'Dhaka' in districts else 0
+        default_idx = districts.index(st.session_state.last_district) \
+            if st.session_state.last_district in districts \
+            else (districts.index('Dhaka') if 'Dhaka' in districts else 0)
 
         sel_idx = st.selectbox(
-            "📍 জেলা নির্বাচন করুন",
+            "জেলা",                          # short native label (hidden by HTML label above)
             options=range(len(districts)),
             format_func=lambda i: district_labels[i],
             index=default_idx,
+            label_visibility="collapsed",    # hide the native label; we use the HTML one
         )
         district = districts[sel_idx]
-        # Save district so it persists when sidebar is closed
-        st.session_state['last_district'] = district
+        st.session_state.last_district = district   # persist across open/close
 
-        aez_num = get_aez(district)
+        aez_num  = get_aez(district)
         aez_name = get_aez_name(aez_num)
 
         st.markdown(f"""
@@ -534,17 +567,20 @@ if st.session_state.sidebar_open:
             বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC) | কৃষি সম্প্রসারণ অধিদপ্তর (DAE)
         </div>
         """, unsafe_allow_html=True)
-
-        st.markdown('<hr class="sidebar-divider">', unsafe_allow_html=True)
-        # Close button inside sidebar
-        if st.button("✕ সাইডবার বন্ধ করুন", key="close_sidebar"):
-            st.session_state.sidebar_open = False
-            st.rerun()
 else:
-    # Fallback: use last saved district when sidebar is closed
-    district = st.session_state.get('last_district', 'Dhaka')
+    # Sidebar is closed — use last saved district
+    district = st.session_state.last_district
     aez_num  = get_aez(district)
     aez_name = get_aez_name(aez_num)
+
+    # Show which district is currently active
+    district_bn = DISTRICT_BANGLA.get(district, district)
+    st.markdown(
+        f"<div style='font-size:0.88rem; color:#555; margin-bottom:0.6rem;'>"
+        f"📍 নির্বাচিত জেলা: <b style='color:#1a5c2a;'>{district_bn}</b>"
+        f" &nbsp;|&nbsp; AEZ-{aez_num}: {aez_name}</div>",
+        unsafe_allow_html=True
+    )
 
 
 # ================================================================
@@ -556,20 +592,6 @@ st.markdown("""
     <div class="hero-sub">আবহাওয়ার তথ্য দিন — মুহূর্তেই পাবেন সেরা ফসল ও সারের পরামর্শ</div>
 </div>
 """, unsafe_allow_html=True)
-
-# ← NEW: Show "Open Sidebar" button only when sidebar is closed
-if not st.session_state.sidebar_open:
-    district_bn = DISTRICT_BANGLA.get(district, district)
-    st.markdown(
-        f"<div style='font-size:0.88rem; color:#666; margin-bottom:0.3rem;'>"
-        f"📍 নির্বাচিত জেলা: <b>{district_bn}</b> &nbsp;|&nbsp; AEZ-{aez_num}</div>",
-        unsafe_allow_html=True
-    )
-    st.markdown('<div class="sidebar-open-btn">', unsafe_allow_html=True)
-    if st.button("☰ জেলা পরিবর্তন করুন", key="open_sidebar"):
-        st.session_state.sidebar_open = True
-        st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
 
 
 # ================================================================
@@ -586,7 +608,7 @@ if st.session_state.result is None:
             "📅 মাস",
             options=range(12),
             format_func=lambda i: MONTHS[i][1],
-            index=6,  # July
+            index=6,
         )
     with col_w:
         week = st.selectbox(
@@ -616,7 +638,6 @@ if st.session_state.result is None:
     st.markdown("<br>", unsafe_allow_html=True)
     submit = st.button("ফসল সাজেস্ট করুন ✨", key="predict_btn")
 
-    # How-to-use card
     st.markdown("""
     <div class="about-card">
         <div class="about-card-title">📖 কীভাবে ব্যবহার করবেন?</div>
@@ -627,7 +648,6 @@ if st.session_state.result is None:
     </div>
     """, unsafe_allow_html=True)
 
-    # ---- Predict ----
     if submit:
         with st.spinner(""):
             placeholder = st.empty()
@@ -656,7 +676,6 @@ if st.session_state.result is None:
                 time.sleep(0.25)
             placeholder.empty()
 
-            # Build feature vector
             sample = {f: 0 for f in features}
             weather_map = {
                 'Rainfall (mm)':   rainfall,
@@ -707,14 +726,12 @@ else:
     crop_label = res['crop']
     emoji, bn_name = crop_meta(crop_label)
 
-    # Success banner
     st.markdown("""
     <div class="info-box">
         ✅ <b>বিশ্লেষণ সম্পন্ন!</b> আপনার এলাকা ও আবহাওয়ার উপর ভিত্তি করে সেরা ফসল নির্বাচন করা হয়েছে।
     </div>
     """, unsafe_allow_html=True)
 
-    # Result hero
     st.markdown(f"""
     <div class="result-hero">
         <div class="result-emoji">{emoji}</div>
@@ -723,7 +740,6 @@ else:
     </div>
     """, unsafe_allow_html=True)
 
-    # Context badges
     district_bn = DISTRICT_BANGLA.get(snap['district'], snap['district'])
     badges_html = (
         f'<span class="badge">📍 {district_bn}</span>'
@@ -735,7 +751,6 @@ else:
     )
     st.markdown(f'<div class="badges">{badges_html}</div>', unsafe_allow_html=True)
 
-    # Fertilizer section
     st.markdown('<div class="section-title">🧪 প্রয়োজনীয় সারের পরিমাণ</div>', unsafe_allow_html=True)
 
     if res['is_fruit']:
@@ -781,7 +796,6 @@ else:
         )
         fert = get_fertilizer(crop_label, field_df, fruit_df, soil_level=soil_sel)
 
-    # Render fertilizer table
     if 'error' in fert:
         st.markdown(f'<div class="warn-box">⚠️ {fert["error"]} — দয়া করে স্থানীয় কৃষি অফিসের সাথে যোগাযোগ করুন।</div>',
                     unsafe_allow_html=True)
@@ -846,7 +860,6 @@ else:
             st.markdown('<div class="warn-box">⚠️ এই ফসলের জন্য পুষ্টির ডেটা পাওয়া যায়নি।</div>',
                         unsafe_allow_html=True)
 
-    # Advisory note
     st.markdown("""
     <div class="warn-box">
         💡 <b>পরামর্শ:</b> সার প্রয়োগের আগে স্থানীয় কৃষি অফিসারের সাথে পরামর্শ করুন।
@@ -854,7 +867,6 @@ else:
     </div>
     """, unsafe_allow_html=True)
 
-    # Reset button (centered, outline style)
     st.markdown('<div class="reset-btn">', unsafe_allow_html=True)
     if st.button("🔄 আবার নতুন করে চেষ্টা করুন", key="reset_btn"):
         st.session_state.result = None
@@ -862,7 +874,6 @@ else:
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # About card at the bottom
     st.markdown("""
     <div class="about-card">
         <div class="about-card-title">📖 এই অ্যাপ সম্পর্কে</div>
