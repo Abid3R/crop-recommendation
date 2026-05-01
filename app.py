@@ -118,7 +118,8 @@ def crop_meta(label):
 # ----------------------------------------------------------------
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap');
 
 html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea {
     font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
@@ -128,16 +129,16 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
 section[data-testid="stSidebar"] {
     display: flex !important;
     visibility: visible !important;
-    width: 320px !important;
-    min-width: 320px !important;
-    max-width: 320px !important;
+    width: 340px !important;
+    min-width: 340px !important;
+    max-width: 340px !important;
     transform: none !important;
     transition: none !important;
 }
 section[data-testid="stSidebar"] > div:first-child {
-    background: linear-gradient(180deg, #1a5c2a 0%, #2d7d3a 100%) !important;
+    background: linear-gradient(180deg, #10361c 0%, #1f5e2f 48%, #2f7d3f 100%) !important;
     padding: 1.5rem 1rem !important;
-    width: 320px !important;
+    width: 340px !important;
 }
 
 /* Hide the sidebar collapse/toggle arrow button */
@@ -151,44 +152,58 @@ button[kind="header"],
 section[data-testid="stSidebar"] *,
 section[data-testid="stSidebar"] p,
 section[data-testid="stSidebar"] span,
-section[data-testid="stSidebar"] div {
+section[data-testid="stSidebar"] div,
+section[data-testid="stSidebar"] label {
     color: #ffffff !important;
+    font-weight: 500 !important;
 }
 section[data-testid="stSidebar"] label p,
 section[data-testid="stSidebar"] .stSelectbox label {
-    color: #c8ebb0 !important;
-    font-weight: 700 !important;
+    color: #e7ffd2 !important;
+    font-weight: 800 !important;
     font-size: 1rem !important;
 }
 
 /* Selectbox inside sidebar */
 section[data-testid="stSidebar"] [data-baseweb="select"] > div {
     background-color: #ffffff !important;
-    border: 2px solid #a8dba0 !important;
-    border-radius: 10px !important;
+    border: 2px solid #b8e6a6 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.10) !important;
 }
 section[data-testid="stSidebar"] [data-baseweb="select"] [role="combobox"],
 section[data-testid="stSidebar"] [data-baseweb="select"] input {
-    color: #1a3d1f !important;
-    -webkit-text-fill-color: #1a3d1f !important;
-    font-weight: 600 !important;
-    font-size: 0.95rem !important;
+    color: #16361c !important;
+    -webkit-text-fill-color: #16361c !important;
+    font-weight: 700 !important;
+    font-size: 0.98rem !important;
 }
 section[data-testid="stSidebar"] [data-baseweb="select"] svg {
-    color: #1a5c2a !important;
-    fill: #1a5c2a !important;
+    color: #1b5e2b !important;
+    fill: #1b5e2b !important;
+}
+
+/* Make sidebar widgets more visible */
+section[data-testid="stSidebar"] .stRadio label,
+section[data-testid="stSidebar"] .stSelectbox,
+section[data-testid="stSidebar"] .stNumberInput {
+    color: #ffffff !important;
+}
+section[data-testid="stSidebar"] [data-baseweb="input"] {
+    background: #ffffff !important;
 }
 
 /* ── AEZ badge ─────────────────────────────────────────────── */
 .aez-badge {
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.25);
-    border-radius: 12px;
-    padding: 0.85rem 1rem;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.30);
+    border-radius: 14px;
+    padding: 0.95rem 1rem;
     margin-top: 1rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
 }
-.aez-num  { font-size: 1.45rem; font-weight: 700; color: #d4f0a0; line-height: 1.1; }
-.aez-name { font-size: 0.78rem; color: rgba(255,255,255,0.85); margin-top: 4px; line-height: 1.45; }
+.aez-num  { font-size: 1.5rem; font-weight: 800; color: #e7ffd2; line-height: 1.1; }
+.aez-name { font-size: 0.82rem; color: rgba(255,255,255,0.92); margin-top: 4px; line-height: 1.5; }
 
 /* ── Main area ─────────────────────────────────────────────── */
 .stApp { background: #f5f1ea; }
@@ -343,7 +358,7 @@ with st.sidebar:
     <div style='font-size:1.6rem; font-weight:800; margin-bottom:0.3rem; color:#ffffff;'>
         🌾 ফসল সাজেস্টার
     </div>
-    <div style='font-size:0.82rem; color:#a8dba0; margin-bottom:1.5rem; line-height:1.6;'>
+    <div style='font-size:0.82rem; color:#e7ffd2; margin-bottom:1.5rem; line-height:1.6;'>
         BARC FRG-2024 ভিত্তিক ফসল ও সার সুপারিশ
     </div>
     """, unsafe_allow_html=True)
@@ -380,10 +395,10 @@ with st.sidebar:
 
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("""
-    <div style='font-size:0.9rem; color:#c8ebb0; font-weight:700; margin-bottom:0.4rem;'>🌿 এই অ্যাপ সম্পর্কে</div>
-    <div style='font-size:0.83rem; color:rgba(255,255,255,0.82); line-height:1.75;'>
+    <div style='font-size:0.9rem; color:#e7ffd2; font-weight:800; margin-bottom:0.4rem;'>🌿 এই অ্যাপ সম্পর্কে</div>
+    <div style='font-size:0.83rem; color:rgba(255,255,255,0.95); line-height:1.75;'>
         মেশিন লার্নিং ও BARC ডেটা ব্যবহার করে আপনার এলাকার জন্য সেরা ফসল ও সারের পরিমাণ সুপারিশ করা হয়।<br><br>
-        <span style='color:#a8dba0;'>তথ্যসূত্র:</span><br>
+        <span style='color:#dfffc1; font-weight:700;'>তথ্যসূত্র:</span><br>
         বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC)<br>
         কৃষি সম্প্রসারণ অধিদপ্তর (DAE)
     </div>
