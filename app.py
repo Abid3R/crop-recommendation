@@ -10,7 +10,6 @@ import joblib
 import pandas as pd
 import streamlit as st
 
-# Make local imports work when run from any directory
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from aez_mapping import DISTRICT_TO_AEZ, AEZ_NAMES, get_aez, get_aez_name
 from fertilizer_lookup import (
@@ -19,12 +18,12 @@ from fertilizer_lookup import (
 )
 
 # ----------------------------------------------------------------
-# Page config (must be first Streamlit call)
+# Page config
 # ----------------------------------------------------------------
 st.set_page_config(
     page_title="ফসল সাজেস্টার",
     page_icon="🌾",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="expanded",
 )
 
@@ -59,7 +58,6 @@ MONTHS = [
 ]
 MONTH_BN = dict(MONTHS)
 
-# Crop emoji + Bangla name (covers the 41 model output classes)
 CROP_INFO = {
     'Aman':                  ('🌾', 'আমন ধান'),
     'Aush':                  ('🌾', 'আউশ ধান'),
@@ -95,7 +93,6 @@ CROP_INFO = {
     'khorip pumpkin Cucurbita': ('🎃', 'মিষ্টিকুমড়া (খরিপ)'),
     'robi pointed gourd':    ('🥒', 'পটল (রবি)'),
     'khorip pointed grourd': ('🥒', 'পটল (খরিপ)'),
-    # Fruit trees
     'Mango':                 ('🥭', 'আম'),
     'Banana':                ('🍌', 'কলা'),
     'Guava':                 ('🍈', 'পেয়ারা'),
@@ -109,7 +106,6 @@ CROP_INFO = {
 def crop_meta(label):
     if label in CROP_INFO:
         return CROP_INFO[label]
-    # case-insensitive fallback
     lc = label.lower().strip()
     for k, v in CROP_INFO.items():
         if k.lower().strip() == lc:
@@ -118,7 +114,7 @@ def crop_meta(label):
 
 
 # ----------------------------------------------------------------
-# CSS — recreates the design from the HTML prototype
+# CSS — sidebar always shown, no toggle hiding
 # ----------------------------------------------------------------
 st.markdown("""
 <style>
@@ -128,321 +124,184 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
 }
 
-/* App base */
-.stApp { background: #f5f1ea; }
-#MainMenu, footer { visibility: hidden; }
-[data-testid="stHeader"] { background: transparent; height: 0; }
-[data-testid="stToolbar"] { display: none !important; }
-.block-container { padding-top: 1rem !important; padding-bottom: 2rem; max-width: 920px; }
-
-/* === Sidebar — dark green gradient === */
-[data-testid="stSidebar"] > div {
-    background: linear-gradient(180deg, #1a5c2a 0%, #2d7d3a 100%);
-    padding-top: 1.5rem;
+/* ── Force sidebar open & visible ──────────────────────────── */
+section[data-testid="stSidebar"] {
+    display: flex !important;
+    visibility: visible !important;
+    width: 320px !important;
+    min-width: 320px !important;
+    max-width: 320px !important;
+    transform: none !important;
+    transition: none !important;
 }
-[data-testid="stSidebar"] * { color: #ffffff !important; }
-[data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2,
-[data-testid="stSidebar"] h3 { color: #ffffff !important; }
+section[data-testid="stSidebar"] > div:first-child {
+    background: linear-gradient(180deg, #1a5c2a 0%, #2d7d3a 100%) !important;
+    padding: 1.5rem 1rem !important;
+    width: 320px !important;
+}
 
-/* Sidebar selectbox — closed state */
-[data-testid="stSidebar"] [data-baseweb="select"] > div {
+/* Hide the sidebar collapse/toggle arrow button */
+button[data-testid="collapsedControl"],
+button[kind="header"],
+[data-testid="stSidebarCollapseButton"] {
+    display: none !important;
+}
+
+/* ── Sidebar text colours ───────────────────────────────────── */
+section[data-testid="stSidebar"] *,
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] div {
+    color: #ffffff !important;
+}
+section[data-testid="stSidebar"] label p,
+section[data-testid="stSidebar"] .stSelectbox label {
+    color: #c8ebb0 !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+}
+
+/* Selectbox inside sidebar */
+section[data-testid="stSidebar"] [data-baseweb="select"] > div {
     background-color: #ffffff !important;
-    border: 1.5px solid rgba(255,255,255,0.45) !important;
+    border: 2px solid #a8dba0 !important;
     border-radius: 10px !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
-
-/* Make selected district text clearly visible */
-[data-testid="stSidebar"] [data-baseweb="select"] [role="combobox"],
-[data-testid="stSidebar"] [data-baseweb="select"] [role="combobox"] * {
-    color: #12351a !important;
-    -webkit-text-fill-color: #12351a !important;
-    font-weight: 700 !important;
+section[data-testid="stSidebar"] [data-baseweb="select"] [role="combobox"],
+section[data-testid="stSidebar"] [data-baseweb="select"] input {
+    color: #1a3d1f !important;
+    -webkit-text-fill-color: #1a3d1f !important;
+    font-weight: 600 !important;
     font-size: 0.95rem !important;
-    opacity: 1 !important;
 }
-
-/* Placeholder / input text visibility */
-[data-testid="stSidebar"] [data-baseweb="select"] input {
-    color: #12351a !important;
-    -webkit-text-fill-color: #12351a !important;
-    font-weight: 700 !important;
-    font-size: 0.95rem !important;
-    opacity: 1 !important;
-}
-
-/* Dropdown arrow visibility */
-[data-testid="stSidebar"] [data-baseweb="select"] svg {
+section[data-testid="stSidebar"] [data-baseweb="select"] svg {
     color: #1a5c2a !important;
     fill: #1a5c2a !important;
-    opacity: 1 !important;
 }
 
-/* Sidebar label */
-[data-testid="stSidebar"] .stSelectbox label,
-[data-testid="stSidebar"] label[data-testid="stWidgetLabel"] p {
-    color: #c8ebb0 !important;
-    font-weight: 600 !important;
-    font-size: 0.85rem !important;
-}
-
-/* AEZ badge */
+/* ── AEZ badge ─────────────────────────────────────────────── */
 .aez-badge {
-    background: rgba(255,255,255,0.10);
-    border: 1px solid rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
     border-radius: 12px;
     padding: 0.85rem 1rem;
     margin-top: 1rem;
 }
-.aez-num { font-size: 1.45rem; font-weight: 700; color: #d4f0a0; line-height: 1.1; }
-.aez-name { font-size: 0.78rem; color: rgba(255,255,255,0.78); margin-top: 4px; line-height: 1.45; }
+.aez-num  { font-size: 1.45rem; font-weight: 700; color: #d4f0a0; line-height: 1.1; }
+.aez-name { font-size: 0.78rem; color: rgba(255,255,255,0.85); margin-top: 4px; line-height: 1.45; }
 
-.sidebar-divider {
-    border: none;
-    border-top: 1px solid rgba(255,255,255,0.18);
-    margin: 1.4rem 0;
-}
-.sidebar-about-title {
-    font-weight: 600;
-    color: #c8ebb0 !important;
-    margin-bottom: 0.4rem;
-    font-size: 0.92rem;
-}
-.sidebar-about-body {
-    font-size: 0.84rem;
-    color: rgba(255,255,255,0.78) !important;
-    line-height: 1.75;
-}
+/* ── Main area ─────────────────────────────────────────────── */
+.stApp { background: #f5f1ea; }
+#MainMenu, footer { visibility: hidden; }
+[data-testid="stToolbar"] { display: none !important; }
+.block-container { padding-top: 1rem !important; padding-bottom: 2rem; max-width: 820px; }
 
-/* === Hero banner === */
-.hero {
-    background: linear-gradient(135deg, #1a5c2a 0%, #2d7d3a 55%, #4d9e42 100%);
-    margin: -1rem -1rem 1.5rem -1rem;
-    padding: 2rem 2rem;
-    text-align: center;
-    border-radius: 0 0 18px 18px;
-    box-shadow: 0 4px 14px rgba(26,92,42,0.18);
-}
-.hero-title {
-    color: #ffffff;
-    font-size: 2.1rem;
-    font-weight: 700;
-    letter-spacing: -0.4px;
-    margin: 0;
-}
-.hero-sub {
-    color: #c0e8a0;
-    font-size: 1rem;
-    margin-top: 6px;
-}
-
-/* === Section titles === */
+/* ── Section title ─────────────────────────────────────────── */
 .section-title {
-    color: #1a5c2a;
-    font-size: 1.15rem;
-    font-weight: 700;
+    color: #1a5c2a; font-size: 1.15rem; font-weight: 700;
     border-bottom: 2px solid #c8dfc0;
-    padding-bottom: 0.4rem;
-    margin: 1.4rem 0 1rem 0;
+    padding-bottom: 0.4rem; margin: 1.4rem 0 1rem 0;
 }
 
-/* === Input labels & selects === */
+/* ── Input widgets ─────────────────────────────────────────── */
 .stSelectbox label, .stNumberInput label {
-    color: #3a6b30 !important;
-    font-weight: 600 !important;
-    font-size: 0.92rem !important;
+    color: #3a6b30 !important; font-weight: 600 !important; font-size: 0.92rem !important;
 }
 .stSelectbox [data-baseweb="select"] > div,
-.stNumberInput input,
-.stTextInput input {
-    border-radius: 10px !important;
-    border: 1.5px solid #d0e4c8 !important;
-    background: #ffffff !important;
-    color: #2a3a22 !important;
-    font-size: 0.96rem !important;
-}
-.stNumberInput input:focus,
-.stSelectbox [data-baseweb="select"] > div:focus-within {
-    border-color: #2d7d3a !important;
-    box-shadow: 0 0 0 2px rgba(45,125,58,0.15) !important;
+.stNumberInput input {
+    border-radius: 10px !important; border: 1.5px solid #d0e4c8 !important;
+    background: #ffffff !important; color: #2a3a22 !important; font-size: 0.96rem !important;
 }
 
-/* === Big primary button === */
+/* ── Hero banner ───────────────────────────────────────────── */
+.hero {
+    background: linear-gradient(135deg, #1a5c2a 0%, #2d7d3a 55%, #4d9e42 100%);
+    padding: 2rem; text-align: center;
+    border-radius: 18px; box-shadow: 0 4px 14px rgba(26,92,42,0.18);
+    margin-bottom: 1.5rem;
+}
+.hero-title { color: #ffffff; font-size: 2rem; font-weight: 700; margin: 0; }
+.hero-sub   { color: #c0e8a0; font-size: 1rem; margin-top: 6px; }
+
+/* ── Predict button ────────────────────────────────────────── */
 .stButton > button {
     width: 100%;
     background: linear-gradient(135deg, #1a5c2a, #3a9e48) !important;
-    color: #ffffff !important;
-    font-size: 1.25rem !important;
-    font-weight: 700 !important;
-    border: none !important;
-    border-radius: 50px !important;
-    padding: 0.9rem 1.5rem !important;
-    box-shadow: 0 6px 22px rgba(26,92,42,0.30) !important;
-    letter-spacing: 0.3px !important;
-    transition: all 0.2s ease !important;
+    color: #ffffff !important; font-size: 1.2rem !important; font-weight: 700 !important;
+    border: none !important; border-radius: 50px !important;
+    padding: 0.9rem 1.5rem !important; box-shadow: 0 6px 22px rgba(26,92,42,0.30) !important;
     margin-top: 0.5rem !important;
 }
-.stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(26,92,42,0.42) !important;
-}
-/* Secondary (reset) button — outline style */
 .reset-btn .stButton > button {
-    background: #ffffff !important;
-    color: #1a5c2a !important;
-    border: 2px solid #1a5c2a !important;
-    font-size: 1rem !important;
-    font-weight: 600 !important;
-    box-shadow: none !important;
-    width: auto !important;
-    padding: 0.55rem 1.6rem !important;
-    margin: 0 auto !important;
-    display: block !important;
-}
-.reset-btn .stButton > button:hover {
-    background: #1a5c2a !important;
-    color: #ffffff !important;
-    transform: translateY(-1px);
+    background: #ffffff !important; color: #1a5c2a !important;
+    border: 2px solid #1a5c2a !important; font-size: 1rem !important;
+    width: auto !important; padding: 0.55rem 1.6rem !important;
 }
 
-/* === Result hero === */
+/* ── Result card ───────────────────────────────────────────── */
 .result-hero {
     background: linear-gradient(135deg, #1a5c2a, #3a9e48);
-    border-radius: 22px;
-    padding: 2rem 1.5rem;
-    text-align: center;
-    color: #ffffff;
-    margin: 0.5rem 0 1.4rem 0;
+    border-radius: 22px; padding: 2rem 1.5rem; text-align: center;
+    color: #ffffff; margin: 0.5rem 0 1.4rem;
     box-shadow: 0 8px 28px rgba(26,92,42,0.24);
 }
 .result-emoji { font-size: 4rem; line-height: 1; }
-.result-name  { font-size: 2rem; font-weight: 700; margin-top: 0.4rem; color: #fff; }
-.result-name-en { font-size: 0.92rem; opacity: 0.78; margin-top: 4px; color: #fff; }
+.result-name  { font-size: 2rem; font-weight: 700; margin-top: 0.4rem; }
+.result-name-en { font-size: 0.92rem; opacity: 0.80; margin-top: 4px; }
 
-/* === Context badges === */
+/* ── Badges ────────────────────────────────────────────────── */
 .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.4rem; }
 .badge {
-    background: #e4f0da;
-    color: #1a5c2a;
-    border-radius: 20px;
-    padding: 0.28rem 0.95rem;
-    font-size: 0.85rem;
-    font-weight: 600;
+    background: #e4f0da; color: #1a5c2a;
+    border-radius: 20px; padding: 0.28rem 0.95rem;
+    font-size: 0.85rem; font-weight: 600;
 }
 
-/* === Soil-level pill buttons === */
-.soil-pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 0.4rem; }
-.soil-pill-label {
-    color: #3a6b30 !important;
-    font-weight: 600 !important;
-    font-size: 0.95rem !important;
-    margin-bottom: 0.5rem !important;
-}
-/* Streamlit radio styled as pills */
-.stRadio > label > div { display: none !important; }  /* hide group label (we add our own) */
-.stRadio [role="radiogroup"] {
-    display: flex !important;
-    gap: 8px !important;
-    flex-wrap: wrap !important;
-}
+/* ── Soil radio pills ──────────────────────────────────────── */
+.soil-pill-label { color: #3a6b30 !important; font-weight: 600 !important; font-size: 0.95rem !important; margin-bottom: 0.5rem !important; }
+.stRadio [role="radiogroup"] { display: flex !important; gap: 8px !important; flex-wrap: wrap !important; }
 .stRadio [role="radiogroup"] label {
-    background: #ffffff;
-    border: 1.5px solid #ccc;
-    border-radius: 50px !important;
-    padding: 0.5rem 1.2rem !important;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.15s;
+    background: #ffffff; border: 1.5px solid #ccc;
+    border-radius: 50px !important; padding: 0.5rem 1.2rem !important;
+    cursor: pointer; font-weight: 600;
 }
 .stRadio [role="radiogroup"] label:has(input:checked) {
-    background: #1a7a30;
-    color: #fff !important;
-    border-color: #1a7a30;
+    background: #1a7a30; color: #fff !important; border-color: #1a7a30;
 }
-.stRadio [role="radiogroup"] label > div:first-child { display: none !important; } /* hide circle */
+.stRadio > label > div { display: none !important; }
+.stRadio [role="radiogroup"] label > div:first-child { display: none !important; }
 
-/* === Fertilizer table === */
-.fert-card {
-    background: #ffffff;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-    margin-bottom: 1.2rem;
-}
-.fert-table { width: 100%; border-collapse: collapse; }
-.fert-table th {
-    background: #1a5c2a;
-    color: #ffffff;
-    padding: 0.75rem 1rem;
-    text-align: left;
-    font-size: 0.92rem;
-    font-weight: 600;
-}
-.fert-table td {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #eef3ec;
-    font-size: 0.93rem;
-    color: #333;
-}
-.fert-table tr:nth-child(even) td { background: #f8fcf6; }
-.fert-table tr:last-child td { border-bottom: none; }
-.fert-value { font-weight: 700; color: #1a5c2a; }
+/* ── Fertilizer card ───────────────────────────────────────── */
+.fert-card { background:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.07); margin-bottom:1.2rem; }
+.fert-table { width:100%; border-collapse:collapse; }
+.fert-table th { background:#1a5c2a; color:#ffffff; padding:0.75rem 1rem; text-align:left; font-size:0.92rem; font-weight:600; }
+.fert-table td { padding:0.75rem 1rem; border-bottom:1px solid #eef3ec; font-size:0.93rem; color:#333; }
+.fert-table tr:nth-child(even) td { background:#f8fcf6; }
+.fert-table tr:last-child td { border-bottom:none; }
+.fert-value { font-weight:700; color:#1a5c2a; }
 
-/* === Info / warn boxes === */
+/* ── Info / warn boxes ─────────────────────────────────────── */
 .info-box {
-    background: #e8f5e2;
-    border: 1px solid #b8dca8;
-    border-left: 4px solid #2d7d3a;
-    border-radius: 10px;
-    padding: 0.95rem 1.1rem;
-    font-size: 0.92rem;
-    color: #2a5c20;
-    margin: 0.8rem 0 1rem;
-    line-height: 1.6;
+    background:#e8f5e2; border:1px solid #b8dca8; border-left:4px solid #2d7d3a;
+    border-radius:10px; padding:0.95rem 1.1rem; font-size:0.92rem; color:#2a5c20;
+    margin:0.8rem 0 1rem; line-height:1.6;
 }
 .warn-box {
-    background: #fff8e1;
-    border: 1px solid #ffe082;
-    border-left: 4px solid #e8b84b;
-    border-radius: 10px;
-    padding: 0.95rem 1.1rem;
-    font-size: 0.92rem;
-    color: #7a5a00;
-    margin: 0.8rem 0 1rem;
-    line-height: 1.6;
+    background:#fff8e1; border:1px solid #ffe082; border-left:4px solid #e8b84b;
+    border-radius:10px; padding:0.95rem 1.1rem; font-size:0.92rem; color:#7a5a00;
+    margin:0.8rem 0 1rem; line-height:1.6;
 }
-
-/* === About card === */
 .about-card {
-    background: #ffffff;
-    border-radius: 16px;
-    border: 1px solid #dde8d5;
-    padding: 1.2rem 1.5rem;
-    font-size: 0.88rem;
-    color: #555;
-    line-height: 1.8;
-    margin: 1.5rem 0;
+    background:#ffffff; border-radius:16px; border:1px solid #dde8d5;
+    padding:1.2rem 1.5rem; font-size:0.88rem; color:#555; line-height:1.8; margin:1.5rem 0;
 }
-.about-card-title {
-    font-weight: 700;
-    color: #1a5c2a;
-    font-size: 0.96rem;
-    margin-bottom: 0.5rem;
-}
-
-/* Mobile adjustments */
-@media (max-width: 720px) {
-    .hero-title { font-size: 1.6rem; }
-    .result-emoji { font-size: 3rem; }
-    .result-name  { font-size: 1.5rem; }
-    .block-container { padding-left: 0.6rem; padding-right: 0.6rem; }
-}
+.about-card-title { font-weight:700; color:#1a5c2a; font-size:0.96rem; margin-bottom:0.5rem; }
 </style>
 """, unsafe_allow_html=True)
 
 
 # ----------------------------------------------------------------
-# Load model + reference data (cached)
+# Load model + reference data
 # ----------------------------------------------------------------
 @st.cache_resource
 def load_artifacts():
@@ -458,7 +317,6 @@ def load_artifacts():
     field_df = load_field_df(os.path.join(base, 'field_crops_fertilizer.csv'))
     fruit_df = load_fruit_df(os.path.join(base, 'fruit_trees_fertilizer.csv'))
     return model, encoder, features, field_df, fruit_df
-
 
 try:
     model, encoder, features, field_df, fruit_df = load_artifacts()
@@ -478,24 +336,39 @@ if 'inputs_snapshot' not in st.session_state:
 
 
 # ================================================================
-# SIDEBAR — district selector + AEZ badge + about
+# SIDEBAR — permanently visible district selector
 # ================================================================
 with st.sidebar:
-    st.markdown("<div style='font-size:1.5rem; font-weight:700; margin-bottom:0.2rem;'>🌾 ফসল সাজেস্টার</div>", unsafe_allow_html=True)
-    st.markdown("<div style='font-size:0.8rem; color:#a8dba0 !important; margin-bottom:1.4rem; line-height:1.5;'>BARC FRG-2024 ভিত্তিক ফসল ও সার সুপারিশ</div>", unsafe_allow_html=True)
+    st.markdown("""
+    <div style='font-size:1.6rem; font-weight:800; margin-bottom:0.3rem; color:#ffffff;'>
+        🌾 ফসল সাজেস্টার
+    </div>
+    <div style='font-size:0.82rem; color:#a8dba0; margin-bottom:1.5rem; line-height:1.6;'>
+        BARC FRG-2024 ভিত্তিক ফসল ও সার সুপারিশ
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("---")
 
     districts = sorted(DISTRICT_TO_AEZ.keys())
     district_labels = [f"{DISTRICT_BANGLA.get(d, d)} ({d})" for d in districts]
     default_idx = districts.index('Dhaka') if 'Dhaka' in districts else 0
 
+    # Store in session state so it persists across reruns
+    if 'selected_district_idx' not in st.session_state:
+        st.session_state.selected_district_idx = default_idx
+
     sel_idx = st.selectbox(
         "📍 জেলা নির্বাচন করুন",
         options=range(len(districts)),
         format_func=lambda i: district_labels[i],
-        index=default_idx,
+        index=st.session_state.selected_district_idx,
+        key="district_selector",
     )
+    st.session_state.selected_district_idx = sel_idx
+
     district = districts[sel_idx]
-    aez_num = get_aez(district)
+    aez_num  = get_aez(district)
     aez_name = get_aez_name(aez_num)
 
     st.markdown(f"""
@@ -505,19 +378,20 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown('<hr class="sidebar-divider">', unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("""
-    <div class="sidebar-about-title">🌿 এই অ্যাপ সম্পর্কে</div>
-    <div class="sidebar-about-body">
+    <div style='font-size:0.9rem; color:#c8ebb0; font-weight:700; margin-bottom:0.4rem;'>🌿 এই অ্যাপ সম্পর্কে</div>
+    <div style='font-size:0.83rem; color:rgba(255,255,255,0.82); line-height:1.75;'>
         মেশিন লার্নিং ও BARC ডেটা ব্যবহার করে আপনার এলাকার জন্য সেরা ফসল ও সারের পরিমাণ সুপারিশ করা হয়।<br><br>
-        <span style="color:#a8dba0 !important;">তথ্যসূত্র:</span><br>
-        বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC) | কৃষি সম্প্রসারণ অধিদপ্তর (DAE)
+        <span style='color:#a8dba0;'>তথ্যসূত্র:</span><br>
+        বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC)<br>
+        কৃষি সম্প্রসারণ অধিদপ্তর (DAE)
     </div>
     """, unsafe_allow_html=True)
 
 
 # ================================================================
-# HERO
+# MAIN AREA
 # ================================================================
 st.markdown("""
 <div class="hero">
@@ -528,11 +402,10 @@ st.markdown("""
 
 
 # ================================================================
-# MAIN — show input form OR result based on session state
+# INPUT FORM
 # ================================================================
 if st.session_state.result is None:
 
-    # ---- Input form ----
     st.markdown('<div class="section-title">🌡️ আবহাওয়া ও সময়ের তথ্য দিন</div>', unsafe_allow_html=True)
 
     col_m, col_w = st.columns(2)
@@ -541,7 +414,7 @@ if st.session_state.result is None:
             "📅 মাস",
             options=range(12),
             format_func=lambda i: MONTHS[i][1],
-            index=6,  # July
+            index=6,
         )
     with col_w:
         week = st.selectbox(
@@ -571,7 +444,6 @@ if st.session_state.result is None:
     st.markdown("<br>", unsafe_allow_html=True)
     submit = st.button("ফসল সাজেস্ট করুন ✨", key="predict_btn")
 
-    # How-to-use card
     st.markdown("""
     <div class="about-card">
         <div class="about-card-title">📖 কীভাবে ব্যবহার করবেন?</div>
@@ -582,7 +454,6 @@ if st.session_state.result is None:
     </div>
     """, unsafe_allow_html=True)
 
-    # ---- Predict ----
     if submit:
         with st.spinner(""):
             placeholder = st.empty()
@@ -599,8 +470,7 @@ if st.session_state.result is None:
                 <div style="text-align:center; padding:1.5rem; background:#e8f5e2;
                             border-radius:14px; margin:1rem 0;">
                     <div style="font-size:2.2rem;">🌾</div>
-                    <div style="color:#1a5c2a; font-weight:600; margin-top:0.5rem;
-                                font-size:1.05rem;">{msg}</div>
+                    <div style="color:#1a5c2a; font-weight:600; margin-top:0.5rem; font-size:1.05rem;">{msg}</div>
                     <div style="margin-top:0.7rem; background:rgba(26,92,42,0.15);
                                 border-radius:4px; height:6px; overflow:hidden;">
                         <div style="width:{pct}%; height:100%; background:#3a9e48;"></div>
@@ -611,7 +481,6 @@ if st.session_state.result is None:
                 time.sleep(0.25)
             placeholder.empty()
 
-            # Build feature vector
             sample = {f: 0 for f in features}
             weather_map = {
                 'Rainfall (mm)':   rainfall,
@@ -625,24 +494,23 @@ if st.session_state.result is None:
             for k, v in weather_map.items():
                 if k in sample:
                     sample[k] = v
+
             zone_col  = f'Agricultural Zone_{district}'
             month_col = f'Month_{month}'
-            if zone_col in sample:  sample[zone_col] = 1
+            if zone_col  in sample: sample[zone_col]  = 1
             if month_col in sample: sample[month_col] = 1
 
             X_input = pd.DataFrame([sample])[features]
-            proba = model.predict_proba(X_input)[0]
-            top_i = int(proba.argmax())
+            proba   = model.predict_proba(X_input)[0]
+            top_i   = int(proba.argmax())
             crop_label = encoder.inverse_transform([top_i])[0]
             confidence = round(float(proba[top_i]) * 100, 1)
-
             fert = get_fertilizer(crop_label, field_df, fruit_df, tree_age=10)
 
             st.session_state.result = {
                 'crop': crop_label,
                 'confidence': confidence,
                 'is_fruit': is_fruit_tree(crop_label),
-                'fert_field': fert if not is_fruit_tree(crop_label) else None,
             }
             st.session_state.inputs_snapshot = {
                 'district': district, 'aez_num': aez_num,
@@ -654,22 +522,20 @@ if st.session_state.result is None:
             st.rerun()
 
 # ================================================================
-# RESULT VIEW
+# RESULT PAGE
 # ================================================================
 else:
-    res = st.session_state.result
+    res  = st.session_state.result
     snap = st.session_state.inputs_snapshot
     crop_label = res['crop']
     emoji, bn_name = crop_meta(crop_label)
 
-    # Success banner
     st.markdown("""
     <div class="info-box">
         ✅ <b>বিশ্লেষণ সম্পন্ন!</b> আপনার এলাকা ও আবহাওয়ার উপর ভিত্তি করে সেরা ফসল নির্বাচন করা হয়েছে।
     </div>
     """, unsafe_allow_html=True)
 
-    # Result hero
     st.markdown(f"""
     <div class="result-hero">
         <div class="result-emoji">{emoji}</div>
@@ -678,7 +544,6 @@ else:
     </div>
     """, unsafe_allow_html=True)
 
-    # Context badges
     district_bn = DISTRICT_BANGLA.get(snap['district'], snap['district'])
     badges_html = (
         f'<span class="badge">📍 {district_bn}</span>'
@@ -690,123 +555,84 @@ else:
     )
     st.markdown(f'<div class="badges">{badges_html}</div>', unsafe_allow_html=True)
 
-    # Fertilizer section
     st.markdown('<div class="section-title">🧪 প্রয়োজনীয় সারের পরিমাণ</div>', unsafe_allow_html=True)
 
     if res['is_fruit']:
-        # Fruit tree — age-group selector
         age_groups_bn = {
-            'Before planting': 'রোপণের আগে',
-            '0-1':   '০-১ বছর',
-            '2-4':   '২-৪ বছর',
-            '5-7':   '৫-৭ বছর',
-            '8-10':  '৮-১০ বছর',
-            '11-15': '১১-১৫ বছর',
-            '16-20': '১৬-২০ বছর',
-            '>20':   '২০ বছরের বেশি',
+            'Before planting': 'রোপণের আগে', '0-1': '০-১ বছর', '2-4': '২-৪ বছর',
+            '5-7': '৫-৭ বছর', '8-10': '৮-১০ বছর', '11-15': '১১-১৫ বছর',
+            '16-20': '১৬-২০ বছর', '>20': '২০ বছরের বেশি',
         }
-        st.markdown('<div class="soil-pill-label">🌳 গাছের বয়স / পর্যায় নির্বাচন করুন:</div>', unsafe_allow_html=True)
         age_choices = list(age_groups_bn.keys())
         age_default = age_choices.index('8-10') if '8-10' in age_choices else 0
+        st.markdown('<div class="soil-pill-label">🌳 গাছের বয়স / পর্যায়:</div>', unsafe_allow_html=True)
         age_sel = st.selectbox(
-            "গাছের বয়স",
-            options=age_choices,
+            "গাছের বয়স", options=age_choices,
             format_func=lambda a: age_groups_bn.get(a, a),
-            index=age_default,
-            label_visibility="collapsed",
+            index=age_default, label_visibility="collapsed",
         )
-        # Map Bangla age to numeric for lookup
-        age_to_num = {'Before planting': 0, '0-1': 1, '2-4': 3, '5-7': 6,
-                      '8-10': 10, '11-15': 13, '16-20': 18, '>20': 25}
-        fert = get_fertilizer(crop_label, field_df, fruit_df,
-                              tree_age=age_to_num.get(age_sel, 10))
+        age_to_num = {'Before planting':0,'0-1':1,'2-4':3,'5-7':6,'8-10':10,'11-15':13,'16-20':18,'>20':25}
+        fert = get_fertilizer(crop_label, field_df, fruit_df, tree_age=age_to_num.get(age_sel, 10))
     else:
-        # Field crop — soil-level pills
         soil_options_bn = {
-            'Optimum':  '✅ অপ্টিমাম',
-            'Medium':   '🟡 মাঝারি',
-            'Low':      '🟠 কম',
-            'Very low': '🔴 খুব কম',
+            'Optimum': '✅ অপ্টিমাম', 'Medium': '🟡 মাঝারি',
+            'Low': '🟠 কম', 'Very low': '🔴 খুব কম',
         }
-        st.markdown('<div class="soil-pill-label">🌍 মাটির উর্বরতা স্তর নির্বাচন করুন:</div>', unsafe_allow_html=True)
+        st.markdown('<div class="soil-pill-label">🌍 মাটির উর্বরতা স্তর:</div>', unsafe_allow_html=True)
         soil_sel = st.radio(
-            "মাটির স্তর",
-            options=list(soil_options_bn.keys()),
+            "মাটির স্তর", options=list(soil_options_bn.keys()),
             format_func=lambda s: soil_options_bn[s],
-            index=1,
-            horizontal=True,
-            label_visibility="collapsed",
+            index=1, horizontal=True, label_visibility="collapsed",
         )
         fert = get_fertilizer(crop_label, field_df, fruit_df, soil_level=soil_sel)
 
-    # Render fertilizer table
     if 'error' in fert:
-        st.markdown(f'<div class="warn-box">⚠️ {fert["error"]} — দয়া করে স্থানীয় কৃষি অফিসের সাথে যোগাযোগ করুন।</div>',
-                    unsafe_allow_html=True)
+        st.markdown(f'<div class="warn-box">⚠️ {fert["error"]} — স্থানীয় কৃষি অফিসের সাথে যোগাযোগ করুন।</div>', unsafe_allow_html=True)
     else:
         nutrients = fert.get('nutrients', {}) or {}
-        # Bangla labels for nutrients
         bn_nutrients = {
-            'N (Nitrogen)':   'নাইট্রোজেন (N)',
-            'P (Phosphorus)': 'ফসফরাস (P)',
-            'K (Potassium)':  'পটাশিয়াম (K)',
-            'S (Sulphur)':    'সালফার (S)',
-            'Zn (Zinc)':      'জিঙ্ক (Zn)',
-            'B (Boron)':      'বোরন (B)',
-            'Mg (Magnesium)': 'ম্যাগনেসিয়াম (Mg)',
-            'Organic Matter': 'জৈব সার',
+            'N (Nitrogen)': 'নাইট্রোজেন (N)', 'P (Phosphorus)': 'ফসফরাস (P)',
+            'K (Potassium)': 'পটাশিয়াম (K)', 'S (Sulphur)': 'সালফার (S)',
+            'Zn (Zinc)': 'জিঙ্ক (Zn)', 'B (Boron)': 'বোরন (B)',
+            'Mg (Magnesium)': 'ম্যাগনেসিয়াম (Mg)', 'Organic Matter': 'জৈব সার',
         }
         unit_default = fert.get('unit', '')
-        unit_bn = 'কেজি/হেক্টর' if unit_default == 'kg/ha' else (
-                  'গ্রাম/গাছ' if unit_default == 'g/tree' else unit_default)
+        unit_bn = 'কেজি/হেক্টর' if unit_default == 'kg/ha' else ('গ্রাম/গাছ' if unit_default == 'g/tree' else unit_default)
 
         if nutrients:
             rows_html = ""
             for raw_name, val in nutrients.items():
                 bn_label = bn_nutrients.get(raw_name, raw_name)
-                # Organic Matter values may include their own unit suffix
                 if isinstance(val, str) and any(u in val for u in ['t/ha', 'kg/tree']):
                     amount, unit_label = val.rsplit(' ', 1)
-                    unit_label_bn = ('টন/হেক্টর' if unit_label == 't/ha'
-                                     else 'কেজি/গাছ' if unit_label == 'kg/tree'
-                                     else unit_label)
+                    unit_label_bn = 'টন/হেক্টর' if unit_label == 't/ha' else ('কেজি/গাছ' if unit_label == 'kg/tree' else unit_label)
                 else:
                     amount = str(val)
                     unit_label_bn = unit_bn
-                rows_html += (
-                    f'<tr><td>{bn_label}</td>'
-                    f'<td class="fert-value">{amount}</td>'
-                    f'<td>{unit_label_bn}</td></tr>'
-                )
-            variety = fert.get('variety', '-')
+                rows_html += f'<tr><td>{bn_label}</td><td class="fert-value">{amount}</td><td>{unit_label_bn}</td></tr>'
+
+            variety  = fert.get('variety', '-')
             meta_line = f'<b>জাত:</b> {variety}'
             if not res['is_fruit']:
-                soil_bn_map = {'Optimum':'অপ্টিমাম', 'Medium':'মাঝারি',
-                               'Low':'কম', 'Very low':'খুব কম'}
+                soil_bn_map = {'Optimum':'অপ্টিমাম','Medium':'মাঝারি','Low':'কম','Very low':'খুব কম'}
                 meta_line += f' &nbsp;|&nbsp; <b>মাটির স্তর:</b> {soil_bn_map.get(fert.get("soil_level","Medium"), fert.get("soil_level","Medium"))}'
             else:
-                meta_line += f' &nbsp;|&nbsp; <b>বয়সের গ্রুপ:</b> {age_groups_bn.get(fert.get("age_group", "8-10"), fert.get("age_group", "8-10"))}'
+                meta_line += f' &nbsp;|&nbsp; <b>বয়সের গ্রুপ:</b> {age_groups_bn.get(fert.get("age_group","8-10"), fert.get("age_group","8-10"))}'
             if fert.get('is_proxy'):
-                meta_line += ' &nbsp;|&nbsp; <i>(কাছাকাছি ফসলের তথ্য দেখানো হচ্ছে)</i>'
+                meta_line += ' &nbsp;|&nbsp; <i>(কাছাকাছি ফসলের তথ্য)</i>'
 
             st.markdown(f"""
-            <div class="info-box" style="font-size:0.88rem; margin-bottom:0.7rem;">
-                {meta_line}
-            </div>
+            <div class="info-box" style="font-size:0.88rem; margin-bottom:0.7rem;">{meta_line}</div>
             <div class="fert-card">
               <table class="fert-table">
-                <thead>
-                  <tr><th>সারের নাম</th><th>পরিমাণ</th><th>একক</th></tr>
-                </thead>
+                <thead><tr><th>সারের নাম</th><th>পরিমাণ</th><th>একক</th></tr></thead>
                 <tbody>{rows_html}</tbody>
               </table>
             </div>
             """, unsafe_allow_html=True)
         else:
-            st.markdown('<div class="warn-box">⚠️ এই ফসলের জন্য পুষ্টির ডেটা পাওয়া যায়নি।</div>',
-                        unsafe_allow_html=True)
+            st.markdown('<div class="warn-box">⚠️ এই ফসলের জন্য পুষ্টির ডেটা পাওয়া যায়নি।</div>', unsafe_allow_html=True)
 
-    # Advisory note
     st.markdown("""
     <div class="warn-box">
         💡 <b>পরামর্শ:</b> সার প্রয়োগের আগে স্থানীয় কৃষি অফিসারের সাথে পরামর্শ করুন।
@@ -814,7 +640,6 @@ else:
     </div>
     """, unsafe_allow_html=True)
 
-    # Reset button (centered, outline style)
     st.markdown('<div class="reset-btn">', unsafe_allow_html=True)
     if st.button("🔄 আবার নতুন করে চেষ্টা করুন", key="reset_btn"):
         st.session_state.result = None
@@ -822,13 +647,11 @@ else:
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # About card at the bottom
     st.markdown("""
     <div class="about-card">
         <div class="about-card-title">📖 এই অ্যাপ সম্পর্কে</div>
         এই অ্যাপটি <b>BARC FRG-2024</b> ডেটা ও মেশিন লার্নিং মডেলের উপর ভিত্তি করে তৈরি।
-        আবহাওয়ার তথ্য ও AEZ ডেটা বিশ্লেষণ করে সর্বোত্তম ফসল ও সারের সুপারিশ দেওয়া হয়।
-        <br><br>
+        আবহাওয়ার তথ্য ও AEZ ডেটা বিশ্লেষণ করে সর্বোত্তম ফসল ও সারের সুপারিশ দেওয়া হয়।<br><br>
         <b>তথ্যসূত্র:</b> বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC) | কৃষি সম্প্রসারণ অধিদপ্তর (DAE)
     </div>
     """, unsafe_allow_html=True)
