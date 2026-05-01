@@ -95,7 +95,6 @@ CROP_INFO = {
     'khorip pumpkin Cucurbita': ('🎃', 'মিষ্টিকুমড়া (খরিপ)'),
     'robi pointed gourd':    ('🥒', 'পটল (রবি)'),
     'khorip pointed grourd': ('🥒', 'পটল (খরিপ)'),
-    # Fruit trees
     'Mango':                 ('🥭', 'আম'),
     'Banana':                ('🍌', 'কলা'),
     'Guava':                 ('🍈', 'পেয়ারা'),
@@ -109,7 +108,6 @@ CROP_INFO = {
 def crop_meta(label):
     if label in CROP_INFO:
         return CROP_INFO[label]
-    # case-insensitive fallback
     lc = label.lower().strip()
     for k, v in CROP_INFO.items():
         if k.lower().strip() == lc:
@@ -128,14 +126,12 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
 }
 
-/* App base */
 .stApp { background: #f5f1ea; }
 #MainMenu, footer { visibility: hidden; }
 [data-testid="stHeader"] { background: transparent; height: 0; }
 [data-testid="stToolbar"] { display: none !important; }
 .block-container { padding-top: 1rem !important; padding-bottom: 2rem; max-width: 920px; }
 
-/* === Sidebar — dark green gradient === */
 [data-testid="stSidebar"] > div {
     background: linear-gradient(180deg, #1a5c2a 0%, #2d7d3a 100%);
     padding-top: 1.5rem;
@@ -144,10 +140,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
 [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3 { color: #ffffff !important; }
 
-/* Sidebar selectbox — closed state.
-   We make the dropdown a clean WHITE pill with dark green text — easier to
-   read against the dark green sidebar than a translucent variant, and avoids
-   a long battle with BaseWeb's nested white backgrounds. */
 [data-testid="stSidebar"] [data-baseweb="select"] > div {
     background-color: #ffffff !important;
     border: 1.5px solid rgba(255,255,255,0.45) !important;
@@ -165,7 +157,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     color: #1a5c2a !important;
     fill: #1a5c2a !important;
 }
-/* Sidebar label */
 [data-testid="stSidebar"] .stSelectbox label,
 [data-testid="stSidebar"] label[data-testid="stWidgetLabel"] p {
     color: #c8ebb0 !important;
@@ -173,7 +164,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     font-size: 0.85rem !important;
 }
 
-/* AEZ badge */
 .aez-badge {
     background: rgba(255,255,255,0.10);
     border: 1px solid rgba(255,255,255,0.22);
@@ -201,7 +191,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     line-height: 1.75;
 }
 
-/* === Hero banner === */
 .hero {
     background: linear-gradient(135deg, #1a5c2a 0%, #2d7d3a 55%, #4d9e42 100%);
     margin: -1rem -1rem 1.5rem -1rem;
@@ -223,7 +212,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     margin-top: 6px;
 }
 
-/* === Section titles === */
 .section-title {
     color: #1a5c2a;
     font-size: 1.15rem;
@@ -233,7 +221,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     margin: 1.4rem 0 1rem 0;
 }
 
-/* === Input labels & selects === */
 .stSelectbox label, .stNumberInput label {
     color: #3a6b30 !important;
     font-weight: 600 !important;
@@ -254,7 +241,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     box-shadow: 0 0 0 2px rgba(45,125,58,0.15) !important;
 }
 
-/* === Big primary button === */
 .stButton > button {
     width: 100%;
     background: linear-gradient(135deg, #1a5c2a, #3a9e48) !important;
@@ -273,7 +259,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     transform: translateY(-2px);
     box-shadow: 0 10px 30px rgba(26,92,42,0.42) !important;
 }
-/* Secondary (reset) button — outline style */
 .reset-btn .stButton > button {
     background: #ffffff !important;
     color: #1a5c2a !important;
@@ -292,7 +277,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     transform: translateY(-1px);
 }
 
-/* === Result hero === */
 .result-hero {
     background: linear-gradient(135deg, #1a5c2a, #3a9e48);
     border-radius: 22px;
@@ -306,7 +290,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
 .result-name  { font-size: 2rem; font-weight: 700; margin-top: 0.4rem; color: #fff; }
 .result-name-en { font-size: 0.92rem; opacity: 0.78; margin-top: 4px; color: #fff; }
 
-/* === Context badges === */
 .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.4rem; }
 .badge {
     background: #e4f0da;
@@ -317,7 +300,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     font-weight: 600;
 }
 
-/* === Soil-level pill buttons === */
 .soil-pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 0.4rem; }
 .soil-pill-label {
     color: #3a6b30 !important;
@@ -325,8 +307,7 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     font-size: 0.95rem !important;
     margin-bottom: 0.5rem !important;
 }
-/* Streamlit radio styled as pills */
-.stRadio > label > div { display: none !important; }  /* hide group label (we add our own) */
+.stRadio > label > div { display: none !important; }
 .stRadio [role="radiogroup"] {
     display: flex !important;
     gap: 8px !important;
@@ -346,9 +327,8 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     color: #fff !important;
     border-color: #1a7a30;
 }
-.stRadio [role="radiogroup"] label > div:first-child { display: none !important; } /* hide circle */
+.stRadio [role="radiogroup"] label > div:first-child { display: none !important; }
 
-/* === Fertilizer table === */
 .fert-card {
     background: #ffffff;
     border-radius: 16px;
@@ -375,7 +355,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
 .fert-table tr:last-child td { border-bottom: none; }
 .fert-value { font-weight: 700; color: #1a5c2a; }
 
-/* === Info / warn boxes === */
 .info-box {
     background: #e8f5e2;
     border: 1px solid #b8dca8;
@@ -399,7 +378,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     line-height: 1.6;
 }
 
-/* === About card === */
 .about-card {
     background: #ffffff;
     border-radius: 16px;
@@ -417,7 +395,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     margin-bottom: 0.5rem;
 }
 
-/* Mobile adjustments */
 @media (max-width: 720px) {
     .hero-title { font-size: 1.6rem; }
     .result-emoji { font-size: 3rem; }
@@ -465,7 +442,7 @@ if 'inputs_snapshot' not in st.session_state:
 
 
 # ================================================================
-# SIDEBAR — district selector + AEZ badge + about
+# SIDEBAR — always visible
 # ================================================================
 with st.sidebar:
     st.markdown("<div style='font-size:1.5rem; font-weight:700; margin-bottom:0.2rem;'>🌾 ফসল সাজেস্টার</div>", unsafe_allow_html=True)
@@ -519,7 +496,6 @@ st.markdown("""
 # ================================================================
 if st.session_state.result is None:
 
-    # ---- Input form ----
     st.markdown('<div class="section-title">🌡️ আবহাওয়া ও সময়ের তথ্য দিন</div>', unsafe_allow_html=True)
 
     col_m, col_w = st.columns(2)
@@ -528,7 +504,7 @@ if st.session_state.result is None:
             "📅 মাস",
             options=range(12),
             format_func=lambda i: MONTHS[i][1],
-            index=6,  # July
+            index=6,
         )
     with col_w:
         week = st.selectbox(
@@ -558,7 +534,6 @@ if st.session_state.result is None:
     st.markdown("<br>", unsafe_allow_html=True)
     submit = st.button("ফসল সাজেস্ট করুন ✨", key="predict_btn")
 
-    # How-to-use card
     st.markdown("""
     <div class="about-card">
         <div class="about-card-title">📖 কীভাবে ব্যবহার করবেন?</div>
@@ -569,7 +544,6 @@ if st.session_state.result is None:
     </div>
     """, unsafe_allow_html=True)
 
-    # ---- Predict ----
     if submit:
         with st.spinner(""):
             placeholder = st.empty()
@@ -598,7 +572,6 @@ if st.session_state.result is None:
                 time.sleep(0.25)
             placeholder.empty()
 
-            # Build feature vector
             sample = {f: 0 for f in features}
             weather_map = {
                 'Rainfall (mm)':   rainfall,
@@ -640,23 +613,18 @@ if st.session_state.result is None:
             }
             st.rerun()
 
-# ================================================================
-# RESULT VIEW
-# ================================================================
 else:
     res = st.session_state.result
     snap = st.session_state.inputs_snapshot
     crop_label = res['crop']
     emoji, bn_name = crop_meta(crop_label)
 
-    # Success banner
     st.markdown("""
     <div class="info-box">
         ✅ <b>বিশ্লেষণ সম্পন্ন!</b> আপনার এলাকা ও আবহাওয়ার উপর ভিত্তি করে সেরা ফসল নির্বাচন করা হয়েছে।
     </div>
     """, unsafe_allow_html=True)
 
-    # Result hero
     st.markdown(f"""
     <div class="result-hero">
         <div class="result-emoji">{emoji}</div>
@@ -665,7 +633,6 @@ else:
     </div>
     """, unsafe_allow_html=True)
 
-    # Context badges
     district_bn = DISTRICT_BANGLA.get(snap['district'], snap['district'])
     badges_html = (
         f'<span class="badge">📍 {district_bn}</span>'
@@ -677,11 +644,9 @@ else:
     )
     st.markdown(f'<div class="badges">{badges_html}</div>', unsafe_allow_html=True)
 
-    # Fertilizer section
     st.markdown('<div class="section-title">🧪 প্রয়োজনীয় সারের পরিমাণ</div>', unsafe_allow_html=True)
 
     if res['is_fruit']:
-        # Fruit tree — age-group selector
         age_groups_bn = {
             'Before planting': 'রোপণের আগে',
             '0-1':   '০-১ বছর',
@@ -702,13 +667,11 @@ else:
             index=age_default,
             label_visibility="collapsed",
         )
-        # Map Bangla age to numeric for lookup
         age_to_num = {'Before planting': 0, '0-1': 1, '2-4': 3, '5-7': 6,
                       '8-10': 10, '11-15': 13, '16-20': 18, '>20': 25}
         fert = get_fertilizer(crop_label, field_df, fruit_df,
                               tree_age=age_to_num.get(age_sel, 10))
     else:
-        # Field crop — soil-level pills
         soil_options_bn = {
             'Optimum':  '✅ অপ্টিমাম',
             'Medium':   '🟡 মাঝারি',
@@ -726,13 +689,11 @@ else:
         )
         fert = get_fertilizer(crop_label, field_df, fruit_df, soil_level=soil_sel)
 
-    # Render fertilizer table
     if 'error' in fert:
         st.markdown(f'<div class="warn-box">⚠️ {fert["error"]} — দয়া করে স্থানীয় কৃষি অফিসের সাথে যোগাযোগ করুন।</div>',
                     unsafe_allow_html=True)
     else:
         nutrients = fert.get('nutrients', {}) or {}
-        # Bangla labels for nutrients
         bn_nutrients = {
             'N (Nitrogen)':   'নাইট্রোজেন (N)',
             'P (Phosphorus)': 'ফসফরাস (P)',
@@ -751,7 +712,6 @@ else:
             rows_html = ""
             for raw_name, val in nutrients.items():
                 bn_label = bn_nutrients.get(raw_name, raw_name)
-                # Organic Matter values may include their own unit suffix
                 if isinstance(val, str) and any(u in val for u in ['t/ha', 'kg/tree']):
                     amount, unit_label = val.rsplit(' ', 1)
                     unit_label_bn = ('টন/হেক্টর' if unit_label == 't/ha'
@@ -793,7 +753,6 @@ else:
             st.markdown('<div class="warn-box">⚠️ এই ফসলের জন্য পুষ্টির ডেটা পাওয়া যায়নি।</div>',
                         unsafe_allow_html=True)
 
-    # Advisory note
     st.markdown("""
     <div class="warn-box">
         💡 <b>পরামর্শ:</b> সার প্রয়োগের আগে স্থানীয় কৃষি অফিসারের সাথে পরামর্শ করুন।
@@ -801,7 +760,6 @@ else:
     </div>
     """, unsafe_allow_html=True)
 
-    # Reset button (centered, outline style)
     st.markdown('<div class="reset-btn">', unsafe_allow_html=True)
     if st.button("🔄 আবার নতুন করে চেষ্টা করুন", key="reset_btn"):
         st.session_state.result = None
@@ -809,7 +767,6 @@ else:
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # About card at the bottom
     st.markdown("""
     <div class="about-card">
         <div class="about-card-title">📖 এই অ্যাপ সম্পর্কে</div>
