@@ -144,7 +144,10 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
 [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3 { color: #ffffff !important; }
 
-/* Sidebar selectbox */
+/* Sidebar selectbox — closed state.
+   We make the dropdown a clean WHITE pill with dark green text — easier to
+   read against the dark green sidebar than a translucent variant, and avoids
+   a long battle with BaseWeb's nested white backgrounds. */
 [data-testid="stSidebar"] [data-baseweb="select"] > div {
     background-color: #ffffff !important;
     border: 1.5px solid rgba(255,255,255,0.45) !important;
@@ -162,19 +165,12 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     color: #1a5c2a !important;
     fill: #1a5c2a !important;
 }
-
-/* ✅ FIX: sidebar label always bright white */
+/* Sidebar label */
 [data-testid="stSidebar"] .stSelectbox label,
-[data-testid="stSidebar"] label[data-testid="stWidgetLabel"] p,
-[data-testid="stSidebar"] label[data-testid="stWidgetLabel"],
-[data-testid="stSidebar"] div[data-testid="stWidgetLabel"] > p {
-    color: #ffffff !important;
-    -webkit-text-fill-color: #ffffff !important;
-    font-weight: 700 !important;
-    font-size: 1rem !important;
-    margin-bottom: 0.4rem !important;
-    opacity: 1 !important;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.35);
+[data-testid="stSidebar"] label[data-testid="stWidgetLabel"] p {
+    color: #c8ebb0 !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
 }
 
 /* AEZ badge */
@@ -277,7 +273,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     transform: translateY(-2px);
     box-shadow: 0 10px 30px rgba(26,92,42,0.42) !important;
 }
-
 /* Secondary (reset) button — outline style */
 .reset-btn .stButton > button {
     background: #ffffff !important;
@@ -294,26 +289,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
 .reset-btn .stButton > button:hover {
     background: #1a5c2a !important;
     color: #ffffff !important;
-    transform: translateY(-1px);
-}
-
-/* ✅ NEW: Sidebar toggle button in main area — small pill */
-.sidebar-toggle-wrap .stButton > button {
-    background: #1a5c2a !important;
-    color: #ffffff !important;
-    font-size: 0.88rem !important;
-    font-weight: 700 !important;
-    border: none !important;
-    border-radius: 50px !important;
-    padding: 0.38rem 1.1rem !important;
-    box-shadow: 0 2px 8px rgba(26,92,42,0.22) !important;
-    width: auto !important;
-    margin-top: 0 !important;
-    margin-bottom: 0.6rem !important;
-    display: inline-block !important;
-}
-.sidebar-toggle-wrap .stButton > button:hover {
-    background: #3a9e48 !important;
     transform: translateY(-1px);
 }
 
@@ -351,7 +326,7 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     margin-bottom: 0.5rem !important;
 }
 /* Streamlit radio styled as pills */
-.stRadio > label > div { display: none !important; }
+.stRadio > label > div { display: none !important; }  /* hide group label (we add our own) */
 .stRadio [role="radiogroup"] {
     display: flex !important;
     gap: 8px !important;
@@ -371,7 +346,7 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     color: #fff !important;
     border-color: #1a7a30;
 }
-.stRadio [role="radiogroup"] label > div:first-child { display: none !important; }
+.stRadio [role="radiogroup"] label > div:first-child { display: none !important; } /* hide circle */
 
 /* === Fertilizer table === */
 .fert-card {
@@ -487,87 +462,45 @@ if 'result' not in st.session_state:
     st.session_state.result = None
 if 'inputs_snapshot' not in st.session_state:
     st.session_state.inputs_snapshot = None
-# ✅ NEW: sidebar open/close toggle state
-if 'sidebar_open' not in st.session_state:
-    st.session_state.sidebar_open = True
-if 'last_district' not in st.session_state:
-    st.session_state.last_district = 'Dhaka'
 
 
 # ================================================================
 # SIDEBAR — district selector + AEZ badge + about
 # ================================================================
-if st.session_state.sidebar_open:
-    with st.sidebar:
-        st.markdown("<div style='font-size:1.5rem; font-weight:700; margin-bottom:0.2rem;'>🌾 ফসল সাজেস্টার</div>", unsafe_allow_html=True)
-        st.markdown("<div style='font-size:0.8rem; color:#a8dba0 !important; margin-bottom:1.4rem; line-height:1.5;'>BARC FRG-2024 ভিত্তিক ফসল ও সার সুপারিশ</div>", unsafe_allow_html=True)
+with st.sidebar:
+    st.markdown("<div style='font-size:1.5rem; font-weight:700; margin-bottom:0.2rem;'>🌾 ফসল সাজেস্টার</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:0.8rem; color:#a8dba0 !important; margin-bottom:1.4rem; line-height:1.5;'>BARC FRG-2024 ভিত্তিক ফসল ও সার সুপারিশ</div>", unsafe_allow_html=True)
 
-        # ✅ FIX: white HTML label above selectbox so it's always visible
-        st.markdown(
-            "<p style='color:#ffffff !important; -webkit-text-fill-color:#ffffff !important; "
-            "font-weight:700; font-size:1rem; margin-bottom:0.3rem; "
-            "text-shadow: 0 1px 3px rgba(0,0,0,0.4);'>📍 জেলা নির্বাচন করুন</p>",
-            unsafe_allow_html=True,
-        )
+    districts = sorted(DISTRICT_TO_AEZ.keys())
+    district_labels = [f"{DISTRICT_BANGLA.get(d, d)} ({d})" for d in districts]
+    default_idx = districts.index('Dhaka') if 'Dhaka' in districts else 0
 
-        districts = sorted(DISTRICT_TO_AEZ.keys())
-        district_labels = [f"{DISTRICT_BANGLA.get(d, d)} ({d})" for d in districts]
-        saved_idx = districts.index(st.session_state.last_district) \
-            if st.session_state.last_district in districts \
-            else (districts.index('Dhaka') if 'Dhaka' in districts else 0)
-
-        sel_idx = st.selectbox(
-            "জেলা",
-            options=range(len(districts)),
-            format_func=lambda i: district_labels[i],
-            index=saved_idx,
-            label_visibility="collapsed",   # hide native label; we use the HTML one above
-        )
-        district = districts[sel_idx]
-        st.session_state.last_district = district   # persist across open/close
-
-        aez_num = get_aez(district)
-        aez_name = get_aez_name(aez_num)
-
-        st.markdown(f"""
-        <div class="aez-badge">
-            <div class="aez-num">AEZ — {aez_num}</div>
-            <div class="aez-name">{aez_name}</div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        st.markdown('<hr class="sidebar-divider">', unsafe_allow_html=True)
-        st.markdown("""
-        <div class="sidebar-about-title">🌿 এই অ্যাপ সম্পর্কে</div>
-        <div class="sidebar-about-body">
-            মেশিন লার্নিং ও BARC ডেটা ব্যবহার করে আপনার এলাকার জন্য সেরা ফসল ও সারের পরিমাণ সুপারিশ করা হয়।<br><br>
-            <span style="color:#a8dba0 !important;">তথ্যসূত্র:</span><br>
-            বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC) | কৃষি সম্প্রসারণ অধিদপ্তর (DAE)
-        </div>
-        """, unsafe_allow_html=True)
-
-else:
-    # Sidebar closed — use last saved district silently
-    district = st.session_state.last_district
-    aez_num  = get_aez(district)
+    sel_idx = st.selectbox(
+        "📍 জেলা নির্বাচন করুন",
+        options=range(len(districts)),
+        format_func=lambda i: district_labels[i],
+        index=default_idx,
+    )
+    district = districts[sel_idx]
+    aez_num = get_aez(district)
     aez_name = get_aez_name(aez_num)
 
+    st.markdown(f"""
+    <div class="aez-badge">
+        <div class="aez-num">AEZ — {aez_num}</div>
+        <div class="aez-name">{aez_name}</div>
+    </div>
+    """, unsafe_allow_html=True)
 
-# ================================================================
-# ✅ NEW: Sidebar open/close toggle button — rendered in main area
-# Always visible regardless of sidebar state
-# ================================================================
-district_bn_display = DISTRICT_BANGLA.get(st.session_state.last_district, st.session_state.last_district)
-if st.session_state.sidebar_open:
-    btn_label = "✕ সাইডবার বন্ধ করুন"
-else:
-    btn_label = f"☰ জেলা পরিবর্তন করুন  ({district_bn_display})"
-
-st.markdown('<div class="sidebar-toggle-wrap">', unsafe_allow_html=True)
-if st.button(btn_label, key="sidebar_toggle_btn"):
-    st.session_state.sidebar_open = not st.session_state.sidebar_open
-    st.rerun()
-st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('<hr class="sidebar-divider">', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="sidebar-about-title">🌿 এই অ্যাপ সম্পর্কে</div>
+    <div class="sidebar-about-body">
+        মেশিন লার্নিং ও BARC ডেটা ব্যবহার করে আপনার এলাকার জন্য সেরা ফসল ও সারের পরিমাণ সুপারিশ করা হয়।<br><br>
+        <span style="color:#a8dba0 !important;">তথ্যসূত্র:</span><br>
+        বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC) | কৃষি সম্প্রসারণ অধিদপ্তর (DAE)
+    </div>
+    """, unsafe_allow_html=True)
 
 
 # ================================================================
@@ -662,4 +595,227 @@ if st.session_state.result is None:
                     <div style="color:#3a6b30; font-size:0.85rem; margin-top:6px;">{pct}%</div>
                 </div>
                 """, unsafe_allow_html=True)
-                
+                time.sleep(0.25)
+            placeholder.empty()
+
+            # Build feature vector
+            sample = {f: 0 for f in features}
+            weather_map = {
+                'Rainfall (mm)':   rainfall,
+                'Mean Temp. (*C)': temp,
+                'RHmean (%)':      humidity,
+                'SShr (hrs)':      sunshine,
+                'WS (Km/hr)':      wind_speed,
+                'WD (deg)':        wind_dir,
+                'Week':            week,
+            }
+            for k, v in weather_map.items():
+                if k in sample:
+                    sample[k] = v
+            zone_col  = f'Agricultural Zone_{district}'
+            month_col = f'Month_{month}'
+            if zone_col in sample:  sample[zone_col] = 1
+            if month_col in sample: sample[month_col] = 1
+
+            X_input = pd.DataFrame([sample])[features]
+            proba = model.predict_proba(X_input)[0]
+            top_i = int(proba.argmax())
+            crop_label = encoder.inverse_transform([top_i])[0]
+            confidence = round(float(proba[top_i]) * 100, 1)
+
+            fert = get_fertilizer(crop_label, field_df, fruit_df, tree_age=10)
+
+            st.session_state.result = {
+                'crop': crop_label,
+                'confidence': confidence,
+                'is_fruit': is_fruit_tree(crop_label),
+                'fert_field': fert if not is_fruit_tree(crop_label) else None,
+            }
+            st.session_state.inputs_snapshot = {
+                'district': district, 'aez_num': aez_num,
+                'month_bn': MONTHS[month_idx][1], 'week': week,
+                'rainfall': rainfall, 'temp': temp, 'humidity': humidity,
+                'sunshine': sunshine, 'wind_dir': wind_dir, 'wind_speed': wind_speed,
+                'month_en': month,
+            }
+            st.rerun()
+
+# ================================================================
+# RESULT VIEW
+# ================================================================
+else:
+    res = st.session_state.result
+    snap = st.session_state.inputs_snapshot
+    crop_label = res['crop']
+    emoji, bn_name = crop_meta(crop_label)
+
+    # Success banner
+    st.markdown("""
+    <div class="info-box">
+        ✅ <b>বিশ্লেষণ সম্পন্ন!</b> আপনার এলাকা ও আবহাওয়ার উপর ভিত্তি করে সেরা ফসল নির্বাচন করা হয়েছে।
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Result hero
+    st.markdown(f"""
+    <div class="result-hero">
+        <div class="result-emoji">{emoji}</div>
+        <div class="result-name">{bn_name}</div>
+        <div class="result-name-en">{crop_label} &nbsp;·&nbsp; বিশ্বাসযোগ্যতা: {res['confidence']}%</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Context badges
+    district_bn = DISTRICT_BANGLA.get(snap['district'], snap['district'])
+    badges_html = (
+        f'<span class="badge">📍 {district_bn}</span>'
+        f'<span class="badge">🗺️ AEZ-{snap["aez_num"]}</span>'
+        f'<span class="badge">📅 {snap["month_bn"]}, {snap["week"]} সপ্তাহ</span>'
+        f'<span class="badge">🌡️ {snap["temp"]}°C</span>'
+        f'<span class="badge">💧 {snap["humidity"]}%</span>'
+        f'<span class="badge">🌧️ {snap["rainfall"]} মিমি</span>'
+    )
+    st.markdown(f'<div class="badges">{badges_html}</div>', unsafe_allow_html=True)
+
+    # Fertilizer section
+    st.markdown('<div class="section-title">🧪 প্রয়োজনীয় সারের পরিমাণ</div>', unsafe_allow_html=True)
+
+    if res['is_fruit']:
+        # Fruit tree — age-group selector
+        age_groups_bn = {
+            'Before planting': 'রোপণের আগে',
+            '0-1':   '০-১ বছর',
+            '2-4':   '২-৪ বছর',
+            '5-7':   '৫-৭ বছর',
+            '8-10':  '৮-১০ বছর',
+            '11-15': '১১-১৫ বছর',
+            '16-20': '১৬-২০ বছর',
+            '>20':   '২০ বছরের বেশি',
+        }
+        st.markdown('<div class="soil-pill-label">🌳 গাছের বয়স / পর্যায় নির্বাচন করুন:</div>', unsafe_allow_html=True)
+        age_choices = list(age_groups_bn.keys())
+        age_default = age_choices.index('8-10') if '8-10' in age_choices else 0
+        age_sel = st.selectbox(
+            "গাছের বয়স",
+            options=age_choices,
+            format_func=lambda a: age_groups_bn.get(a, a),
+            index=age_default,
+            label_visibility="collapsed",
+        )
+        # Map Bangla age to numeric for lookup
+        age_to_num = {'Before planting': 0, '0-1': 1, '2-4': 3, '5-7': 6,
+                      '8-10': 10, '11-15': 13, '16-20': 18, '>20': 25}
+        fert = get_fertilizer(crop_label, field_df, fruit_df,
+                              tree_age=age_to_num.get(age_sel, 10))
+    else:
+        # Field crop — soil-level pills
+        soil_options_bn = {
+            'Optimum':  '✅ অপ্টিমাম',
+            'Medium':   '🟡 মাঝারি',
+            'Low':      '🟠 কম',
+            'Very low': '🔴 খুব কম',
+        }
+        st.markdown('<div class="soil-pill-label">🌍 মাটির উর্বরতা স্তর নির্বাচন করুন:</div>', unsafe_allow_html=True)
+        soil_sel = st.radio(
+            "মাটির স্তর",
+            options=list(soil_options_bn.keys()),
+            format_func=lambda s: soil_options_bn[s],
+            index=1,
+            horizontal=True,
+            label_visibility="collapsed",
+        )
+        fert = get_fertilizer(crop_label, field_df, fruit_df, soil_level=soil_sel)
+
+    # Render fertilizer table
+    if 'error' in fert:
+        st.markdown(f'<div class="warn-box">⚠️ {fert["error"]} — দয়া করে স্থানীয় কৃষি অফিসের সাথে যোগাযোগ করুন।</div>',
+                    unsafe_allow_html=True)
+    else:
+        nutrients = fert.get('nutrients', {}) or {}
+        # Bangla labels for nutrients
+        bn_nutrients = {
+            'N (Nitrogen)':   'নাইট্রোজেন (N)',
+            'P (Phosphorus)': 'ফসফরাস (P)',
+            'K (Potassium)':  'পটাশিয়াম (K)',
+            'S (Sulphur)':    'সালফার (S)',
+            'Zn (Zinc)':      'জিঙ্ক (Zn)',
+            'B (Boron)':      'বোরন (B)',
+            'Mg (Magnesium)': 'ম্যাগনেসিয়াম (Mg)',
+            'Organic Matter': 'জৈব সার',
+        }
+        unit_default = fert.get('unit', '')
+        unit_bn = 'কেজি/হেক্টর' if unit_default == 'kg/ha' else (
+                  'গ্রাম/গাছ' if unit_default == 'g/tree' else unit_default)
+
+        if nutrients:
+            rows_html = ""
+            for raw_name, val in nutrients.items():
+                bn_label = bn_nutrients.get(raw_name, raw_name)
+                # Organic Matter values may include their own unit suffix
+                if isinstance(val, str) and any(u in val for u in ['t/ha', 'kg/tree']):
+                    amount, unit_label = val.rsplit(' ', 1)
+                    unit_label_bn = ('টন/হেক্টর' if unit_label == 't/ha'
+                                     else 'কেজি/গাছ' if unit_label == 'kg/tree'
+                                     else unit_label)
+                else:
+                    amount = str(val)
+                    unit_label_bn = unit_bn
+                rows_html += (
+                    f'<tr><td>{bn_label}</td>'
+                    f'<td class="fert-value">{amount}</td>'
+                    f'<td>{unit_label_bn}</td></tr>'
+                )
+            variety = fert.get('variety', '-')
+            meta_line = f'<b>জাত:</b> {variety}'
+            if not res['is_fruit']:
+                soil_bn_map = {'Optimum':'অপ্টিমাম', 'Medium':'মাঝারি',
+                               'Low':'কম', 'Very low':'খুব কম'}
+                meta_line += f' &nbsp;|&nbsp; <b>মাটির স্তর:</b> {soil_bn_map.get(fert.get("soil_level","Medium"), fert.get("soil_level","Medium"))}'
+            else:
+                meta_line += f' &nbsp;|&nbsp; <b>বয়সের গ্রুপ:</b> {age_groups_bn.get(fert.get("age_group", "8-10"), fert.get("age_group", "8-10"))}'
+            if fert.get('is_proxy'):
+                meta_line += ' &nbsp;|&nbsp; <i>(কাছাকাছি ফসলের তথ্য দেখানো হচ্ছে)</i>'
+
+            st.markdown(f"""
+            <div class="info-box" style="font-size:0.88rem; margin-bottom:0.7rem;">
+                {meta_line}
+            </div>
+            <div class="fert-card">
+              <table class="fert-table">
+                <thead>
+                  <tr><th>সারের নাম</th><th>পরিমাণ</th><th>একক</th></tr>
+                </thead>
+                <tbody>{rows_html}</tbody>
+              </table>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.markdown('<div class="warn-box">⚠️ এই ফসলের জন্য পুষ্টির ডেটা পাওয়া যায়নি।</div>',
+                        unsafe_allow_html=True)
+
+    # Advisory note
+    st.markdown("""
+    <div class="warn-box">
+        💡 <b>পরামর্শ:</b> সার প্রয়োগের আগে স্থানীয় কৃষি অফিসারের সাথে পরামর্শ করুন।
+        মাটি পরীক্ষা করালে আরও সঠিক ফলাফল পাওয়া যাবে।
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Reset button (centered, outline style)
+    st.markdown('<div class="reset-btn">', unsafe_allow_html=True)
+    if st.button("🔄 আবার নতুন করে চেষ্টা করুন", key="reset_btn"):
+        st.session_state.result = None
+        st.session_state.inputs_snapshot = None
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # About card at the bottom
+    st.markdown("""
+    <div class="about-card">
+        <div class="about-card-title">📖 এই অ্যাপ সম্পর্কে</div>
+        এই অ্যাপটি <b>BARC FRG-2024</b> ডেটা ও মেশিন লার্নিং মডেলের উপর ভিত্তি করে তৈরি।
+        আবহাওয়ার তথ্য ও AEZ ডেটা বিশ্লেষণ করে সর্বোত্তম ফসল ও সারের সুপারিশ দেওয়া হয়।
+        <br><br>
+        <b>তথ্যসূত্র:</b> বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC) | কৃষি সম্প্রসারণ অধিদপ্তর (DAE)
+    </div>
+    """, unsafe_allow_html=True)
