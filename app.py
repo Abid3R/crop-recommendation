@@ -144,27 +144,40 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
 [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3 { color: #ffffff !important; }
 
-/* Sidebar selectbox — closed state.
-   We make the dropdown a clean WHITE pill with dark green text — easier to
-   read against the dark green sidebar than a translucent variant, and avoids
-   a long battle with BaseWeb's nested white backgrounds. */
+/* Sidebar selectbox — closed state */
 [data-testid="stSidebar"] [data-baseweb="select"] > div {
     background-color: #ffffff !important;
     border: 1.5px solid rgba(255,255,255,0.45) !important;
     border-radius: 10px !important;
     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
+
+/* Make selected district text clearly visible */
 [data-testid="stSidebar"] [data-baseweb="select"] [role="combobox"],
-[data-testid="stSidebar"] [data-baseweb="select"] input {
-    color: #1a3d1f !important;
-    -webkit-text-fill-color: #1a3d1f !important;
-    font-weight: 600 !important;
+[data-testid="stSidebar"] [data-baseweb="select"] [role="combobox"] * {
+    color: #12351a !important;
+    -webkit-text-fill-color: #12351a !important;
+    font-weight: 700 !important;
     font-size: 0.95rem !important;
+    opacity: 1 !important;
 }
+
+/* Placeholder / input text visibility */
+[data-testid="stSidebar"] [data-baseweb="select"] input {
+    color: #12351a !important;
+    -webkit-text-fill-color: #12351a !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    opacity: 1 !important;
+}
+
+/* Dropdown arrow visibility */
 [data-testid="stSidebar"] [data-baseweb="select"] svg {
     color: #1a5c2a !important;
     fill: #1a5c2a !important;
+    opacity: 1 !important;
 }
+
 /* Sidebar label */
 [data-testid="stSidebar"] .stSelectbox label,
 [data-testid="stSidebar"] label[data-testid="stWidgetLabel"] p {
