@@ -167,10 +167,12 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
 }
 /* Sidebar label */
 [data-testid="stSidebar"] .stSelectbox label,
-[data-testid="stSidebar"] label[data-testid="stWidgetLabel"] p {
-    color: #c8ebb0 !important;
-    font-weight: 600 !important;
-    font-size: 0.85rem !important;
+[data-testid="stSidebar"] label[data-testid="stWidgetLabel"] p,
+[data-testid="stSidebar"] label[data-testid="stWidgetLabel"] {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    margin-bottom: 0.4rem !important;
 }
 
 /* AEZ badge */
@@ -333,18 +335,29 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     flex-wrap: wrap !important;
 }
 .stRadio [role="radiogroup"] label {
-    background: #ffffff;
-    border: 1.5px solid #ccc;
+    background: #ffffff !important;
+    border: 1.5px solid #c0d4b8 !important;
     border-radius: 50px !important;
     padding: 0.5rem 1.2rem !important;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 600 !important;
     transition: all 0.15s;
+    color: #1a3d1f !important;          /* dark green text on white pill */
+}
+.stRadio [role="radiogroup"] label * {
+    color: #1a3d1f !important;          /* override children too */
+}
+.stRadio [role="radiogroup"] label:hover {
+    border-color: #1a7a30 !important;
+    background: #f0f7ec !important;
 }
 .stRadio [role="radiogroup"] label:has(input:checked) {
-    background: #1a7a30;
-    color: #fff !important;
-    border-color: #1a7a30;
+    background: #1a7a30 !important;
+    border-color: #1a7a30 !important;
+}
+.stRadio [role="radiogroup"] label:has(input:checked),
+.stRadio [role="radiogroup"] label:has(input:checked) * {
+    color: #ffffff !important;          /* white text on green selected pill */
 }
 .stRadio [role="radiogroup"] label > div:first-child { display: none !important; } /* hide circle */
 
