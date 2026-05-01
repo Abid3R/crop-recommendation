@@ -144,10 +144,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
 [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3 { color: #ffffff !important; }
 
-/* Sidebar selectbox — closed state.
-   We make the dropdown a clean WHITE pill with dark green text — easier to
-   read against the dark green sidebar than a translucent variant, and avoids
-   a long battle with BaseWeb's nested white backgrounds. */
 [data-testid="stSidebar"] [data-baseweb="select"] > div {
     background-color: #ffffff !important;
     border: 1.5px solid rgba(255,255,255,0.45) !important;
@@ -165,7 +161,6 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     color: #1a5c2a !important;
     fill: #1a5c2a !important;
 }
-/* Sidebar label */
 [data-testid="stSidebar"] .stSelectbox label,
 [data-testid="stSidebar"] label[data-testid="stWidgetLabel"] p,
 [data-testid="stSidebar"] label[data-testid="stWidgetLabel"] {
@@ -294,6 +289,25 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     transform: translateY(-1px);
 }
 
+/* === Sidebar toggle button === */
+.sidebar-open-btn .stButton > button {
+    background: #1a5c2a !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 50px !important;
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+    padding: 0.4rem 1.1rem !important;
+    box-shadow: 0 3px 10px rgba(26,92,42,0.25) !important;
+    width: auto !important;
+    margin: 0 !important;
+    margin-bottom: 0.5rem !important;
+}
+.sidebar-open-btn .stButton > button:hover {
+    background: #3a9e48 !important;
+    transform: translateY(-1px);
+}
+
 /* === Result hero === */
 .result-hero {
     background: linear-gradient(135deg, #1a5c2a, #3a9e48);
@@ -327,8 +341,7 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     font-size: 0.95rem !important;
     margin-bottom: 0.5rem !important;
 }
-/* Streamlit radio styled as pills */
-.stRadio > label > div { display: none !important; }  /* hide group label (we add our own) */
+.stRadio > label > div { display: none !important; }
 .stRadio [role="radiogroup"] {
     display: flex !important;
     gap: 8px !important;
@@ -342,10 +355,10 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
     cursor: pointer;
     font-weight: 600 !important;
     transition: all 0.15s;
-    color: #1a3d1f !important;          /* dark green text on white pill */
+    color: #1a3d1f !important;
 }
 .stRadio [role="radiogroup"] label * {
-    color: #1a3d1f !important;          /* override children too */
+    color: #1a3d1f !important;
 }
 .stRadio [role="radiogroup"] label:hover {
     border-color: #1a7a30 !important;
@@ -357,9 +370,9 @@ html, body, [class*="css"], .stApp, .stMarkdown, button, input, select, textarea
 }
 .stRadio [role="radiogroup"] label:has(input:checked),
 .stRadio [role="radiogroup"] label:has(input:checked) * {
-    color: #ffffff !important;          /* white text on green selected pill */
+    color: #ffffff !important;
 }
-.stRadio [role="radiogroup"] label > div:first-child { display: none !important; } /* hide circle */
+.stRadio [role="radiogroup"] label > div:first-child { display: none !important; }
 
 /* === Fertilizer table === */
 .fert-card {
@@ -475,45 +488,63 @@ if 'result' not in st.session_state:
     st.session_state.result = None
 if 'inputs_snapshot' not in st.session_state:
     st.session_state.inputs_snapshot = None
+# ← NEW: sidebar toggle state
+if 'sidebar_open' not in st.session_state:
+    st.session_state.sidebar_open = True
 
 
 # ================================================================
 # SIDEBAR — district selector + AEZ badge + about
 # ================================================================
-with st.sidebar:
-    st.markdown("<div style='font-size:1.5rem; font-weight:700; margin-bottom:0.2rem;'>🌾 ফসল সাজেস্টার</div>", unsafe_allow_html=True)
-    st.markdown("<div style='font-size:0.8rem; color:#a8dba0 !important; margin-bottom:1.4rem; line-height:1.5;'>BARC FRG-2024 ভিত্তিক ফসল ও সার সুপারিশ</div>", unsafe_allow_html=True)
+if st.session_state.sidebar_open:
+    with st.sidebar:
+        st.markdown("<div style='font-size:1.5rem; font-weight:700; margin-bottom:0.2rem;'>🌾 ফসল সাজেস্টার</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size:0.8rem; color:#a8dba0 !important; margin-bottom:1.4rem; line-height:1.5;'>BARC FRG-2024 ভিত্তিক ফসল ও সার সুপারিশ</div>", unsafe_allow_html=True)
 
-    districts = sorted(DISTRICT_TO_AEZ.keys())
-    district_labels = [f"{DISTRICT_BANGLA.get(d, d)} ({d})" for d in districts]
-    default_idx = districts.index('Dhaka') if 'Dhaka' in districts else 0
+        districts = sorted(DISTRICT_TO_AEZ.keys())
+        district_labels = [f"{DISTRICT_BANGLA.get(d, d)} ({d})" for d in districts]
+        default_idx = districts.index('Dhaka') if 'Dhaka' in districts else 0
 
-    sel_idx = st.selectbox(
-        "📍 জেলা নির্বাচন করুন",
-        options=range(len(districts)),
-        format_func=lambda i: district_labels[i],
-        index=default_idx,
-    )
-    district = districts[sel_idx]
-    aez_num = get_aez(district)
+        sel_idx = st.selectbox(
+            "📍 জেলা নির্বাচন করুন",
+            options=range(len(districts)),
+            format_func=lambda i: district_labels[i],
+            index=default_idx,
+        )
+        district = districts[sel_idx]
+        # Save district so it persists when sidebar is closed
+        st.session_state['last_district'] = district
+
+        aez_num = get_aez(district)
+        aez_name = get_aez_name(aez_num)
+
+        st.markdown(f"""
+        <div class="aez-badge">
+            <div class="aez-num">AEZ — {aez_num}</div>
+            <div class="aez-name">{aez_name}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown('<hr class="sidebar-divider">', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="sidebar-about-title">🌿 এই অ্যাপ সম্পর্কে</div>
+        <div class="sidebar-about-body">
+            মেশিন লার্নিং ও BARC ডেটা ব্যবহার করে আপনার এলাকার জন্য সেরা ফসল ও সারের পরিমাণ সুপারিশ করা হয়।<br><br>
+            <span style="color:#a8dba0 !important;">তথ্যসূত্র:</span><br>
+            বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC) | কৃষি সম্প্রসারণ অধিদপ্তর (DAE)
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown('<hr class="sidebar-divider">', unsafe_allow_html=True)
+        # Close button inside sidebar
+        if st.button("✕ সাইডবার বন্ধ করুন", key="close_sidebar"):
+            st.session_state.sidebar_open = False
+            st.rerun()
+else:
+    # Fallback: use last saved district when sidebar is closed
+    district = st.session_state.get('last_district', 'Dhaka')
+    aez_num  = get_aez(district)
     aez_name = get_aez_name(aez_num)
-
-    st.markdown(f"""
-    <div class="aez-badge">
-        <div class="aez-num">AEZ — {aez_num}</div>
-        <div class="aez-name">{aez_name}</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown('<hr class="sidebar-divider">', unsafe_allow_html=True)
-    st.markdown("""
-    <div class="sidebar-about-title">🌿 এই অ্যাপ সম্পর্কে</div>
-    <div class="sidebar-about-body">
-        মেশিন লার্নিং ও BARC ডেটা ব্যবহার করে আপনার এলাকার জন্য সেরা ফসল ও সারের পরিমাণ সুপারিশ করা হয়।<br><br>
-        <span style="color:#a8dba0 !important;">তথ্যসূত্র:</span><br>
-        বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC) | কৃষি সম্প্রসারণ অধিদপ্তর (DAE)
-    </div>
-    """, unsafe_allow_html=True)
 
 
 # ================================================================
@@ -525,6 +556,20 @@ st.markdown("""
     <div class="hero-sub">আবহাওয়ার তথ্য দিন — মুহূর্তেই পাবেন সেরা ফসল ও সারের পরামর্শ</div>
 </div>
 """, unsafe_allow_html=True)
+
+# ← NEW: Show "Open Sidebar" button only when sidebar is closed
+if not st.session_state.sidebar_open:
+    district_bn = DISTRICT_BANGLA.get(district, district)
+    st.markdown(
+        f"<div style='font-size:0.88rem; color:#666; margin-bottom:0.3rem;'>"
+        f"📍 নির্বাচিত জেলা: <b>{district_bn}</b> &nbsp;|&nbsp; AEZ-{aez_num}</div>",
+        unsafe_allow_html=True
+    )
+    st.markdown('<div class="sidebar-open-btn">', unsafe_allow_html=True)
+    if st.button("☰ জেলা পরিবর্তন করুন", key="open_sidebar"):
+        st.session_state.sidebar_open = True
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
 # ================================================================
@@ -694,7 +739,6 @@ else:
     st.markdown('<div class="section-title">🧪 প্রয়োজনীয় সারের পরিমাণ</div>', unsafe_allow_html=True)
 
     if res['is_fruit']:
-        # Fruit tree — age-group selector
         age_groups_bn = {
             'Before planting': 'রোপণের আগে',
             '0-1':   '০-১ বছর',
@@ -715,13 +759,11 @@ else:
             index=age_default,
             label_visibility="collapsed",
         )
-        # Map Bangla age to numeric for lookup
         age_to_num = {'Before planting': 0, '0-1': 1, '2-4': 3, '5-7': 6,
                       '8-10': 10, '11-15': 13, '16-20': 18, '>20': 25}
         fert = get_fertilizer(crop_label, field_df, fruit_df,
                               tree_age=age_to_num.get(age_sel, 10))
     else:
-        # Field crop — soil-level pills
         soil_options_bn = {
             'Optimum':  '✅ অপ্টিমাম',
             'Medium':   '🟡 মাঝারি',
@@ -745,7 +787,6 @@ else:
                     unsafe_allow_html=True)
     else:
         nutrients = fert.get('nutrients', {}) or {}
-        # Bangla labels for nutrients
         bn_nutrients = {
             'N (Nitrogen)':   'নাইট্রোজেন (N)',
             'P (Phosphorus)': 'ফসফরাস (P)',
@@ -764,7 +805,6 @@ else:
             rows_html = ""
             for raw_name, val in nutrients.items():
                 bn_label = bn_nutrients.get(raw_name, raw_name)
-                # Organic Matter values may include their own unit suffix
                 if isinstance(val, str) and any(u in val for u in ['t/ha', 'kg/tree']):
                     amount, unit_label = val.rsplit(' ', 1)
                     unit_label_bn = ('টন/হেক্টর' if unit_label == 't/ha'
